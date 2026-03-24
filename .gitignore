@@ -3,3 +3,10 @@ dist
 .DS_Store
 .env
 .env.local
+around_68.txt
+debug.log
+pdf_extract.txt
+pdf_full_extract.txt
+staj_dokuman.txt
+stream_66.txt
+stream_68.txt
