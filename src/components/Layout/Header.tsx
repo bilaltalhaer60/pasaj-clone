@@ -12,10 +12,26 @@ import { env } from "../../config/env";
 import { ROUTES } from "../../constants/routes";
 
 const navItems = [
-  { label: "Telefon", to: "/category/telefon" },
-  { label: "Bilgisayar", to: "/category/bilgisayar" },
-  { label: "Aksesuar", to: "/category/aksesuar" },
-  { label: "Kampanyalar", to: ROUTES.home }
+  {
+    label: "Telefon",
+    to: "/category/telefon",
+    children: ["Apple", "Samsung", "Xiaomi", "Yenilenmis"]
+  },
+  {
+    label: "Bilgisayar",
+    to: "/category/bilgisayar",
+    children: ["Laptop", "Oyuncu", "Monitor", "Tablet"]
+  },
+  {
+    label: "Aksesuar",
+    to: "/category/aksesuar",
+    children: ["Kulaklik", "Saat", "Sarj", "Ev teknolojileri"]
+  },
+  {
+    label: "Kampanyalar",
+    to: ROUTES.home,
+    children: ["Gece firsatlari", "Ogrenciye ozel", "Pesin fiyatina taksit", "Outlet"]
+  }
 ];
 
 export const Header = () => {
@@ -23,7 +39,7 @@ export const Header = () => {
   const links = useMemo(
     () => [
       ...navItems,
-      { label: "Giriş", to: ROUTES.login },
+      { label: "Giris", to: ROUTES.login },
       { label: "Sepet", to: ROUTES.cart }
     ],
     []
@@ -32,14 +48,14 @@ export const Header = () => {
   return (
     <header className="site-header">
       <div className="topbar">
-        <span>Hızlı teslimat ve temel routing hazır.</span>
-        <span>Kargo eşiği: {env.shippingThreshold} TL</span>
+        <span>Hizli teslimat ve haftalik vitrin alanlari hazir.</span>
+        <span>Kargo esigi: {env.shippingThreshold} TL</span>
       </div>
       <div className="header-main">
         <Space align="center" size="middle">
           <Button
             className="mobile-only"
-            aria-label="Menüyü aç"
+            aria-label="Menuyu ac"
             icon={<MenuOutlined />}
             onClick={() => setOpen(true)}
           />
@@ -52,7 +68,7 @@ export const Header = () => {
           className="header-search"
           size="large"
           prefix={<SearchOutlined />}
-          placeholder="Ürün, marka veya kategori ara"
+          placeholder="Urun, marka veya kategori ara"
         />
 
         <Space size="middle">
@@ -72,9 +88,21 @@ export const Header = () => {
 
       <nav className="desktop-nav">
         {navItems.map((item) => (
-          <NavLink key={item.to} to={item.to} className="nav-link">
-            {item.label}
-          </NavLink>
+          <div key={item.to} className="mega-nav-item">
+            <NavLink to={item.to} className="nav-link">
+              {item.label}
+            </NavLink>
+            <div className="mega-menu">
+              <span className="mega-title">{item.label}</span>
+              <div className="mega-links">
+                {item.children.map((child) => (
+                  <Link key={child} to={item.to} className="mega-link">
+                    {child}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
         ))}
       </nav>
 

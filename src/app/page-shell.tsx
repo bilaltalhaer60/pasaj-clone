@@ -7,18 +7,20 @@ type PageShellProps = {
   description: string;
   nextTargets?: Array<{ label: string; to: string }>;
   children?: ReactNode;
+  badge?: string;
 };
 
 export const PageShell = ({
   title,
   description,
   nextTargets,
-  children
+  children,
+  badge = "1. Hafta Teslimi"
 }: PageShellProps) => {
   return (
     <Space direction="vertical" size={24} style={{ width: "100%" }}>
       <Card className="hero-card">
-        <Tag color="gold">1. Hafta Teslimi</Tag>
+        <Tag color="gold">{badge}</Tag>
         <Typography.Title level={1}>{title}</Typography.Title>
         <Typography.Paragraph>{description}</Typography.Paragraph>
         {nextTargets && nextTargets.length > 0 ? (
@@ -45,7 +47,7 @@ export const RoutePreviewGrid = ({
     <Row gutter={[16, 16]}>
       {items.map((item) => (
         <Col xs={24} md={12} xl={8} key={item.to}>
-          <Card className="route-card" title={item.title} extra={<Link to={item.to}>Aç</Link>}>
+          <Card className="route-card" title={item.title} extra={<Link to={item.to}>Ac</Link>}>
             <Typography.Paragraph>{item.description}</Typography.Paragraph>
           </Card>
         </Col>

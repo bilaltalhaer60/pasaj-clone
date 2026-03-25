@@ -3,15 +3,15 @@ import { Col, Row, Typography } from "antd";
 const footerColumns = [
   {
     title: "Kurumsal",
-    items: ["Hakkımızda", "Kariyer", "İletişim"]
+    items: ["Hakkimizda", "Kariyer", "Iletisim"]
   },
   {
-    title: "Müşteri Hizmetleri",
-    items: ["Sipariş Takibi", "İade", "Yardım Merkezi"]
+    title: "Musteri Hizmetleri",
+    items: ["Siparis Takibi", "Iade", "Yardim Merkezi"]
   },
   {
     title: "Staj Projesi",
-    items: ["React + TypeScript", "Vite", "React Router"]
+    items: ["React + TypeScript", "Vite", "Swiper + React Query"]
   }
 ];
 
