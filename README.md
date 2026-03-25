@@ -1,6 +1,6 @@
 # Pasaj Clone
 
-TypeScript ile hazırlanmış 1. hafta staj projesi iskeleti.
+1. hafta kapsamında Pasaj Clone projesinin temel yapısı tamamlandı. Ana sayfa düzeni geliştirildi, layout bileşenleri güncellendi, header ve footer yapıları düzenlendi, stil dosyaları iyileştirildi ve proje için gerekli veri yapısı eklendi.
 
 ## Kurulum
 
