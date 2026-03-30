@@ -10,6 +10,7 @@ import { useMemo, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { env } from "../../config/env";
 import { ROUTES } from "../../constants/routes";
+import { getCartItemCount, useCartStore } from "../../store/cartStore";
 
 const navItems = [
   {
@@ -36,6 +37,7 @@ const navItems = [
 
 export const Header = () => {
   const [open, setOpen] = useState(false);
+  const itemCount = useCartStore((state) => getCartItemCount(state.items));
   const links = useMemo(
     () => [
       ...navItems,
@@ -79,7 +81,7 @@ export const Header = () => {
             <HeartOutlined />
           </button>
           <NavLink to={ROUTES.cart} className="icon-link">
-            <Badge count={0} size="small">
+            <Badge count={itemCount} size="small">
               <ShoppingCartOutlined />
             </Badge>
           </NavLink>
