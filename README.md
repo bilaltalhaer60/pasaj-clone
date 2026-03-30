@@ -19,3 +19,23 @@ npm run dev
 - Error Lens
 
 `.vscode/extensions.json` dosyası açıldığında bu önerileri otomatik gösterir.
+
+
+
+
+## Firebase Entegrasyonu
+
+Projede ürün verileri mock yapıdan çıkarılıp Firebase Firestore'a taşınmıştır.
+Anasayfa, kategori ve ürün detay sayfaları ürün verilerini Firestore üzerinden okumaktadır.
+
+Gerekli ortam değişkenleri:
+
+- VITE_FIREBASE_PRODUCTS_COLLECTION
+- VITE_FIREBASE_API_KEY
+- VITE_FIREBASE_AUTH_DOMAIN
+- VITE_FIREBASE_PROJECT_ID
+- VITE_FIREBASE_STORAGE_BUCKET
+- VITE_FIREBASE_MESSAGING_SENDER_ID
+- VITE_FIREBASE_APP_ID
+
+
