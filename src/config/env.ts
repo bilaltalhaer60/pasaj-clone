@@ -11,6 +11,7 @@ export const env = {
   appName: getEnv("VITE_APP_NAME", "Pasaj Clone"),
   shippingThreshold: parseNumber(getEnv("VITE_SHIPPING_THRESHOLD", "200"), 200),
   shippingCost: parseNumber(getEnv("VITE_SHIPPING_COST", "29.9"), 29.9),
+  productsCollection: getEnv("VITE_FIREBASE_PRODUCTS_COLLECTION", "products"),
   firebase: {
     apiKey: getEnv("VITE_FIREBASE_API_KEY"),
     authDomain: getEnv("VITE_FIREBASE_AUTH_DOMAIN"),

@@ -1,6 +1,6 @@
 import { ClockCircleOutlined, FireOutlined, ThunderboltOutlined } from "@ant-design/icons";
 import { useQuery } from "@tanstack/react-query";
-import { Button, Card, Col, Rate, Row, Skeleton, Space, Statistic, Tag, Typography } from "antd";
+import { Alert, Button, Card, Col, Rate, Row, Skeleton, Space, Statistic, Tag, Typography } from "antd";
 import dayjs from "dayjs";
 import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -8,23 +8,19 @@ import { Autoplay, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import { PageShell } from "../app/page-shell";
+import { isFirebaseReady } from "../config/firebase";
 import {
   campaignCards,
   categoryCards,
-  featuredProducts,
   heroSlides,
   trustHighlights
 } from "../data/home";
-
-const fetchFeaturedProducts = async () => {
-  await new Promise((resolve) => setTimeout(resolve, 350));
-  return featuredProducts;
-};
+import { getFeaturedProducts } from "../services/productService";
 
 export const HomePage = () => {
   const { data, isLoading } = useQuery({
     queryKey: ["featured-products"],
-    queryFn: fetchFeaturedProducts
+    queryFn: getFeaturedProducts
   });
 
   const campaignDeadline = dayjs().add(3, "day").format("DD MMMM");
@@ -147,9 +143,17 @@ export const HomePage = () => {
         <div className="section-heading">
           <Typography.Title level={3}>One cikan urunler</Typography.Title>
           <Typography.Paragraph>
-            Bu alan React Query ile mock veri cekiyor. Sonraki haftada API veya Firebase ile baglanacak.
+            Bu alan React Query ile Firestore uzerinden gelen urunleri listeliyor.
           </Typography.Paragraph>
         </div>
+        {!isFirebaseReady ? (
+          <Alert
+            type="warning"
+            showIcon
+            style={{ marginBottom: 16 }}
+            message="Firebase baglantisi hazir degil. .env dosyasini doldurup Firestore icindeki products koleksiyonunu tanimlaman gerekiyor."
+          />
+        ) : null}
         <Row gutter={[16, 16]}>
           {isLoading
             ? Array.from({ length: 4 }).map((_, index) => (
@@ -161,7 +165,7 @@ export const HomePage = () => {
               ))
             : data?.map((product) => (
                 <Col xs={24} md={12} xl={6} key={product.id}>
-                  <Link to={product.to}>
+                  <Link to={`/product/${product.slug}`}>
                     <Card className="product-card">
                       <Tag color="blue">{product.badge}</Tag>
                       <Typography.Paragraph className="product-brand">
@@ -171,7 +175,7 @@ export const HomePage = () => {
                       <Space direction="vertical" size={6}>
                         <Rate allowHalf disabled defaultValue={product.rating} />
                         <Typography.Text type="secondary">
-                          {product.rating} puan · {product.reviewCount} yorum
+                          {product.rating} puan Â· {product.reviewCount} yorum
                         </Typography.Text>
                         <Typography.Title level={4} className="product-price">
                           {product.price.toLocaleString("tr-TR")} TL
