@@ -21,6 +21,12 @@ npm run dev
 `.vscode/extensions.json` dosyasÄ± aÃ§Ä±ldÄ±ÄŸÄ±nda bu Ã¶nerileri otomatik gÃ¶sterir.
 
 
+## 3. Hafta Geliştirmeleri
+
+Bu hafta proje içerisinde cart ve checkout akışları geliştirilmiştir.
+Sepet yönetimi, ürün adet güncelleme işlemleri ve sipariş özeti bileşenleri düzenlenmiştir.
+Checkout sayfası kullanıcı akışına uygun şekilde güncellenmiş, arayüzde gerekli stil iyileştirmeleri yapılmıştır.
+Ek olarak bazı proje yapılandırmaları gözden geçirilmiş ve düzenlenmiştir.
 
 
 
