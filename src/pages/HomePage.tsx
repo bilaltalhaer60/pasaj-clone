@@ -9,16 +9,11 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { PageShell } from "../app/page-shell";
 import { isFirebaseReady } from "../config/firebase";
-import {
-  campaignCards,
-  categoryCards,
-  heroSlides,
-  trustHighlights
-} from "../data/home";
+import { campaignCards, categoryCards, heroSlides, trustHighlights } from "../data/home";
 import { getFeaturedProducts } from "../services/productService";
 
 export const HomePage = () => {
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey: ["featured-products"],
     queryFn: getFeaturedProducts
   });
@@ -154,6 +149,14 @@ export const HomePage = () => {
             message="Firebase baglantisi hazir degil. .env dosyasini doldurup Firestore icindeki products koleksiyonunu tanimlaman gerekiyor."
           />
         ) : null}
+        {error ? (
+          <Alert
+            type="error"
+            showIcon
+            style={{ marginBottom: 16 }}
+            message={error instanceof Error ? error.message : "Urunler yuklenirken bir hata olustu."}
+          />
+        ) : null}
         <Row gutter={[16, 16]}>
           {isLoading
             ? Array.from({ length: 4 }).map((_, index) => (
@@ -175,7 +178,7 @@ export const HomePage = () => {
                       <Space direction="vertical" size={6}>
                         <Rate allowHalf disabled defaultValue={product.rating} />
                         <Typography.Text type="secondary">
-                          {product.rating} puan · {product.reviewCount} yorum
+                          {product.rating} puan - {product.reviewCount} yorum
                         </Typography.Text>
                         <Typography.Title level={4} className="product-price">
                           {product.price.toLocaleString("tr-TR")} TL

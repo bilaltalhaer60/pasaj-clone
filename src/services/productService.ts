@@ -35,13 +35,13 @@ const fallbackProductValues: Omit<Product, "id"> = {
 };
 
 const ensureFirestore = () => {
-  if (!firestore) {
+  if (!firestore || !productsCollectionName) {
     throw new Error(
-      "Firebase ayarlari eksik. .env icine Firebase config bilgilerini ve products koleksiyon adini girmen gerekiyor."
+      "Firebase ayarlari eksik. .env dosyasini ve Firestore products koleksiyonunu kontrol etmen gerekiyor."
     );
   }
 
-  return firestore;
+  return collection(firestore, productsCollectionName);
 };
 
 const toSpecs = (value: unknown): ProductSpec[] => {
@@ -111,16 +111,14 @@ const mapProduct = (doc: QueryDocumentSnapshot<DocumentData>): Product => {
 };
 
 export const getFeaturedProducts = async () => {
-  const db = ensureFirestore();
-  const productsRef = collection(db, productsCollectionName);
+  const productsRef = ensureFirestore();
   const snapshot = await getDocs(query(productsRef, orderBy("popularity", "desc"), limit(4)));
 
   return snapshot.docs.map(mapProduct);
 };
 
 export const getProductsByCategory = async (category: string) => {
-  const db = ensureFirestore();
-  const productsRef = collection(db, productsCollectionName);
+  const productsRef = ensureFirestore();
   const snapshot = await getDocs(query(productsRef, where("category", "==", category)));
 
   return snapshot.docs.map(mapProduct);
@@ -131,8 +129,7 @@ export const getProductBySlug = async (slug?: string) => {
     return null;
   }
 
-  const db = ensureFirestore();
-  const productsRef = collection(db, productsCollectionName);
+  const productsRef = ensureFirestore();
   const snapshot = await getDocs(query(productsRef, where("slug", "==", slug), limit(1)));
 
   return snapshot.docs[0] ? mapProduct(snapshot.docs[0]) : null;

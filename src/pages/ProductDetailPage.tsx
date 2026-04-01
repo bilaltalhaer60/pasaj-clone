@@ -94,7 +94,7 @@ export const ProductDetailPage = () => {
               <Space align="center" size="middle" wrap>
                 <Rate allowHalf disabled value={product.rating} />
                 <Typography.Text type="secondary">
-                  {product.rating} puan · {product.reviewCount} yorum
+                  {product.rating} puan - {product.reviewCount} yorum
                 </Typography.Text>
               </Space>
               <Typography.Title level={2} className="detail-price">
