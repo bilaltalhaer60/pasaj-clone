@@ -9,6 +9,7 @@ import { HomePage } from "../pages/HomePage";
 import { LoginPage } from "../pages/LoginPage";
 import { NotFoundPage } from "../pages/NotFoundPage";
 import { ProductDetailPage } from "../pages/ProductDetailPage";
+import { RegisterPage } from "../pages/RegisterPage";
 import { ROUTES } from "../constants/routes";
 
 export const router = createBrowserRouter([
@@ -21,6 +22,7 @@ export const router = createBrowserRouter([
       { path: ROUTES.product, element: <ProductDetailPage /> },
       { path: ROUTES.cart, element: <CartPage /> },
       { path: ROUTES.login, element: <LoginPage /> },
+      { path: ROUTES.register, element: <RegisterPage /> },
       { path: ROUTES.checkout, element: <CheckoutPage /> },
       { path: ROUTES.account, element: <AccountPage /> },
       { path: ROUTES.admin, element: <AdminPage /> },

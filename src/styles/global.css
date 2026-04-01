@@ -320,7 +320,12 @@ a {
 .detail-summary-card,
 .detail-info-card,
 .checkout-card,
-.empty-card {
+.empty-card,
+.auth-card,
+.auth-side-card,
+.account-stat-card,
+.profile-card,
+.admin-stat-card {
   border-radius: 24px;
 }
 
@@ -408,6 +413,20 @@ a {
 
 .checkout-note {
   margin-bottom: 0 !important;
+}
+
+.auth-card,
+.auth-side-card,
+.account-stat-card,
+.profile-card,
+.admin-stat-card {
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(20, 33, 61, 0.08);
+  box-shadow: 0 20px 40px rgba(11, 42, 73, 0.08);
+}
+
+.account-stats-grid {
+  margin-bottom: 16px;
 }
 
 .trust-section {

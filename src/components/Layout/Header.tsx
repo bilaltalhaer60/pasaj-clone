@@ -10,6 +10,7 @@ import { useMemo, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { env } from "../../config/env";
 import { ROUTES } from "../../constants/routes";
+import { useAuthStore } from "../../store/authStore";
 import { getCartItemCount, useCartStore } from "../../store/cartStore";
 
 const navItems = [
@@ -38,13 +39,15 @@ const navItems = [
 export const Header = () => {
   const [open, setOpen] = useState(false);
   const itemCount = useCartStore((state) => getCartItemCount(state.items));
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const links = useMemo(
     () => [
       ...navItems,
-      { label: "Giris", to: ROUTES.login },
+      { label: isLoggedIn ? "Hesabim" : "Giris", to: isLoggedIn ? ROUTES.account : ROUTES.login },
+      { label: "Admin", to: ROUTES.admin },
       { label: "Sepet", to: ROUTES.cart }
     ],
-    []
+    [isLoggedIn]
   );
 
   return (
@@ -74,7 +77,7 @@ export const Header = () => {
         />
 
         <Space size="middle">
-          <NavLink to={ROUTES.login} className="icon-link">
+          <NavLink to={isLoggedIn ? ROUTES.account : ROUTES.login} className="icon-link">
             <UserOutlined />
           </NavLink>
           <button className="icon-link" type="button" aria-label="Favoriler">

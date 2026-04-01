@@ -5,30 +5,30 @@ import { isFirebaseReady } from "../config/firebase";
 import { ROUTES } from "../constants/routes";
 import { useAuthStore } from "../store/authStore";
 
-export const LoginPage = () => {
+export const RegisterPage = () => {
   const navigate = useNavigate();
-  const login = useAuthStore((state) => state.login);
+  const register = useAuthStore((state) => state.register);
 
-  const onFinish = (values: { email: string }) => {
-    login(values.email);
+  const onFinish = (values: { fullName: string; email: string }) => {
+    register(values.fullName, values.email);
     navigate(ROUTES.account);
   };
 
   return (
     <PageShell
       badge="4. Hafta Teslimi"
-      title="Giris"
-      description="Auth akisinin demo surumu 4. haftada tamamlandi. Giris sonrasi kullanici hesap paneline yonleniyor."
+      title="Kayit Ol"
+      description="4. haftada auth akisinin demo versiyonu tamamlandi. Kayit formu hesap ekranina yonleniyor."
       nextTargets={[
-        { label: "Kayit Ol", to: ROUTES.register },
-        { label: "Hesabim", to: ROUTES.account }
+        { label: "Giris Yap", to: ROUTES.login },
+        { label: "Anasayfa", to: ROUTES.home }
       ]}
     >
       {!isFirebaseReady ? (
         <Alert
-          type="warning"
+          type="info"
           showIcon
-          message="Firebase environment degiskenleri henuz tanimli degil. Demo auth akisi ile test etmeye devam edebilirsin."
+          message="Firebase ayarlari zorunlu degil; bu hafta icin demo auth akisiyla ilerliyoruz."
           style={{ marginBottom: 16 }}
         />
       ) : null}
@@ -37,6 +37,13 @@ export const LoginPage = () => {
         <Col xs={24} lg={14}>
           <Card className="auth-card">
             <Form layout="vertical" onFinish={onFinish}>
+              <Form.Item
+                label="Ad Soyad"
+                name="fullName"
+                rules={[{ required: true, message: "Ad soyad girmen gerekiyor." }]}
+              >
+                <Input placeholder="Bilal Talha" />
+              </Form.Item>
               <Form.Item
                 label="E-posta"
                 name="email"
@@ -52,7 +59,7 @@ export const LoginPage = () => {
                 <Input.Password placeholder="********" />
               </Form.Item>
               <Button type="primary" htmlType="submit" size="large">
-                Giris Yap
+                Hesap olustur
               </Button>
             </Form>
           </Card>
@@ -60,15 +67,15 @@ export const LoginPage = () => {
 
         <Col xs={24} lg={10}>
           <Card className="auth-side-card">
-            <Typography.Title level={4}>Demo kullanici akisi</Typography.Title>
+            <Typography.Title level={4}>4. hafta eklemeleri</Typography.Title>
             <Typography.Paragraph>
-              Giris yaptiginda siparislerini, favorilerini ve adreslerini hesap ekraninda gorebilirsin.
+              Kayit ve giris ekranlari artik hesap sayfasina bagli calisiyor.
             </Typography.Paragraph>
             <Typography.Paragraph>
-              Admin paneli de 4. hafta kapsaminda tablo ve metrik kartlariyla genisletildi.
+              Hazirlanan demo akista siparisler, favoriler ve adresler tek panelde gorulebiliyor.
             </Typography.Paragraph>
             <Button>
-              <Link to={ROUTES.register}>Yeni hesap olustur</Link>
+              <Link to={ROUTES.login}>Zaten uyeyim</Link>
             </Button>
           </Card>
         </Col>
