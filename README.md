@@ -44,3 +44,19 @@ Gerekli ortam değişkenleri:
 - VITE_FIREBASE_STORAGE_BUCKET
 - VITE_FIREBASE_MESSAGING_SENDER_ID
 - VITE_FIREBASE_APP_ID
+
+4. Hafta Özeti
+Bu hafta projede veri akışını daha düzenli ve sürdürülebilir hale getirmeye odaklandım.
+Özellikle ürün verilerinin yönetimi, sayfalar arası veri kullanımı ve kullanıcı deneyimini etkileyen temel akışlarda iyileştirmeler yaptım.
+
+Hafta boyunca yaptığım çalışmalar:
+
+Ürün verilerini Firestore üzerinden daha tutarlı bir yapıda kullanacak şekilde düzenledim.
+Anasayfa, kategori ve ürün detay sayfalarında veri çekme ve gösterme mantığını sadeleştirdim.
+Bileşenler arası veri paylaşımını iyileştirerek gereksiz tekrarları azalttım.
+Hata durumlarında uygulamanın verdiği tepkiyi daha anlaşılır ve yönetilebilir hale getirdim.
+Kod yapısını daha okunabilir tutarak sonraki geliştirmeler için sağlam bir temel oluşturdum.
+Bu çalışmalarla birlikte proje hem teknik açıdan daha stabil hale geldi hem de geliştirme sürecinde yönetilebilirlik arttı.
+
+
+
