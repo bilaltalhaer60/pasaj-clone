@@ -1,6 +1,7 @@
-# Pasaj Clone
+﻿# Pasaj Clone
 
-1. hafta kapsamÄ±nda Pasaj Clone projesinin temel yapÄ±sÄ± tamamlandÄ±. Ana sayfa dÃ¼zeni geliÅŸtirildi, layout bileÅŸenleri gÃ¼ncellendi, header ve footer yapÄ±larÄ± dÃ¼zenlendi, stil dosyalarÄ± iyileÅŸtirildi ve proje iÃ§in gerekli veri yapÄ±sÄ± eklendi.
+Bu proje, e-ticaret deneyimini temel alan bir Pasaj klonudur.
+Vite + React + TypeScript altyapısı ile geliştirilmiş, ürün listeleme, detay, sepet ve checkout akışlarını içermektedir.
 
 ## Kurulum
 
@@ -9,26 +10,18 @@ npm install
 npm run dev
 ```
 
-## VS Code Ã¶nerilen eklentiler
+## 4. Hafta Özeti
 
-- ESLint
-- Prettier
-- TypeScript and JavaScript Language Features
-- Code Spell Checker
-- Auto Rename Tag
-- Error Lens
+4. hafta boyunca projenin veri katmanı ve kullanıcı akışı daha kararlı hale getirildi.
+Özellikle Firestore tabanlı ürün yönetimi, veri çekme süreçleri ve sayfa bazlı veri kullanımında düzenlemeler yapıldı.
 
-`.vscode/extensions.json` dosyasÄ± aÃ§Ä±ldÄ±ÄŸÄ±nda bu Ã¶nerileri otomatik gÃ¶sterir.
+Bu hafta odaklanılan başlıklar:
 
-
-## 3. Hafta Geliştirmeleri
-
-Bu hafta proje içerisinde cart ve checkout akışları geliştirilmiştir.
-Sepet yönetimi, ürün adet güncelleme işlemleri ve sipariş özeti bileşenleri düzenlenmiştir.
-Checkout sayfası kullanıcı akışına uygun şekilde güncellenmiş, arayüzde gerekli stil iyileştirmeleri yapılmıştır.
-Ek olarak bazı proje yapılandırmaları gözden geçirilmiş ve düzenlenmiştir.
-
-
+- Ürün verilerini Firestore üzerinden daha tutarlı şekilde yönetmek
+- Anasayfa, kategori ve ürün detay sayfalarında veri akışını sadeleştirmek
+- Bileşenler arası veri paylaşımını ve sorgu yapısını iyileştirmek
+- Hata durumlarında arayüz davranışlarını daha öngörülebilir hale getirmek
+- Kod düzenini koruyarak sonraki geliştirmeler için daha temiz bir temel hazırlamak
 
 ## Firebase Entegrasyonu
 
@@ -44,3 +37,12 @@ Gerekli ortam değişkenleri:
 - VITE_FIREBASE_STORAGE_BUCKET
 - VITE_FIREBASE_MESSAGING_SENDER_ID
 - VITE_FIREBASE_APP_ID
+
+## VS Code Önerilen Eklentiler
+
+- ESLint
+- Prettier
+- TypeScript and JavaScript Language Features
+- Code Spell Checker
+- Auto Rename Tag
+- Error Lens
