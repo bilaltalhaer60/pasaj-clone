@@ -10,7 +10,6 @@ import {
 } from "firebase/firestore";
 import { env } from "../config/env";
 import { firestore } from "../config/firebase";
-import { allProducts } from "../mocks/products";
 import type { Product, ProductSpec } from "../types/product";
 
 const productsCollectionName = env.productsCollection;
@@ -36,9 +35,11 @@ const fallbackProductValues: Omit<Product, "id"> = {
 };
 
 const ensureFirestore = () => {
-  return firestore && productsCollectionName
-    ? collection(firestore, productsCollectionName)
-    : null;
+  if (!firestore || !productsCollectionName) {
+    throw new Error("Urun verisi su anda yuklenemiyor.");
+  }
+
+  return collection(firestore, productsCollectionName);
 };
 
 const toSpecs = (value: unknown): ProductSpec[] => {
@@ -109,12 +110,6 @@ const mapProduct = (doc: QueryDocumentSnapshot<DocumentData>): Product => {
 
 export const getFeaturedProducts = async () => {
   const productsRef = ensureFirestore();
-  if (!productsRef) {
-    return [...allProducts]
-      .sort((left, right) => right.popularity - left.popularity)
-      .slice(0, 4);
-  }
-
   const snapshot = await getDocs(query(productsRef, orderBy("popularity", "desc"), limit(4)));
 
   return snapshot.docs.map(mapProduct);
@@ -122,10 +117,6 @@ export const getFeaturedProducts = async () => {
 
 export const getProductsByCategory = async (category: string) => {
   const productsRef = ensureFirestore();
-  if (!productsRef) {
-    return allProducts.filter((product) => product.category === category);
-  }
-
   const snapshot = await getDocs(query(productsRef, where("category", "==", category)));
 
   return snapshot.docs.map(mapProduct);
@@ -137,10 +128,6 @@ export const getProductBySlug = async (slug?: string) => {
   }
 
   const productsRef = ensureFirestore();
-  if (!productsRef) {
-    return allProducts.find((product) => product.slug === slug) ?? null;
-  }
-
   const snapshot = await getDocs(query(productsRef, where("slug", "==", slug), limit(1)));
 
   return snapshot.docs[0] ? mapProduct(snapshot.docs[0]) : null;

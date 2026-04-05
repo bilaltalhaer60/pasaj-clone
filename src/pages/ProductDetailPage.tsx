@@ -2,7 +2,6 @@ import { useQuery } from "@tanstack/react-query";
 import { Link, useParams } from "react-router-dom";
 import { Alert, Button, Card, Col, Descriptions, Rate, Row, Skeleton, Space, Tag, Typography } from "antd";
 import { PageShell } from "../app/page-shell";
-import { isFirebaseReady } from "../config/firebase";
 import { getProductBySlug } from "../services/productService";
 import { useCartStore } from "../store/cartStore";
 import { formatCurrency } from "../utils/formatCurrency";
@@ -54,15 +53,7 @@ export const ProductDetailPage = () => {
         title="Urun bulunamadi"
         description="Istenen urun Firestore icindeki products koleksiyonunda bulunamadi."
         nextTargets={[{ label: "Anasayfaya Don", to: "/" }]}
-      >
-        {!isFirebaseReady ? (
-          <Alert
-            type="warning"
-            showIcon
-            message="Firebase baglantisi hazir degil. Once .env bilgilerini doldurman gerekiyor."
-          />
-        ) : null}
-      </PageShell>
+      />
     );
   }
 

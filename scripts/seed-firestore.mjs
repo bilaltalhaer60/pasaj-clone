@@ -92,6 +92,30 @@ const products = [
     ]
   },
   {
+    slug: "lenovo-legion-16",
+    name: "Lenovo Legion 16",
+    brand: "Lenovo",
+    category: "bilgisayar",
+    price: 61999,
+    previousPrice: 68999,
+    discount: 10,
+    popularity: 90,
+    rating: 4.6,
+    reviewCount: 47,
+    installment: "Oyuncu laptoplarinda ozel taksit",
+    badge: "Sinirli stok",
+    image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=900&q=80",
+    summary: "Oyun ve performans odakli kullanim icin guclu ekran karti ve sogutma sistemi sunar.",
+    shippingNote: "Stokta, 24 saat icinde kargoda.",
+    highlights: ["RTX ekran karti", "165 Hz panel", "RGB klavye", "Gelistirilmis sogutma"],
+    specs: [
+      { label: "Islemci", value: "Intel Core i7" },
+      { label: "Ekran", value: "16 in 165 Hz" },
+      { label: "Bellek", value: "32 GB RAM" },
+      { label: "Depolama", value: "1 TB SSD" }
+    ]
+  },
+  {
     slug: "airpods-pro-2",
     name: "AirPods Pro 2",
     brand: "Apple",
@@ -113,6 +137,30 @@ const products = [
       { label: "Pil", value: "6 saate kadar tek sarj" },
       { label: "Ozellik", value: "Uyarlanabilir ses" },
       { label: "Dayaniklilik", value: "IP54" }
+    ]
+  },
+  {
+    slug: "watch-fit-4",
+    name: "Watch Fit 4",
+    brand: "Huawei",
+    category: "aksesuar",
+    price: 6999,
+    previousPrice: 7999,
+    discount: 12,
+    popularity: 82,
+    rating: 4.5,
+    reviewCount: 72,
+    installment: "3 taksit firsati",
+    badge: "Yeni",
+    image: "https://images.unsplash.com/photo-1546868871-7041f2a55e12?auto=format&fit=crop&w=900&q=80",
+    summary: "Spor ve saglik takibi odakli hafif akilli saat deneyimi.",
+    shippingNote: "Hafta ici sipariste ucretsiz kargo.",
+    highlights: ["AMOLED ekran", "Nabiz takibi", "GPS", "Hafif govde"],
+    specs: [
+      { label: "Ekran", value: "1.82 in AMOLED" },
+      { label: "Pil", value: "10 gune kadar" },
+      { label: "Sensor", value: "Nabiz ve SpO2" },
+      { label: "Uyumluluk", value: "iOS ve Android" }
     ]
   }
 ];

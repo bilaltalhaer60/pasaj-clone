@@ -127,5 +127,5 @@ export const trustHighlights = [
   "Ucretsiz kargo limiti bilgisi ust bantta gorunur.",
   "Kategori gecisleri tek tikla ilgili liste rotasina gider.",
   "Hero alaninda dikkat cekici CTA ve kampanya dili korunur.",
-  "Vitrin urunleri React Query ile Firestore veya mock veri uzerinden yuklenir."
+  "Vitrin urunleri React Query ile Firestore uzerinden yuklenir."
 ];

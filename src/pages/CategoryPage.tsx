@@ -3,7 +3,6 @@ import { useQuery } from "@tanstack/react-query";
 import { Link, useParams } from "react-router-dom";
 import { Alert, Button, Card, Col, Empty, Row, Select, Skeleton, Slider, Space, Tag, Typography } from "antd";
 import { PageShell } from "../app/page-shell";
-import { isFirebaseReady } from "../config/firebase";
 import { categoryMeta } from "../data/categories";
 import { getProductsByCategory } from "../services/productService";
 import { useCartStore } from "../store/cartStore";
@@ -89,14 +88,6 @@ export const CategoryPage = () => {
         </aside>
 
         <section>
-          {!isFirebaseReady ? (
-            <Alert
-              type="info"
-              showIcon
-              style={{ marginBottom: 16 }}
-              message="Firebase baglantisi hazir degil. Liste su anda mock urun verisi ile gosteriliyor."
-            />
-          ) : null}
           {error ? (
             <Alert
               type="error"

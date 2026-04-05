@@ -8,7 +8,6 @@ import { Autoplay, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import { PageShell } from "../app/page-shell";
-import { isFirebaseReady } from "../config/firebase";
 import { campaignCards, categoryCards, heroSlides, trustHighlights } from "../data/home";
 import { getFeaturedProducts } from "../services/productService";
 
@@ -141,14 +140,6 @@ export const HomePage = () => {
             Bu alan React Query ile Firestore uzerinden gelen urunleri listeliyor.
           </Typography.Paragraph>
         </div>
-        {!isFirebaseReady ? (
-          <Alert
-            type="info"
-            showIcon
-            style={{ marginBottom: 16 }}
-            message="Firebase baglantisi hazir degil. Vitrin urunleri su anda mock veri ile gosteriliyor."
-          />
-        ) : null}
         {error ? (
           <Alert
             type="error"
