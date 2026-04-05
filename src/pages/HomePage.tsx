@@ -143,10 +143,10 @@ export const HomePage = () => {
         </div>
         {!isFirebaseReady ? (
           <Alert
-            type="warning"
+            type="info"
             showIcon
             style={{ marginBottom: 16 }}
-            message="Firebase baglantisi hazir degil. .env dosyasini doldurup Firestore icindeki products koleksiyonunu tanimlaman gerekiyor."
+            message="Firebase baglantisi hazir degil. Vitrin urunleri su anda mock veri ile gosteriliyor."
           />
         ) : null}
         {error ? (

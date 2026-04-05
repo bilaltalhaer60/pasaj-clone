@@ -91,10 +91,10 @@ export const CategoryPage = () => {
         <section>
           {!isFirebaseReady ? (
             <Alert
-              type="warning"
+              type="info"
               showIcon
               style={{ marginBottom: 16 }}
-              message="Firebase baglantisi hazir degil. Urunleri gorebilmek icin .env bilgilerini ve Firestore products koleksiyonunu tanimlaman gerekiyor."
+              message="Firebase baglantisi hazir degil. Liste su anda mock urun verisi ile gosteriliyor."
             />
           ) : null}
           {error ? (

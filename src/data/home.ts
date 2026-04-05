@@ -94,7 +94,7 @@ export const categoryCards: CategoryCard[] = [
   {
     title: "Tabletler",
     description: "Egitim, cizim ve medya tuketimi icin hafif cihazlar.",
-    to: "/category/tablet",
+    to: "/category/aksesuar",
     accent: "#fef3c7"
   }
 ];
@@ -117,7 +117,7 @@ export const campaignCards: CampaignCard[] = [
   {
     title: "Ogrenciye ozel teknoloji secimi",
     description: "Ders ve kampus kullanimina uygun hafif cihaz listesi.",
-    to: "/category/tablet",
+    to: "/category/aksesuar",
     accent: "#7c3aed",
     tag: "Ogrenci"
   }
@@ -127,5 +127,5 @@ export const trustHighlights = [
   "Ucretsiz kargo limiti bilgisi ust bantta gorunur.",
   "Kategori gecisleri tek tikla ilgili liste rotasina gider.",
   "Hero alaninda dikkat cekici CTA ve kampanya dili korunur.",
-  "Vitrin urunleri React Query ile Firestore'dan yuklenir."
+  "Vitrin urunleri React Query ile Firestore veya mock veri uzerinden yuklenir."
 ];
