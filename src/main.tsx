@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ConfigProvider } from "antd";
+import { ConfigProvider, Space, Spin, Typography } from "antd";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./router";
 import "./styles/global.css";
@@ -21,7 +21,17 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       }}
     >
       <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
+        <RouterProvider
+          router={router}
+          fallbackElement={
+            <div className="page-loader">
+              <Space direction="vertical" size="middle" align="center">
+                <Spin size="large" />
+                <Typography.Text>Sayfa yukleniyor...</Typography.Text>
+              </Space>
+            </div>
+          }
+        />
       </QueryClientProvider>
     </ConfigProvider>
   </React.StrictMode>

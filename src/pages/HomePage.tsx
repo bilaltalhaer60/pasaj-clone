@@ -8,22 +8,70 @@ import { Autoplay, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import { PageShell } from "../app/page-shell";
-import { campaignCards, categoryCards, heroSlides, trustHighlights } from "../data/home";
-import { getFeaturedProducts } from "../services/productService";
+import { heroSlides, trustHighlights } from "../data/home";
+import { getAllProducts } from "../services/productService";
+import {
+  buildCampaignSummaries,
+  buildCategorySummaries,
+  getAverageRating,
+  getTotalReviewCount
+} from "../utils/catalog";
+import { formatCurrency } from "../utils/formatCurrency";
 
 export const HomePage = () => {
-  const { data, isLoading, error } = useQuery({
-    queryKey: ["featured-products"],
-    queryFn: getFeaturedProducts
+  const { data = [], isLoading, error } = useQuery({
+    queryKey: ["products"],
+    queryFn: getAllProducts
+  });
+  const featuredProducts = data.slice(0, 4);
+  const categoryCards = buildCategorySummaries(data);
+  const campaignCards = buildCampaignSummaries(data);
+  const averageRating = getAverageRating(data).toFixed(1);
+  const totalReviews = getTotalReviewCount(data).toLocaleString("tr-TR");
+  const dynamicSlides = heroSlides.map((slide, index) => {
+    if (index === 0) {
+      return {
+        ...slide,
+        stats: [
+          { label: "Firestore urunu", value: String(data.length) },
+          { label: "Kategori", value: String(categoryCards.length) },
+          { label: "Vitrin", value: String(featuredProducts.length) }
+        ]
+      };
+    }
+
+    if (index === 1) {
+      return {
+        ...slide,
+        stats: [
+          { label: "Toplam yorum", value: totalReviews },
+          { label: "Ortalama puan", value: averageRating },
+          { label: "Koleksiyon", value: "Canli" }
+        ]
+      };
+    }
+
+    const topDiscount = data[0]
+      ? `%${Math.max(...data.map((product) => product.discount))}`
+      : "%0";
+
+    return {
+      ...slide,
+      stats: [
+        { label: "En yuksek indirim", value: topDiscount },
+        { label: "React Query", value: "Aktif" },
+        { label: "Kaynak", value: "Firestore" }
+      ]
+    };
   });
 
   const campaignDeadline = dayjs().add(3, "day").format("DD MMMM");
 
   return (
     <PageShell
-      badge="2. Hafta Teslimi"
-      title="Anasayfa hero ve vitrin yapisi"
-      description="Dokumandaki 2. hafta kapsamini baz alarak hero carousel, kategori gecisleri, kampanya kartlari, one cikan urunler ve guven bolumleri eklendi."
+      badge="5. Hafta Teslimi"
+      title="Firestore odakli anasayfa vitrini"
+      description="5. haftada anasayfa; kategori, kampanya ve vitrin alanlarini tek bir Firestore koleksiyonundan besleyecek sekilde yenilendi."
       nextTargets={[
         { label: "Kategoriye Git", to: "/category/telefon" },
         { label: "Urun Detaya Git", to: "/product/iphone-16-pro" }
@@ -37,7 +85,7 @@ export const HomePage = () => {
           loop
           className="hero-swiper"
         >
-          {heroSlides.map((slide) => (
+          {dynamicSlides.map((slide) => (
             <SwiperSlide key={slide.id}>
               <div className="hero-slide" style={{ background: slide.accent }}>
                 <div className="hero-copy">
@@ -88,17 +136,18 @@ export const HomePage = () => {
       <section>
         <div className="section-heading">
           <Typography.Title level={3}>Hizli kategori gecisleri</Typography.Title>
-          <Typography.Paragraph>
-            Kategori kartlari ilgili dynamic route yapisina bagli.
-          </Typography.Paragraph>
+          <Typography.Paragraph>Bu kartlar Firestore urunlerinden turetiliyor.</Typography.Paragraph>
         </div>
         <Row gutter={[16, 16]}>
           {categoryCards.map((category) => (
-            <Col xs={24} sm={12} xl={6} key={category.title}>
-              <Link to={category.to}>
+            <Col xs={24} sm={12} xl={6} key={category.slug}>
+              <Link to={`/category/${category.slug}`}>
                 <Card className="category-card" style={{ background: category.accent }}>
                   <Typography.Title level={4}>{category.title}</Typography.Title>
                   <Typography.Paragraph>{category.description}</Typography.Paragraph>
+                  <Typography.Text type="secondary">
+                    {category.productCount} urun · baslangic {formatCurrency(category.startingPrice)}
+                  </Typography.Text>
                   <span className="inline-link">Listeyi ac</span>
                 </Card>
               </Link>
@@ -111,7 +160,7 @@ export const HomePage = () => {
         <div className="section-heading">
           <Typography.Title level={3}>Kampanya vitrinleri</Typography.Title>
           <Typography.Paragraph>
-            Hero altinda promosyon kutulari ve listeye yonlendiren aksiyonlar bulunuyor.
+            Kampanya kutulari en yuksek indirimli Firestore urunlerinden uretiliyor.
           </Typography.Paragraph>
         </div>
         <Row gutter={[16, 16]}>
@@ -136,9 +185,7 @@ export const HomePage = () => {
       <section>
         <div className="section-heading">
           <Typography.Title level={3}>One cikan urunler</Typography.Title>
-          <Typography.Paragraph>
-            Bu alan React Query ile Firestore uzerinden gelen urunleri listeliyor.
-          </Typography.Paragraph>
+          <Typography.Paragraph>Bu alan React Query ile Firestore uzerinden gelen urunleri listeliyor.</Typography.Paragraph>
         </div>
         {error ? (
           <Alert
@@ -157,7 +204,7 @@ export const HomePage = () => {
                   </Card>
                 </Col>
               ))
-            : data?.map((product) => (
+            : featuredProducts.map((product) => (
                 <Col xs={24} md={12} xl={6} key={product.id}>
                   <Link to={`/product/${product.slug}`}>
                     <Card className="product-card">

@@ -1,11 +1,11 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useParams } from "react-router-dom";
 import { Alert, Button, Card, Col, Empty, Row, Select, Skeleton, Slider, Space, Tag, Typography } from "antd";
 import { PageShell } from "../app/page-shell";
-import { categoryMeta } from "../data/categories";
 import { getProductsByCategory } from "../services/productService";
 import { useCartStore } from "../store/cartStore";
+import { toCategoryTitle } from "../utils/catalog";
 import { formatCurrency } from "../utils/formatCurrency";
 
 const sortOptions = [
@@ -24,11 +24,15 @@ export const CategoryPage = () => {
     queryFn: () => getProductsByCategory(categorySlug ?? ""),
     enabled: Boolean(categorySlug)
   });
+  const categoryTitle = toCategoryTitle(categorySlug ?? "kategori");
+  const minPrice = data.length > 0 ? Math.min(...data.map((product) => product.price)) : 1000;
+  const maxPrice = data.length > 0 ? Math.max(...data.map((product) => product.price)) : 100000;
 
-  const category = categoryMeta[categorySlug ?? ""] ?? {
-    title: categorySlug ?? "Kategori",
-    description: "Bu kategori icin filtrelenmis urun listesi ve kampanya kartlari hazirlandi."
-  };
+  useEffect(() => {
+    if (data.length > 0) {
+      setRange([minPrice, maxPrice]);
+    }
+  }, [maxPrice, minPrice, data.length]);
 
   const filteredProducts = useMemo(() => {
     const scoped = data.filter(
@@ -53,9 +57,9 @@ export const CategoryPage = () => {
 
   return (
     <PageShell
-      badge="3. Hafta Teslimi"
-      title={`${category.title} listesi`}
-      description={`${category.description} Filtre, siralama ve urun detaya gecisleri bu hafta ayni akista toplandi.`}
+      badge="5. Hafta Teslimi"
+      title={`${categoryTitle} listesi`}
+      description={`${categoryTitle} kategorisi artik yalnizca Firestore verisiyle besleniyor. Filtre, siralama ve sepete ekleme akislari canli veri uzerinden calisiyor.`}
       nextTargets={[
         { label: "Sepete Git", to: "/cart" },
         { label: "Anasayfaya Don", to: "/" }
@@ -65,7 +69,7 @@ export const CategoryPage = () => {
         <div>
           <Typography.Title level={3}>Filtre ve siralama</Typography.Title>
           <Typography.Paragraph>
-            Fiyat araligi ve populerlik bazli listeleme aktif durumda.
+            Fiyat araligi Firestore'dan gelen urunlere gore dinamik olarak olusuyor.
           </Typography.Paragraph>
         </div>
         <Select value={sortBy} options={sortOptions} onChange={setSortBy} style={{ width: 220 }} />
@@ -76,8 +80,8 @@ export const CategoryPage = () => {
           <Typography.Title level={5}>Fiyat araligi</Typography.Title>
           <Slider
             range
-            min={1000}
-            max={100000}
+            min={minPrice}
+            max={maxPrice}
             value={range}
             onChange={(value) => setRange(value as [number, number])}
           />

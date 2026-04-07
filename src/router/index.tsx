@@ -1,15 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
 import { MainLayout } from "../layouts/MainLayout";
-import { AccountPage } from "../pages/AccountPage";
-import { AdminPage } from "../pages/AdminPage";
-import { CartPage } from "../pages/CartPage";
-import { CategoryPage } from "../pages/CategoryPage";
-import { CheckoutPage } from "../pages/CheckoutPage";
-import { HomePage } from "../pages/HomePage";
-import { LoginPage } from "../pages/LoginPage";
-import { NotFoundPage } from "../pages/NotFoundPage";
-import { ProductDetailPage } from "../pages/ProductDetailPage";
-import { RegisterPage } from "../pages/RegisterPage";
 import { ROUTES } from "../constants/routes";
 
 export const router = createBrowserRouter([
@@ -17,16 +7,76 @@ export const router = createBrowserRouter([
     path: ROUTES.home,
     element: <MainLayout />,
     children: [
-      { index: true, element: <HomePage /> },
-      { path: ROUTES.category, element: <CategoryPage /> },
-      { path: ROUTES.product, element: <ProductDetailPage /> },
-      { path: ROUTES.cart, element: <CartPage /> },
-      { path: ROUTES.login, element: <LoginPage /> },
-      { path: ROUTES.register, element: <RegisterPage /> },
-      { path: ROUTES.checkout, element: <CheckoutPage /> },
-      { path: ROUTES.account, element: <AccountPage /> },
-      { path: ROUTES.admin, element: <AdminPage /> },
-      { path: "*", element: <NotFoundPage /> }
+      {
+        index: true,
+        lazy: async () => {
+          const module = await import("../pages/HomePage");
+          return { Component: module.HomePage };
+        }
+      },
+      {
+        path: ROUTES.category,
+        lazy: async () => {
+          const module = await import("../pages/CategoryPage");
+          return { Component: module.CategoryPage };
+        }
+      },
+      {
+        path: ROUTES.product,
+        lazy: async () => {
+          const module = await import("../pages/ProductDetailPage");
+          return { Component: module.ProductDetailPage };
+        }
+      },
+      {
+        path: ROUTES.cart,
+        lazy: async () => {
+          const module = await import("../pages/CartPage");
+          return { Component: module.CartPage };
+        }
+      },
+      {
+        path: ROUTES.login,
+        lazy: async () => {
+          const module = await import("../pages/LoginPage");
+          return { Component: module.LoginPage };
+        }
+      },
+      {
+        path: ROUTES.register,
+        lazy: async () => {
+          const module = await import("../pages/RegisterPage");
+          return { Component: module.RegisterPage };
+        }
+      },
+      {
+        path: ROUTES.checkout,
+        lazy: async () => {
+          const module = await import("../pages/CheckoutPage");
+          return { Component: module.CheckoutPage };
+        }
+      },
+      {
+        path: ROUTES.account,
+        lazy: async () => {
+          const module = await import("../pages/AccountPage");
+          return { Component: module.AccountPage };
+        }
+      },
+      {
+        path: ROUTES.admin,
+        lazy: async () => {
+          const module = await import("../pages/AdminPage");
+          return { Component: module.AdminPage };
+        }
+      },
+      {
+        path: "*",
+        lazy: async () => {
+          const module = await import("../pages/NotFoundPage");
+          return { Component: module.NotFoundPage };
+        }
+      }
     ]
   }
 ]);

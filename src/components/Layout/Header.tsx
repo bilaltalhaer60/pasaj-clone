@@ -5,41 +5,51 @@ import {
   ShoppingCartOutlined,
   UserOutlined
 } from "@ant-design/icons";
+import { useQuery } from "@tanstack/react-query";
 import { Badge, Button, Drawer, Input, Space } from "antd";
 import { useMemo, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { env } from "../../config/env";
 import { ROUTES } from "../../constants/routes";
+import { getAllProducts } from "../../services/productService";
 import { useAuthStore } from "../../store/authStore";
 import { getCartItemCount, useCartStore } from "../../store/cartStore";
-
-const navItems = [
-  {
-    label: "Telefon",
-    to: "/category/telefon",
-    children: ["Apple", "Samsung", "Xiaomi", "Yenilenmis"]
-  },
-  {
-    label: "Bilgisayar",
-    to: "/category/bilgisayar",
-    children: ["Laptop", "Oyuncu", "Monitor", "Tablet"]
-  },
-  {
-    label: "Aksesuar",
-    to: "/category/aksesuar",
-    children: ["Kulaklik", "Saat", "Sarj", "Ev teknolojileri"]
-  },
-  {
-    label: "Kampanyalar",
-    to: ROUTES.home,
-    children: ["Gece firsatlari", "Ogrenciye ozel", "Pesin fiyatina taksit", "Outlet"]
-  }
-];
+import { buildCategorySummaries } from "../../utils/catalog";
 
 export const Header = () => {
   const [open, setOpen] = useState(false);
   const itemCount = useCartStore((state) => getCartItemCount(state.items));
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const { data: products = [] } = useQuery({
+    queryKey: ["products"],
+    queryFn: getAllProducts
+  });
+  const navItems = useMemo(() => {
+    const categoryMap = new Map<string, string[]>();
+
+    products.forEach((product) => {
+      const current = categoryMap.get(product.category) ?? [];
+      if (!current.includes(product.brand)) {
+        current.push(product.brand);
+      }
+      categoryMap.set(product.category, current);
+    });
+
+    const categoryItems = buildCategorySummaries(products).map((category) => ({
+      label: category.title,
+      to: `/category/${category.slug}`,
+      children: category.topBrands.length > 0 ? category.topBrands : categoryMap.get(category.slug) ?? []
+    }));
+
+    return [
+      ...categoryItems,
+      {
+        label: "Kampanyalar",
+        to: ROUTES.home,
+        children: ["Canli kampanyalar", "Indirimli urunler", "Vitrin secimleri", "Yeni gelenler"]
+      }
+    ];
+  }, [products]);
   const links = useMemo(
     () => [
       ...navItems,

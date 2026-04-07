@@ -23,6 +23,19 @@ Hafta boyunca yapılan çalışmalar:
 - Hata durumlarında uygulama davranışını daha anlaşılır ve yönetilebilir hale getirmek
 - Kod yapısını daha okunabilir tutarak sonraki geliştirmeler için sağlam bir temel oluşturmak
 
+## 5. Hafta Özeti
+
+5. hafta ile birlikte ürün vitrini tamamen Firebase odaklı çalışacak şekilde yenilendi.
+Mock ürün verileri projeden çıkarıldı; anasayfa, kategori, ürün detay, header navigasyonu ve admin paneli artık Firestore koleksiyonundaki ürünlerden besleniyor.
+
+Hafta boyunca yapılan çalışmalar:
+
+- Tüm ana ürün akışlarını tek Firestore koleksiyonundan veri okuyacak şekilde birleştirmek
+- Kategori kartları, kampanya blokları ve vitrin alanlarını canlı ürün verilerinden türetmek
+- Header menüsünü ve admin metriklerini mock veriden çıkarıp Firestore tabanlı hale getirmek
+- Eski feature dosyalarını güncel sayfa bileşenlerine bağlayarak mock bağımlılıklarını kaldırmak
+- TypeScript derleme kontrolünden geçen daha temiz bir veri katmanı oluşturmak
+
 ## Firebase Entegrasyonu
 
 Projede ürün verileri mock yapıdan çıkarılıp Firebase Firestore'a taşınmıştır.

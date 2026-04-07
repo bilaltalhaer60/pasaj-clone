@@ -18,7 +18,7 @@ export const ProductDetailPage = () => {
   if (isLoading) {
     return (
       <PageShell
-        badge="3. Hafta Teslimi"
+        badge="5. Hafta Teslimi"
         title="Urun yukleniyor"
         description="Urun bilgileri Firestore uzerinden getiriliyor."
       >
@@ -32,7 +32,7 @@ export const ProductDetailPage = () => {
   if (error) {
     return (
       <PageShell
-        badge="3. Hafta Teslimi"
+        badge="5. Hafta Teslimi"
         title="Urun yuklenemedi"
         description="Detay verisi Firestore'dan okunurken bir sorun olustu."
         nextTargets={[{ label: "Anasayfaya Don", to: "/" }]}
@@ -49,7 +49,7 @@ export const ProductDetailPage = () => {
   if (!product) {
     return (
       <PageShell
-        badge="3. Hafta Teslimi"
+        badge="5. Hafta Teslimi"
         title="Urun bulunamadi"
         description="Istenen urun Firestore icindeki products koleksiyonunda bulunamadi."
         nextTargets={[{ label: "Anasayfaya Don", to: "/" }]}
@@ -59,9 +59,9 @@ export const ProductDetailPage = () => {
 
   return (
     <PageShell
-      badge="3. Hafta Teslimi"
+      badge="5. Hafta Teslimi"
       title={product.name}
-      description="Bu hafta urun detay akisi; fiyat, taksit, teknik ozellikler ve sepete ekleme aksiyonu ile birlikte tamamlandi."
+      description="5. haftada urun detay akisi; fiyat, taksit, teknik ozellikler ve sepete ekleme aksiyonunu Firestore verisiyle calistiracak sekilde guncellendi."
       nextTargets={[
         { label: "Sepete Git", to: "/cart" },
         { label: "Kategoriye Don", to: `/category/${product.category}` }

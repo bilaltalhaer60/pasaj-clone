@@ -115,6 +115,13 @@ export const getFeaturedProducts = async () => {
   return snapshot.docs.map(mapProduct);
 };
 
+export const getAllProducts = async () => {
+  const productsRef = ensureFirestore();
+  const snapshot = await getDocs(productsRef);
+
+  return snapshot.docs.map(mapProduct).sort((left, right) => right.popularity - left.popularity);
+};
+
 export const getProductsByCategory = async (category: string) => {
   const productsRef = ensureFirestore();
   const snapshot = await getDocs(query(productsRef, where("category", "==", category)));
