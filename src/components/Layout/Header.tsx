@@ -1,135 +1,87 @@
-import {
-  HeartOutlined,
-  MenuOutlined,
+﻿import {
+  DownOutlined,
   SearchOutlined,
-  ShoppingCartOutlined,
+  ShoppingOutlined,
   UserOutlined
 } from "@ant-design/icons";
-import { useQuery } from "@tanstack/react-query";
-import { Badge, Button, Drawer, Input, Space } from "antd";
-import { useMemo, useState } from "react";
+import { Badge, Button, Input } from "antd";
 import { Link, NavLink } from "react-router-dom";
-import { env } from "../../config/env";
+import { categoryNav, topLinks } from "../../data/home";
 import { ROUTES } from "../../constants/routes";
-import { getAllProducts } from "../../services/productService";
 import { useAuthStore } from "../../store/authStore";
 import { getCartItemCount, useCartStore } from "../../store/cartStore";
-import { buildCategorySummaries } from "../../utils/catalog";
+import { useUiStore } from "../../store/uiStore";
 
 export const Header = () => {
-  const [open, setOpen] = useState(false);
   const itemCount = useCartStore((state) => getCartItemCount(state.items));
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
-  const { data: products = [] } = useQuery({
-    queryKey: ["products"],
-    queryFn: getAllProducts
-  });
-  const navItems = useMemo(() => {
-    const categoryMap = new Map<string, string[]>();
-
-    products.forEach((product) => {
-      const current = categoryMap.get(product.category) ?? [];
-      if (!current.includes(product.brand)) {
-        current.push(product.brand);
-      }
-      categoryMap.set(product.category, current);
-    });
-
-    const categoryItems = buildCategorySummaries(products).map((category) => ({
-      label: category.title,
-      to: `/category/${category.slug}`,
-      children: category.topBrands.length > 0 ? category.topBrands : categoryMap.get(category.slug) ?? []
-    }));
-
-    return [
-      ...categoryItems,
-      {
-        label: "Kampanyalar",
-        to: ROUTES.home,
-        children: ["Canli kampanyalar", "Indirimli urunler", "Vitrin secimleri", "Yeni gelenler"]
-      }
-    ];
-  }, [products]);
-  const links = useMemo(
-    () => [
-      ...navItems,
-      { label: isLoggedIn ? "Hesabim" : "Giris", to: isLoggedIn ? ROUTES.account : ROUTES.login },
-      { label: "Admin", to: ROUTES.admin },
-      { label: "Sepet", to: ROUTES.cart }
-    ],
-    [isLoggedIn]
-  );
+  const openCartDrawer = useUiStore((state) => state.openCartDrawer);
 
   return (
-    <header className="site-header">
-      <div className="topbar">
-        <span>Hizli teslimat ve haftalik vitrin alanlari hazir.</span>
-        <span>Kargo esigi: {env.shippingThreshold} TL</span>
-      </div>
-      <div className="header-main">
-        <Space align="center" size="middle">
-          <Button
-            className="mobile-only"
-            aria-label="Menuyu ac"
-            icon={<MenuOutlined />}
-            onClick={() => setOpen(true)}
-          />
-          <Link to={ROUTES.home} className="brand">
-            {env.appName}
+    <header className="site-header pasaj-header">
+      <div className="pasaj-top-links">
+        <div className="pasaj-top-links-inner">
+          <Link to={ROUTES.home} className="pasaj-domain-link">
+            turkcell.com.tr
           </Link>
-        </Space>
-
-        <Input
-          className="header-search"
-          size="large"
-          prefix={<SearchOutlined />}
-          placeholder="Urun, marka veya kategori ara"
-        />
-
-        <Space size="middle">
-          <NavLink to={isLoggedIn ? ROUTES.account : ROUTES.login} className="icon-link">
-            <UserOutlined />
-          </NavLink>
-          <button className="icon-link" type="button" aria-label="Favoriler">
-            <HeartOutlined />
-          </button>
-          <NavLink to={ROUTES.cart} className="icon-link">
-            <Badge count={itemCount} size="small">
-              <ShoppingCartOutlined />
-            </Badge>
-          </NavLink>
-        </Space>
+          <div className="pasaj-top-link-list">
+            {topLinks.map((item) => (
+              <Link key={item} to={ROUTES.home} className="pasaj-top-link-item">
+                {item}
+              </Link>
+            ))}
+          </div>
+        </div>
       </div>
 
-      <nav className="desktop-nav">
-        {navItems.map((item) => (
-          <div key={item.to} className="mega-nav-item">
-            <NavLink to={item.to} className="nav-link">
-              {item.label}
-            </NavLink>
-            <div className="mega-menu">
-              <span className="mega-title">{item.label}</span>
-              <div className="mega-links">
-                {item.children.map((child) => (
-                  <Link key={child} to={item.to} className="mega-link">
-                    {child}
-                  </Link>
-                ))}
-              </div>
-            </div>
-          </div>
-        ))}
-      </nav>
+      <div className="pasaj-header-main-shell">
+        <div className="pasaj-header-main">
+          <Link to={ROUTES.home} className="pasaj-logo-link" aria-label="Pasaj">
+            <img src="/pasaj/logos/PasajHeaderLogo.svg" alt="Turkcell Pasaj" className="pasaj-logo" />
+          </Link>
 
-      <Drawer placement="left" open={open} onClose={() => setOpen(false)} title={env.appName}>
-        <Space direction="vertical" size="middle">
-          {links.map((item) => (
-            <Link key={item.to} to={item.to} onClick={() => setOpen(false)}>
-              {item.label}
-            </Link>
+          <div className="pasaj-search-wrap">
+            <Input
+              className="pasaj-search"
+              size="large"
+              prefix={<SearchOutlined />}
+              placeholder="Urun, marka veya kategori ara"
+            />
+          </div>
+
+          <div className="pasaj-header-actions">
+            <NavLink to={isLoggedIn ? ROUTES.account : ROUTES.login} className="pasaj-login-chip">
+              <UserOutlined />
+              <span>Giris Yap</span>
+              <DownOutlined />
+            </NavLink>
+
+            <button type="button" className="pasaj-cart-chip pasaj-cart-button" onClick={openCartDrawer}>
+              <ShoppingOutlined />
+              <span>Sepetim</span>
+              <Badge count={itemCount} showZero className="pasaj-cart-badge" />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="pasaj-category-nav-shell">
+        <nav className="pasaj-category-nav">
+          {categoryNav.map((item, index) => (
+            <div key={item} className="pasaj-category-nav-item">
+              <Link to={ROUTES.home}>{item}</Link>
+              {index < categoryNav.length - 1 ? <span className="pasaj-nav-separator">•</span> : null}
+            </div>
           ))}
-        </Space>
-      </Drawer>
+        </nav>
+      </div>
+
+      <div className="pasaj-announcement-bar">
+        <div className="pasaj-announcement-inner">
+          <span>5G Uyumlu Telefonlarda Platinuma Ozel 1000 TL Indirim!</span>
+          <Button className="pasaj-announcement-button">Incele</Button>
+        </div>
+      </div>
     </header>
   );
 };

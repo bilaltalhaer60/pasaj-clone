@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+﻿import { Link } from "react-router-dom";
 import { Alert, Button, Card, Empty, InputNumber, List, Space, Tag, Typography } from "antd";
 import { PageShell } from "../app/page-shell";
 import { env } from "../config/env";
@@ -16,9 +16,9 @@ export const CartPage = () => {
 
   return (
     <PageShell
-      badge="3. Hafta Teslimi"
+      badge="6. Hafta Teslimi"
       title="Sepet"
-      description="Zustand tabanli sepet state'i, adet guncelleme ve siparis ozeti bu hafta aktif hale getirildi."
+      description="Sepet sayfasi ve drawer deneyimi birlikte aktif. Adet guncelleme, siparis ozeti ve checkout gecisi 6. hafta akisina baglandi."
       nextTargets={[
         { label: "Odeme Sayfasi", to: "/checkout" },
         { label: "Alisverise Don", to: "/" }
@@ -68,9 +68,7 @@ export const CartPage = () => {
                       value={quantity}
                       onChange={(value) => updateQuantity(product.id, Number(value ?? 1))}
                     />
-                    <Typography.Title level={5}>
-                      {formatCurrency(product.price * quantity)}
-                    </Typography.Title>
+                    <Typography.Title level={5}>{formatCurrency(product.price * quantity)}</Typography.Title>
                   </Space>
                 </List.Item>
               )}
@@ -93,7 +91,7 @@ export const CartPage = () => {
               <strong>{formatCurrency(total)}</strong>
             </div>
             <Button type="primary" size="large" block disabled={items.length === 0}>
-              <Link to="/checkout">Odeme adimina gec</Link>
+              <Link to="/checkout">3 adimli odeme akisini baslat</Link>
             </Button>
           </Space>
         </Card>

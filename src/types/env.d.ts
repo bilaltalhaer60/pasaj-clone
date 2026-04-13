@@ -1,5 +1,6 @@
-interface ImportMetaEnv {
+﻿interface ImportMetaEnv {
   readonly VITE_FIREBASE_PRODUCTS_COLLECTION?: string;
+  readonly VITE_FIREBASE_ORDERS_COLLECTION?: string;
   readonly VITE_FIREBASE_API_KEY?: string;
   readonly VITE_FIREBASE_AUTH_DOMAIN?: string;
   readonly VITE_FIREBASE_PROJECT_ID?: string;

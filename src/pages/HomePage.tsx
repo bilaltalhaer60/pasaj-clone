@@ -1,254 +1,272 @@
-import { ClockCircleOutlined, FireOutlined, ThunderboltOutlined } from "@ant-design/icons";
+﻿import {
+  GiftOutlined,
+  HeartOutlined,
+  LeftOutlined,
+  RightOutlined,
+  StarOutlined,
+  UserOutlined
+} from "@ant-design/icons";
 import { useQuery } from "@tanstack/react-query";
-import { Alert, Button, Card, Col, Rate, Row, Skeleton, Space, Statistic, Tag, Typography } from "antd";
-import dayjs from "dayjs";
+import { Alert, Button, Card, Col, Row, Skeleton, Typography } from "antd";
 import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Pagination } from "swiper/modules";
+import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
+import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { PageShell } from "../app/page-shell";
-import { heroSlides, trustHighlights } from "../data/home";
-import { getAllProducts } from "../services/productService";
 import {
-  buildCampaignSummaries,
-  buildCategorySummaries,
-  getAverageRating,
-  getTotalReviewCount
-} from "../utils/catalog";
+  campaignTiles,
+  heroBanners,
+  infoFeatures,
+  popularBrands,
+  shortcutCategories
+} from "../data/home";
+import { getAllProducts } from "../services/productService";
+import type { Product } from "../types/product";
 import { formatCurrency } from "../utils/formatCurrency";
+
+const featureIcons = [GiftOutlined, StarOutlined, StarOutlined, UserOutlined];
+const loadingCards = Array.from({ length: 5 });
+const brandCounts: Record<string, number> = {
+  Apple: 528,
+  Samsung: 367,
+  Mi: 209,
+  Huawei: 82,
+  Philips: 366,
+  Sony: 164,
+  Lenovo: 814,
+  JBL: 97,
+  Anker: 20,
+  Arzum: 51,
+  Braun: 153,
+  Casper: 124,
+  Dyson: 82,
+  Omix: 16,
+  Realme: 22,
+  TCL: 33
+};
+
+const ProductCard = ({ product, bestseller = false }: { product: Product; bestseller?: boolean }) => (
+  <Card className="pasaj-shelf-card">
+    {bestseller ? <span className="best-badge">Cok Satan</span> : null}
+    <button type="button" className="favorite-button" aria-label="Favorilere ekle">
+      <HeartOutlined />
+    </button>
+    <div className="shelf-product-image-wrap">
+      <img src={product.image} alt={product.name} className="shelf-product-image" />
+    </div>
+    <div className="variant-dots">• • •</div>
+    <Typography.Paragraph className="shelf-product-title">{product.name}</Typography.Paragraph>
+    <div className="product-chip-row">
+      <span className="product-chip">Pasaj Limitinle Ode</span>
+      <span className="product-chip">Ucretsiz Kargo</span>
+    </div>
+    <div className="shelf-price-row">
+      {product.previousPrice > 0 ? <span className="old-price">{formatCurrency(product.previousPrice)}</span> : null}
+      {product.discount > 0 ? <span className="discount-text">{product.discount}.000 TL Indirim</span> : null}
+    </div>
+    <div className="current-price">{formatCurrency(product.price)}</div>
+  </Card>
+);
 
 export const HomePage = () => {
   const { data = [], isLoading, error } = useQuery({
     queryKey: ["products"],
     queryFn: getAllProducts
   });
-  const featuredProducts = data.slice(0, 4);
-  const categoryCards = buildCategorySummaries(data);
-  const campaignCards = buildCampaignSummaries(data);
-  const averageRating = getAverageRating(data).toFixed(1);
-  const totalReviews = getTotalReviewCount(data).toLocaleString("tr-TR");
-  const dynamicSlides = heroSlides.map((slide, index) => {
-    if (index === 0) {
-      return {
-        ...slide,
-        stats: [
-          { label: "Firestore urunu", value: String(data.length) },
-          { label: "Kategori", value: String(categoryCards.length) },
-          { label: "Vitrin", value: String(featuredProducts.length) }
-        ]
-      };
-    }
 
-    if (index === 1) {
-      return {
-        ...slide,
-        stats: [
-          { label: "Toplam yorum", value: totalReviews },
-          { label: "Ortalama puan", value: averageRating },
-          { label: "Koleksiyon", value: "Canli" }
-        ]
-      };
-    }
-
-    const topDiscount = data[0]
-      ? `%${Math.max(...data.map((product) => product.discount))}`
-      : "%0";
-
-    return {
-      ...slide,
-      stats: [
-        { label: "En yuksek indirim", value: topDiscount },
-        { label: "React Query", value: "Aktif" },
-        { label: "Kaynak", value: "Firestore" }
-      ]
-    };
-  });
-
-  const campaignDeadline = dayjs().add(3, "day").format("DD MMMM");
+  const featuredProducts = data.slice(0, 5);
+  const bestsellerProducts = data.slice(0, 5);
 
   return (
-    <PageShell
-      badge="5. Hafta Teslimi"
-      title="Firestore odakli anasayfa vitrini"
-      description="5. haftada anasayfa; kategori, kampanya ve vitrin alanlarini tek bir Firestore koleksiyonundan besleyecek sekilde yenilendi."
-      nextTargets={[
-        { label: "Kategoriye Git", to: "/category/telefon" },
-        { label: "Urun Detaya Git", to: "/product/iphone-16-pro" }
-      ]}
-    >
-      <section className="home-hero-section">
+    <div className="pasaj-homepage">
+      <section className="pasaj-hero-section">
         <Swiper
-          modules={[Autoplay, Pagination]}
+          modules={[Autoplay, Navigation, Pagination]}
+          autoplay={{ delay: 4000, disableOnInteraction: false }}
+          navigation
           pagination={{ clickable: true }}
-          autoplay={{ delay: 4500, disableOnInteraction: false }}
           loop
-          className="hero-swiper"
+          className="pasaj-hero-swiper"
         >
-          {dynamicSlides.map((slide) => (
-            <SwiperSlide key={slide.id}>
-              <div className="hero-slide" style={{ background: slide.accent }}>
-                <div className="hero-copy">
-                  <Tag color="gold">{slide.eyebrow}</Tag>
-                  <Typography.Title level={2} className="hero-title">
-                    {slide.title}
-                  </Typography.Title>
-                  <Typography.Paragraph className="hero-description">
-                    {slide.description}
-                  </Typography.Paragraph>
-                  <Space wrap>
-                    <Button type="primary" size="large">
-                      <Link to={slide.ctaTo}>{slide.ctaLabel}</Link>
-                    </Button>
-                    <Button size="large" ghost>
-                      <Link to="/cart">Sepete git</Link>
-                    </Button>
-                  </Space>
-                </div>
-                <div className="hero-stats">
-                  {slide.stats.map((stat) => (
-                    <Card key={stat.label} className="hero-stat-card">
-                      <Statistic title={stat.label} value={stat.value} />
-                    </Card>
-                  ))}
-                </div>
-              </div>
+          {heroBanners.map((banner) => (
+            <SwiperSlide key={banner.id}>
+              <Link to="/" className="pasaj-hero-banner-link">
+                <img src={banner.image} alt={banner.alt} className="pasaj-hero-banner-image" />
+              </Link>
             </SwiperSlide>
           ))}
         </Swiper>
       </section>
 
-      <section className="shipping-strip">
-        <div className="shipping-chip">
-          <ThunderboltOutlined />
-          <span>Ayni gun kargo secenekleri</span>
-        </div>
-        <div className="shipping-chip">
-          <FireOutlined />
-          <span>Geceye ozel kampanyalar</span>
-        </div>
-        <div className="shipping-chip">
-          <ClockCircleOutlined />
-          <span>Kampanya bitisi: {campaignDeadline}</span>
-        </div>
-      </section>
-
-      <section>
-        <div className="section-heading">
-          <Typography.Title level={3}>Hizli kategori gecisleri</Typography.Title>
-          <Typography.Paragraph>Bu kartlar Firestore urunlerinden turetiliyor.</Typography.Paragraph>
-        </div>
-        <Row gutter={[16, 16]}>
-          {categoryCards.map((category) => (
-            <Col xs={24} sm={12} xl={6} key={category.slug}>
-              <Link to={`/category/${category.slug}`}>
-                <Card className="category-card" style={{ background: category.accent }}>
-                  <Typography.Title level={4}>{category.title}</Typography.Title>
-                  <Typography.Paragraph>{category.description}</Typography.Paragraph>
-                  <Typography.Text type="secondary">
-                    {category.productCount} urun · baslangic {formatCurrency(category.startingPrice)}
-                  </Typography.Text>
-                  <span className="inline-link">Listeyi ac</span>
-                </Card>
-              </Link>
-            </Col>
+      <section className="shortcut-icons-section">
+        <div className="shortcut-icons-row">
+          {shortcutCategories.map((item) => (
+            <Link key={item.title} to={item.to} className="shortcut-icon-link">
+              <div className="shortcut-icon-circle">
+                <img src={item.image} alt={item.title} className="shortcut-icon-image" />
+              </div>
+              <span>{item.title}</span>
+            </Link>
           ))}
-        </Row>
-      </section>
-
-      <section>
-        <div className="section-heading">
-          <Typography.Title level={3}>Kampanya vitrinleri</Typography.Title>
-          <Typography.Paragraph>
-            Kampanya kutulari en yuksek indirimli Firestore urunlerinden uretiliyor.
-          </Typography.Paragraph>
         </div>
-        <Row gutter={[16, 16]}>
-          {campaignCards.map((campaign) => (
-            <Col xs={24} md={8} key={campaign.title}>
-              <Link to={campaign.to}>
-                <Card className="campaign-card" style={{ backgroundColor: campaign.accent }}>
-                  <Tag>{campaign.tag}</Tag>
-                  <Typography.Title level={4} className="campaign-title">
-                    {campaign.title}
-                  </Typography.Title>
-                  <Typography.Paragraph className="campaign-description">
-                    {campaign.description}
-                  </Typography.Paragraph>
-                </Card>
-              </Link>
-            </Col>
-          ))}
-        </Row>
       </section>
 
-      <section>
-        <div className="section-heading">
-          <Typography.Title level={3}>One cikan urunler</Typography.Title>
-          <Typography.Paragraph>Bu alan React Query ile Firestore uzerinden gelen urunleri listeliyor.</Typography.Paragraph>
+      <section className="feature-strip-section">
+        <div className="feature-strip-grid">
+          {infoFeatures.map((item, index) => {
+            const Icon = featureIcons[index];
+            return (
+              <article key={item.title} className="feature-strip-card">
+                <div className="feature-strip-icon">
+                  <Icon />
+                </div>
+                <span>{item.title}</span>
+              </article>
+            );
+          })}
+        </div>
+      </section>
+
+      <section className="product-rack-section">
+        <div className="pasaj-section-header">
+          <Typography.Title level={2}>Sana Ozel Urunler</Typography.Title>
         </div>
         {error ? (
           <Alert
             type="error"
             showIcon
-            style={{ marginBottom: 16 }}
-            message={error instanceof Error ? error.message : "Urunler yuklenirken bir hata olustu."}
+            style={{ marginBottom: 20 }}
+            message={error instanceof Error ? error.message : "Urunler yuklenirken hata olustu."}
           />
         ) : null}
-        <Row gutter={[16, 16]}>
+        <Row gutter={[24, 24]}>
           {isLoading
-            ? Array.from({ length: 4 }).map((_, index) => (
-                <Col xs={24} md={12} xl={6} key={index}>
-                  <Card className="product-card">
-                    <Skeleton active paragraph={{ rows: 4 }} />
+            ? loadingCards.map((_, index) => (
+                <Col xs={24} sm={12} lg={8} xl={4} key={index}>
+                  <Card className="pasaj-shelf-card">
+                    <Skeleton active paragraph={{ rows: 5 }} />
                   </Card>
                 </Col>
               ))
             : featuredProducts.map((product) => (
-                <Col xs={24} md={12} xl={6} key={product.id}>
-                  <Link to={`/product/${product.slug}`}>
-                    <Card className="product-card">
-                      <Tag color="blue">{product.badge}</Tag>
-                      <Typography.Paragraph className="product-brand">
-                        {product.brand}
-                      </Typography.Paragraph>
-                      <Typography.Title level={5}>{product.name}</Typography.Title>
-                      <Space direction="vertical" size={6}>
-                        <Rate allowHalf disabled defaultValue={product.rating} />
-                        <Typography.Text type="secondary">
-                          {product.rating} puan - {product.reviewCount} yorum
-                        </Typography.Text>
-                        <Typography.Title level={4} className="product-price">
-                          {product.price.toLocaleString("tr-TR")} TL
-                        </Typography.Title>
-                        <Typography.Text delete type="secondary">
-                          {product.previousPrice.toLocaleString("tr-TR")} TL
-                        </Typography.Text>
-                      </Space>
-                    </Card>
-                  </Link>
+                <Col xs={24} sm={12} lg={8} xl={4} key={product.id}>
+                  <ProductCard product={product} />
                 </Col>
               ))}
         </Row>
       </section>
 
-      <section className="trust-section">
-        <div className="section-heading">
-          <Typography.Title level={3}>Anasayfa kontrol listesi</Typography.Title>
-          <Typography.Paragraph>
-            Dokumandaki zorunlu maddelerin bu hafta icin karsilanan kismi.
-          </Typography.Paragraph>
+      <section className="campaign-grid-section">
+        <div className="pasaj-section-header with-action">
+          <Typography.Title level={2}>Kampanyalar</Typography.Title>
+          <Button className="soft-pill-button">Tumu</Button>
         </div>
-        <Row gutter={[16, 16]}>
-          {trustHighlights.map((item) => (
-            <Col xs={24} md={12} key={item}>
-              <Card className="trust-card">
-                <Typography.Paragraph>{item}</Typography.Paragraph>
-              </Card>
-            </Col>
+        <div className="campaign-image-grid">
+          {campaignTiles.map((tile) => (
+            <Link key={tile.id} to="/" className="campaign-image-link">
+              <img src={tile.image} alt={tile.alt} className="campaign-image" />
+            </Link>
           ))}
+        </div>
+      </section>
+
+      <section className="product-rack-section bestseller-section">
+        <div className="pasaj-section-header">
+          <Typography.Title level={2}>Cok Satanlar</Typography.Title>
+        </div>
+        <div className="bestseller-tabs">
+          <span className="active">Cep Telefonu-Aksesuar</span>
+          <span>Bilgisayar-Tablet</span>
+          <span>Elektrikli Ev Aletleri</span>
+          <span>Saglik-Kisisel Bakim</span>
+          <span>Hobi-Oyun</span>
+          <span>TV-Ses Sistemleri</span>
+          <span>Ev-Yasam</span>
+        </div>
+        <Row gutter={[24, 24]}>
+          {isLoading
+            ? loadingCards.map((_, index) => (
+                <Col xs={24} sm={12} lg={8} xl={4} key={`best-${index}`}>
+                  <Card className="pasaj-shelf-card">
+                    <Skeleton active paragraph={{ rows: 5 }} />
+                  </Card>
+                </Col>
+              ))
+            : bestsellerProducts.map((product) => (
+                <Col xs={24} sm={12} lg={8} xl={4} key={`best-${product.id}`}>
+                  <ProductCard product={product} bestseller />
+                </Col>
+              ))}
         </Row>
       </section>
-    </PageShell>
+
+      <section className="brands-section">
+        <div className="pasaj-section-header with-action">
+          <Typography.Title level={2}>Populer Markalar</Typography.Title>
+          <Button className="soft-pill-button">Tumu</Button>
+        </div>
+        <div className="brand-card-grid">
+          {popularBrands.map((brand) => (
+            <article key={brand.name} className="brand-card">
+              <img src={brand.image} alt={brand.name} className="brand-card-image" />
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="brand-directory-section">
+        <div className="pasaj-section-header centered-title">
+          <Typography.Title level={2}>Markalar</Typography.Title>
+        </div>
+        <div className="directory-filters">
+          <button type="button" className="circle-nav-button">
+            <LeftOutlined />
+          </button>
+          <div className="filter-pills">
+            <span className="filter-pill active">Populer Markalar</span>
+            <span className="filter-pill">Tumu</span>
+            <span className="filter-pill">Diger</span>
+            <span className="filter-pill">A</span>
+            <span className="filter-pill">B</span>
+            <span className="filter-pill">C</span>
+            <span className="filter-pill">D</span>
+            <span className="filter-pill">E</span>
+            <span className="filter-pill">F</span>
+            <span className="filter-pill">G</span>
+          </div>
+          <button type="button" className="circle-nav-button">
+            <RightOutlined />
+          </button>
+        </div>
+        <div className="directory-filters second-row">
+          <button type="button" className="circle-nav-button">
+            <LeftOutlined />
+          </button>
+          <div className="filter-pills category-pills">
+            <span className="filter-pill active">Tumu</span>
+            <span className="filter-pill">Cep Telefonu-Aksesuar</span>
+            <span className="filter-pill">Bilgisayar-Tablet</span>
+            <span className="filter-pill">Elektrikli Ev Aletleri</span>
+            <span className="filter-pill">Saglik-Kisisel Bakim</span>
+            <span className="filter-pill">Hobi-Oyun</span>
+            <span className="filter-pill">TV-Ses Sistemleri</span>
+          </div>
+          <button type="button" className="circle-nav-button">
+            <RightOutlined />
+          </button>
+        </div>
+        <div className="brand-directory-grid">
+          {popularBrands.map((brand) => (
+            <article key={`directory-${brand.name}`} className="brand-directory-card">
+              <img src={brand.image} alt={brand.name} className="brand-directory-image" />
+              <span>{brandCounts[brand.name] ?? 50} Urun</span>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="bottom-spacer" />
+    </div>
   );
 };
