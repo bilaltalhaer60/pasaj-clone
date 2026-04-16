@@ -5,6 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 import { PageShell } from "../app/page-shell";
 import { env } from "../config/env";
 import { createOrder } from "../services/orderService";
+import { useAuthStore } from "../store/authStore";
 import { getCartSubtotal, useCartStore } from "../store/cartStore";
 import { formatCurrency } from "../utils/formatCurrency";
 import type { CreateOrderPayload, OrderRecord } from "../types/order";
@@ -25,6 +26,7 @@ export const CheckoutPage = () => {
   const [completedOrder, setCompletedOrder] = useState<OrderRecord | null>(null);
   const items = useCartStore((state) => state.items);
   const clearCart = useCartStore((state) => state.clearCart);
+  const addOrder = useAuthStore((state) => state.addOrder);
 
   const subtotal = getCartSubtotal(items);
   const shippingCost = subtotal >= env.shippingThreshold ? 0 : env.shippingCost;
@@ -48,6 +50,7 @@ export const CheckoutPage = () => {
     mutationFn: (payload: CreateOrderPayload) => createOrder(payload),
     onSuccess: (order) => {
       setCompletedOrder(order);
+      addOrder(order);
       clearCart();
       message.success("Siparis basariyla olusturuldu.");
     },

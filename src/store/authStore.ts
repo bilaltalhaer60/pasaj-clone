@@ -1,4 +1,6 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
+import type { OrderRecord } from "../types/order";
 
 export type MockOrder = {
   id: string;
@@ -28,6 +30,7 @@ interface AuthState {
   user: MockUser | null;
   login: (email: string) => void;
   register: (fullName: string, email: string) => void;
+  addOrder: (order: OrderRecord) => void;
   logout: () => void;
 }
 
@@ -55,26 +58,66 @@ const defaultUser: MockUser = {
   ]
 };
 
-export const useAuthStore = create<AuthState>((set) => ({
-  isLoggedIn: true,
-  user: defaultUser,
-  login: (email) =>
-    set((state) => ({
+const formatOrderDate = (createdAt: string) => {
+  const date = new Date(createdAt);
+
+  return Number.isNaN(date.getTime())
+    ? "Bugun"
+    : new Intl.DateTimeFormat("tr-TR", {
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+      }).format(date);
+};
+
+export const useAuthStore = create<AuthState>()(
+  persist(
+    (set) => ({
       isLoggedIn: true,
-      user: state.user ? { ...state.user, email } : { ...defaultUser, email }
-    })),
-  register: (fullName, email) =>
-    set(() => ({
-      isLoggedIn: true,
-      user: {
-        ...defaultUser,
-        fullName,
-        email
-      }
-    })),
-  logout: () =>
-    set({
-      isLoggedIn: false,
-      user: null
-    })
-}));
+      user: defaultUser,
+      login: (email) =>
+        set((state) => ({
+          isLoggedIn: true,
+          user: state.user ? { ...state.user, email } : { ...defaultUser, email }
+        })),
+      register: (fullName, email) =>
+        set(() => ({
+          isLoggedIn: true,
+          user: {
+            ...defaultUser,
+            fullName,
+            email
+          }
+        })),
+      addOrder: (order) =>
+        set((state) => {
+          if (!state.user) {
+            return state;
+          }
+
+          const nextOrder: MockOrder = {
+            id: order.orderNumber,
+            date: formatOrderDate(order.createdAt),
+            status: "Hazirlaniyor",
+            total: order.total
+          };
+
+          return {
+            user: {
+              ...state.user,
+              orders: [nextOrder, ...state.user.orders]
+            }
+          };
+        }),
+      logout: () =>
+        set({
+          isLoggedIn: false,
+          user: null
+        })
+    }),
+    {
+      name: "pasaj-auth-store",
+      partialize: (state) => ({ isLoggedIn: state.isLoggedIn, user: state.user })
+    }
+  )
+);

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Button, Card, Col, List, Row, Space, Statistic, Tabs, Tag, Typography } from "antd";
+import { Button, Card, Col, Empty, List, Row, Space, Statistic, Tabs, Tag, Typography } from "antd";
 import { PageShell } from "../app/page-shell";
 import { ROUTES } from "../constants/routes";
 import { useAuthStore } from "../store/authStore";
@@ -56,23 +56,38 @@ export const AccountPage = () => {
             key: "orders",
             label: "Siparisler",
             children: (
-              <List
-                dataSource={user.orders}
-                renderItem={(order) => (
+              user.orders.length === 0 ? (
+                <Empty
+                  description="Hesabinda henuz siparis yok. Checkout tamamlandiginda yeni siparisler burada listelenir."
+                  image={Empty.PRESENTED_IMAGE_SIMPLE}
+                />
+              ) : (
+                <List
+                  dataSource={user.orders}
+                  renderItem={(order) => (
                     <List.Item>
                       <List.Item.Meta
-                      title={`${order.id} - ${order.date}`}
-                      description={`Durum: ${order.status}`}
-                    />
-                    <Space direction="vertical" align="end">
-                      <Tag color={order.status === "Teslim Edildi" ? "green" : "blue"}>
-                        {order.status}
-                      </Tag>
-                      <Typography.Text strong>{formatCurrency(order.total)}</Typography.Text>
-                    </Space>
-                  </List.Item>
-                )}
-              />
+                        title={`${order.id} - ${order.date}`}
+                        description={`Durum: ${order.status}`}
+                      />
+                      <Space direction="vertical" align="end">
+                        <Tag
+                          color={
+                            order.status === "Teslim Edildi"
+                              ? "green"
+                              : order.status === "Kargoda"
+                                ? "blue"
+                                : "gold"
+                          }
+                        >
+                          {order.status}
+                        </Tag>
+                        <Typography.Text strong>{formatCurrency(order.total)}</Typography.Text>
+                      </Space>
+                    </List.Item>
+                  )}
+                />
+              )
             )
           },
           {
