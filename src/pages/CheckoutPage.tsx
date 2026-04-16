@@ -89,6 +89,9 @@ export const CheckoutPage = () => {
     await createOrderMutation.mutateAsync(payload);
   };
 
+  const deliverySummary = form.getFieldsValue(deliveryFields);
+  const paymentSummary = form.getFieldsValue(paymentFields);
+
   if (completedOrder) {
     return (
       <PageShell
@@ -211,6 +214,40 @@ export const CheckoutPage = () => {
                   <Typography.Paragraph>
                     Teslimat, odeme ve sepet bilgilerini kontrol et. "Siparisi olustur" dediginde kayit Firestore'a yazilacak.
                   </Typography.Paragraph>
+                  <div className="checkout-review-box">
+                    <div className="summary-row">
+                      <span>Teslimat alicisi</span>
+                      <strong>{deliverySummary.fullName || "-"}</strong>
+                    </div>
+                    <div className="summary-row">
+                      <span>Telefon</span>
+                      <strong>{deliverySummary.phone || "-"}</strong>
+                    </div>
+                    <div className="summary-row">
+                      <span>Adres</span>
+                      <strong>
+                        {[deliverySummary.district, deliverySummary.city].filter(Boolean).join(" / ") || "-"}
+                      </strong>
+                    </div>
+                  </div>
+                  <div className="checkout-review-box">
+                    <div className="summary-row">
+                      <span>Odeme yontemi</span>
+                      <strong>{paymentSummary.installment || "Pesin"}</strong>
+                    </div>
+                    <div className="summary-row">
+                      <span>Kart sahibi</span>
+                      <strong>{paymentSummary.cardName || "-"}</strong>
+                    </div>
+                    <div className="summary-row">
+                      <span>Kart</span>
+                      <strong>
+                        {paymentSummary.cardNumber
+                          ? `**** ${String(paymentSummary.cardNumber).replace(/\s+/g, "").slice(-4)}`
+                          : "-"}
+                      </strong>
+                    </div>
+                  </div>
                   <div className="checkout-review-box">
                     <div className="summary-row"><span>Toplam urun</span><strong>{items.length}</strong></div>
                     <div className="summary-row"><span>Ara toplam</span><strong>{formatCurrency(subtotal)}</strong></div>

@@ -2,7 +2,12 @@
 import { Link } from "react-router-dom";
 import { env } from "../../config/env";
 import { formatCurrency } from "../../utils/formatCurrency";
-import { getCartItemCount, getCartSubtotal, useCartStore } from "../../store/cartStore";
+import {
+  getCartItemCount,
+  getCartRemainingForFreeShipping,
+  getCartSubtotal,
+  useCartStore
+} from "../../store/cartStore";
 import { useUiStore } from "../../store/uiStore";
 
 export const CartDrawer = () => {
@@ -15,6 +20,7 @@ export const CartDrawer = () => {
   const subtotal = getCartSubtotal(items);
   const shippingCost = subtotal >= env.shippingThreshold ? 0 : env.shippingCost;
   const total = subtotal + shippingCost;
+  const freeShippingRemaining = getCartRemainingForFreeShipping(items, env.shippingThreshold);
 
   return (
     <Drawer
@@ -61,6 +67,11 @@ export const CartDrawer = () => {
               <span>Toplam</span>
               <strong>{formatCurrency(total)}</strong>
             </div>
+            <Typography.Text type="secondary">
+              {freeShippingRemaining === 0
+                ? "Ucretsiz kargo aktif."
+                : `Ucretsiz kargo icin ${formatCurrency(freeShippingRemaining)} daha ekleyin.`}
+            </Typography.Text>
           </div>
           <Button block size="large" onClick={closeDrawer}>
             <Link to="/cart">Sepet sayfasina git</Link>

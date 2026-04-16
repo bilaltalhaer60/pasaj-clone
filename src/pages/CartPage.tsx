@@ -2,7 +2,12 @@
 import { Alert, Button, Card, Empty, InputNumber, List, Space, Tag, Typography } from "antd";
 import { PageShell } from "../app/page-shell";
 import { env } from "../config/env";
-import { getCartItemCount, getCartSubtotal, useCartStore } from "../store/cartStore";
+import {
+  getCartItemCount,
+  getCartRemainingForFreeShipping,
+  getCartSubtotal,
+  useCartStore
+} from "../store/cartStore";
 import { formatCurrency } from "../utils/formatCurrency";
 
 export const CartPage = () => {
@@ -13,6 +18,7 @@ export const CartPage = () => {
   const subtotal = getCartSubtotal(items);
   const shippingCost = subtotal >= env.shippingThreshold ? 0 : env.shippingCost;
   const total = subtotal + shippingCost;
+  const freeShippingRemaining = getCartRemainingForFreeShipping(items, env.shippingThreshold);
 
   return (
     <PageShell
@@ -27,7 +33,13 @@ export const CartPage = () => {
       <Alert
         type="info"
         showIcon
-        message={`Sepette ${getCartItemCount(items)} urun var. Ucretsiz kargo esigi ${env.shippingThreshold} TL.`}
+        message={
+          freeShippingRemaining === 0
+            ? `Sepette ${getCartItemCount(items)} urun var. Ucretsiz kargo aktif.`
+            : `Sepette ${getCartItemCount(items)} urun var. Ucretsiz kargo icin ${formatCurrency(
+                freeShippingRemaining
+              )} daha ekleyebilirsin.`
+        }
       />
 
       <div className="cart-layout">
@@ -69,6 +81,9 @@ export const CartPage = () => {
                       onChange={(value) => updateQuantity(product.id, Number(value ?? 1))}
                     />
                     <Typography.Title level={5}>{formatCurrency(product.price * quantity)}</Typography.Title>
+                    <Typography.Text type="secondary">
+                      Birim fiyat: {formatCurrency(product.price)}
+                    </Typography.Text>
                   </Space>
                 </List.Item>
               )}
