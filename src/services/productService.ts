@@ -1,15 +1,21 @@
 import {
+  addDoc,
   collection,
+  deleteDoc,
+  doc,
   getDocs,
   limit,
   orderBy,
   query,
+  serverTimestamp,
+  setDoc,
   where,
   type DocumentData,
   type QueryDocumentSnapshot
 } from "firebase/firestore";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { env } from "../config/env";
-import { firestore } from "../config/firebase";
+import { firestore, storage } from "../config/firebase";
 import type { Product, ProductSpec } from "../types/product";
 
 const productsCollectionName = env.productsCollection;
@@ -19,6 +25,7 @@ const fallbackProductValues: Omit<Product, "id"> = {
   name: "",
   brand: "",
   category: "",
+  stock: 0,
   price: 0,
   previousPrice: 0,
   discount: 0,
@@ -79,6 +86,7 @@ const mapProduct = (doc: QueryDocumentSnapshot<DocumentData>): Product => {
     brand: typeof data.brand === "string" ? data.brand : fallbackProductValues.brand,
     category:
       typeof data.category === "string" ? data.category : fallbackProductValues.category,
+    stock: typeof data.stock === "number" ? data.stock : fallbackProductValues.stock,
     price: typeof data.price === "number" ? data.price : fallbackProductValues.price,
     previousPrice:
       typeof data.previousPrice === "number"
@@ -138,4 +146,93 @@ export const getProductBySlug = async (slug?: string) => {
   const snapshot = await getDocs(query(productsRef, where("slug", "==", slug), limit(1)));
 
   return snapshot.docs[0] ? mapProduct(snapshot.docs[0]) : null;
+};
+
+export interface ProductMutationInput {
+  name: string;
+  slug?: string;
+  brand: string;
+  category: string;
+  stock: number;
+  price: number;
+  previousPrice?: number;
+  image: string;
+  summary?: string;
+}
+
+const slugify = (value: string) =>
+  value
+    .toLocaleLowerCase("tr-TR")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+const buildProductPayload = (input: ProductMutationInput) => {
+  const safePreviousPrice = input.previousPrice && input.previousPrice > input.price
+    ? input.previousPrice
+    : input.price;
+  const discount = safePreviousPrice > input.price
+    ? Math.round(((safePreviousPrice - input.price) / safePreviousPrice) * 100)
+    : 0;
+
+  return {
+    name: input.name.trim(),
+    slug: slugify(input.slug?.trim() || input.name),
+    brand: input.brand.trim(),
+    category: input.category.trim(),
+    stock: input.stock,
+    price: input.price,
+    previousPrice: safePreviousPrice,
+    discount,
+    image: input.image.trim(),
+    popularity: 0,
+    rating: 0,
+    reviewCount: 0,
+    installment: "Pesin fiyatina 3 taksit",
+    badge: discount > 0 ? `%${discount} indirim` : "Yeni Urun",
+    summary: input.summary?.trim() || `${input.name.trim()} icin yonetim panelinden eklenen urun kaydi.`,
+    shippingNote: "Hizli teslimat icin uygun",
+    highlights: ["Hizli teslimat", "Resmi distributor urunu", "Pasaj guvencesi"],
+    specs: [
+      { label: "Marka", value: input.brand.trim() },
+      { label: "Kategori", value: input.category.trim() },
+      { label: "Stok", value: `${input.stock}` }
+    ],
+    updatedAt: serverTimestamp()
+  };
+};
+
+export const createProduct = async (input: ProductMutationInput) => {
+  const productsRef = ensureFirestore();
+  const payload = {
+    ...buildProductPayload(input),
+    createdAt: serverTimestamp()
+  };
+
+  const docRef = await addDoc(productsRef, payload);
+  return { id: docRef.id, ...payload };
+};
+
+export const updateProduct = async (productId: string, input: ProductMutationInput) => {
+  const payload = buildProductPayload(input);
+  await setDoc(doc(ensureFirestore(), productId), payload, { merge: true });
+
+  return { id: productId, ...payload };
+};
+
+export const deleteProductById = async (productId: string) => {
+  await deleteDoc(doc(ensureFirestore(), productId));
+};
+
+export const uploadProductImage = async (file: File) => {
+  if (!storage) {
+    throw new Error("Firebase Storage ayarlari eksik.");
+  }
+
+  const fileName = `${Date.now()}-${file.name.replace(/\s+/g, "-")}`;
+  const storageRef = ref(storage, `products/${fileName}`);
+  const snapshot = await uploadBytes(storageRef, file);
+
+  return getDownloadURL(snapshot.ref);
 };

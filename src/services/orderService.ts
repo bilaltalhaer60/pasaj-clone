@@ -1,11 +1,60 @@
-﻿import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDocs,
+  orderBy,
+  query,
+  serverTimestamp,
+  updateDoc,
+  type DocumentData,
+  type QueryDocumentSnapshot
+} from "firebase/firestore";
 import { env } from "../config/env";
 import { firestore } from "../config/firebase";
 import type { CreateOrderPayload, OrderRecord } from "../types/order";
 
+const orderStatuses = ["Hazirlaniyor", "Kargoda", "Teslim Edildi", "Iptal Edildi"] as const;
+
 const buildOrderNumber = () => {
   const randomPart = Math.floor(100000 + Math.random() * 900000);
   return `PSJ-${randomPart}`;
+};
+
+const mapOrder = (snapshot: QueryDocumentSnapshot<DocumentData>): OrderRecord => {
+  const data = snapshot.data();
+  const createdAtValue = data.createdAt;
+  const createdAt =
+    createdAtValue && typeof createdAtValue.toDate === "function"
+      ? createdAtValue.toDate().toISOString()
+      : new Date().toISOString();
+
+  return {
+    id: snapshot.id,
+    orderNumber: typeof data.orderNumber === "string" ? data.orderNumber : snapshot.id,
+    status:
+      typeof data.status === "string" && orderStatuses.includes(data.status as never)
+        ? data.status
+        : "Hazirlaniyor",
+    createdAt,
+    customer: {
+      fullName: data.customer?.fullName ?? "",
+      phone: data.customer?.phone ?? "",
+      city: data.customer?.city ?? "",
+      district: data.customer?.district ?? "",
+      address: data.customer?.address ?? ""
+    },
+    payment: {
+      cardName: data.payment?.cardName ?? "",
+      cardNumberLast4: data.payment?.cardNumberLast4 ?? "",
+      expireDate: data.payment?.expireDate ?? "",
+      installment: data.payment?.installment ?? ""
+    },
+    items: Array.isArray(data.items) ? data.items : [],
+    subtotal: typeof data.subtotal === "number" ? data.subtotal : 0,
+    shippingCost: typeof data.shippingCost === "number" ? data.shippingCost : 0,
+    total: typeof data.total === "number" ? data.total : 0
+  };
 };
 
 export const createOrder = async (payload: CreateOrderPayload): Promise<OrderRecord> => {
@@ -50,4 +99,27 @@ export const createOrder = async (payload: CreateOrderPayload): Promise<OrderRec
     shippingCost: payload.shippingCost,
     total: payload.total
   };
+};
+
+export const getAllOrders = async (): Promise<OrderRecord[]> => {
+  if (!firestore || !env.ordersCollection) {
+    throw new Error("Siparis verisi su anda yuklenemiyor.");
+  }
+
+  const snapshot = await getDocs(
+    query(collection(firestore, env.ordersCollection), orderBy("createdAt", "desc"))
+  );
+
+  return snapshot.docs.map(mapOrder);
+};
+
+export const updateOrderStatus = async (orderId: string, status: OrderRecord["status"]) => {
+  if (!firestore || !env.ordersCollection) {
+    throw new Error("Siparis durumu guncellenemedi.");
+  }
+
+  await updateDoc(doc(collection(firestore, env.ordersCollection), orderId), {
+    status,
+    updatedAt: serverTimestamp()
+  });
 };

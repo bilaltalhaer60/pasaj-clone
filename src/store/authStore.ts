@@ -20,6 +20,7 @@ export type MockUser = {
   email: string;
   phone: string;
   membership: string;
+  role: "user" | "admin";
   orders: MockOrder[];
   favorites: string[];
   addresses: MockAddress[];
@@ -39,6 +40,7 @@ const defaultUser: MockUser = {
   email: "bilal@pasajclone.dev",
   phone: "05xx xxx xx xx",
   membership: "Platin Uye",
+  role: "admin",
   orders: [
     { id: "PSJ-24031", date: "28 Mart 2026", status: "Kargoda", total: 79999 },
     { id: "PSJ-23984", date: "25 Mart 2026", status: "Teslim Edildi", total: 9999 }
@@ -70,6 +72,9 @@ const formatOrderDate = (createdAt: string) => {
       }).format(date);
 };
 
+const getRoleFromEmail = (email: string): MockUser["role"] =>
+  email.toLocaleLowerCase("tr-TR").includes("admin") ? "admin" : "user";
+
 export const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
@@ -78,7 +83,9 @@ export const useAuthStore = create<AuthState>()(
       login: (email) =>
         set((state) => ({
           isLoggedIn: true,
-          user: state.user ? { ...state.user, email } : { ...defaultUser, email }
+          user: state.user
+            ? { ...state.user, email, role: getRoleFromEmail(email) }
+            : { ...defaultUser, email, role: getRoleFromEmail(email) }
         })),
       register: (fullName, email) =>
         set(() => ({
@@ -86,7 +93,8 @@ export const useAuthStore = create<AuthState>()(
           user: {
             ...defaultUser,
             fullName,
-            email
+            email,
+            role: "user"
           }
         })),
       addOrder: (order) =>

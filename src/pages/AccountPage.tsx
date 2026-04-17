@@ -7,6 +7,13 @@ import { formatCurrency } from "../utils/formatCurrency";
 
 export const AccountPage = () => {
   const { isLoggedIn, logout, user } = useAuthStore();
+  const nextTargets =
+    user?.role === "admin"
+      ? [
+          { label: "Admin Panel", to: ROUTES.admin },
+          { label: "Alisverise Don", to: ROUTES.home }
+        ]
+      : [{ label: "Alisverise Don", to: ROUTES.home }];
 
   if (!isLoggedIn || !user) {
     return (
@@ -27,10 +34,7 @@ export const AccountPage = () => {
       badge="4. Hafta Teslimi"
       title="Hesabim"
       description="Kullanici paneli; siparisler, favoriler, adresler ve profil ozetiyle birlikte 4. haftada tamamlandi."
-      nextTargets={[
-        { label: "Admin Panel", to: ROUTES.admin },
-        { label: "Alisverise Don", to: ROUTES.home }
-      ]}
+      nextTargets={nextTargets}
     >
       <Row gutter={[16, 16]} className="account-stats-grid">
         <Col xs={24} md={8}>
