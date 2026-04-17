@@ -838,8 +838,31 @@ a {
 }
 
 @media (max-width: 768px) {
+  .app-content {
+    margin-bottom: 28px;
+  }
+
   .pasaj-top-link-list {
     display: none;
+  }
+
+  .pasaj-header-main {
+    min-height: auto;
+    gap: 16px;
+    padding: 16px 0;
+  }
+
+  .pasaj-header-actions {
+    width: 100%;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .pasaj-login-chip,
+  .pasaj-cart-chip {
+    flex: 1;
+    justify-content: center;
+    padding: 0 14px;
   }
 
   .pasaj-category-nav {
@@ -874,9 +897,31 @@ a {
     grid-template-columns: 88px 1fr;
   }
 
+  .pasaj-announcement-inner {
+    min-height: auto;
+    padding: 14px 0;
+  }
+
   .category-layout-block,
   .cart-layout {
     grid-template-columns: 1fr;
+  }
+
+  .summary-row {
+    align-items: flex-start;
+  }
+
+  .checkout-actions {
+    flex-direction: column-reverse;
+  }
+
+  .checkout-actions .ant-btn {
+    width: 100%;
+  }
+
+  .cart-items-card .ant-list-item {
+    align-items: flex-start;
+    gap: 16px;
   }
 }
 

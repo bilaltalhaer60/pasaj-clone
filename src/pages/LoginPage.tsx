@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Alert, Button, Card, Col, Form, Input, Row, Typography } from "antd";
 import { PageShell } from "../app/page-shell";
 import { isFirebaseReady } from "../config/firebase";
@@ -7,11 +7,13 @@ import { useAuthStore } from "../store/authStore";
 
 export const LoginPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const login = useAuthStore((state) => state.login);
+  const redirectTarget = (location.state as { from?: string } | null)?.from ?? ROUTES.account;
 
   const onFinish = (values: { email: string }) => {
     login(values.email);
-    navigate(ROUTES.account);
+    navigate(redirectTarget);
   };
 
   return (
@@ -51,6 +53,9 @@ export const LoginPage = () => {
               >
                 <Input.Password placeholder="********" />
               </Form.Item>
+              <div style={{ marginBottom: 16 }}>
+                <Link to={ROUTES.forgotPassword}>Sifremi unuttum</Link>
+              </div>
               <Button type="primary" htmlType="submit" size="large">
                 Giris Yap
               </Button>

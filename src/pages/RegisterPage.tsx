@@ -21,6 +21,7 @@ export const RegisterPage = () => {
       description="4. haftada auth akisinin demo versiyonu tamamlandi. Kayit formu hesap ekranina yonleniyor."
       nextTargets={[
         { label: "Giris Yap", to: ROUTES.login },
+        { label: "Sifre Sifirla", to: ROUTES.forgotPassword },
         { label: "Anasayfa", to: ROUTES.home }
       ]}
     >

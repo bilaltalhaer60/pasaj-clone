@@ -1,6 +1,8 @@
 import { createBrowserRouter } from "react-router-dom";
 import { MainLayout } from "../layouts/MainLayout";
 import { ROUTES } from "../constants/routes";
+import { AdminRoute } from "../routes/AdminRoute";
+import { ProtectedRoute } from "../routes/ProtectedRoute";
 
 export const router = createBrowserRouter([
   {
@@ -50,25 +52,42 @@ export const router = createBrowserRouter([
         }
       },
       {
-        path: ROUTES.checkout,
+        path: ROUTES.forgotPassword,
         lazy: async () => {
-          const module = await import("../pages/CheckoutPage");
-          return { Component: module.CheckoutPage };
+          const module = await import("../pages/ForgotPasswordPage");
+          return { Component: module.ForgotPasswordPage };
         }
       },
       {
-        path: ROUTES.account,
-        lazy: async () => {
-          const module = await import("../pages/AccountPage");
-          return { Component: module.AccountPage };
-        }
+        element: <ProtectedRoute />,
+        children: [
+          {
+            path: ROUTES.checkout,
+            lazy: async () => {
+              const module = await import("../pages/CheckoutPage");
+              return { Component: module.CheckoutPage };
+            }
+          },
+          {
+            path: ROUTES.account,
+            lazy: async () => {
+              const module = await import("../pages/AccountPage");
+              return { Component: module.AccountPage };
+            }
+          }
+        ]
       },
       {
-        path: ROUTES.admin,
-        lazy: async () => {
-          const module = await import("../pages/AdminPage");
-          return { Component: module.AdminPage };
-        }
+        element: <AdminRoute />,
+        children: [
+          {
+            path: ROUTES.admin,
+            lazy: async () => {
+              const module = await import("../pages/AdminPage");
+              return { Component: module.AdminPage };
+            }
+          }
+        ]
       },
       {
         path: "*",
