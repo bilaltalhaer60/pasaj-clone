@@ -6,11 +6,38 @@
 } from "@ant-design/icons";
 import { Badge, Button, Input } from "antd";
 import { Link, NavLink } from "react-router-dom";
-import { categoryNav, topLinks } from "../../data/home";
+import {
+  categoryMenus,
+  categoryNav,
+  topLinks,
+  type CategoryMenuItem
+} from "../../data/home";
 import { ROUTES } from "../../constants/routes";
 import { useAuthStore } from "../../store/authStore";
 import { getCartItemCount, useCartStore } from "../../store/cartStore";
 import { useUiStore } from "../../store/uiStore";
+
+const renderMegaMenuItems = (items: CategoryMenuItem[]) => (
+  <div className="pasaj-mega-menu-list">
+    {items.map((item) => (
+      <div key={item.label} className="pasaj-mega-menu-row">
+        <Link to={item.to} className="pasaj-mega-menu-link">
+          <span>{item.label}</span>
+          {item.children ? <span className="pasaj-mega-arrow">›</span> : null}
+        </Link>
+        {item.children ? (
+          <div className="pasaj-mega-submenu">
+            {item.children.map((child) => (
+              <Link key={child.label} to={child.to} className="pasaj-mega-submenu-link">
+                {child.label}
+              </Link>
+            ))}
+          </div>
+        ) : null}
+      </div>
+    ))}
+  </div>
+);
 
 export const Header = () => {
   const itemCount = useCartStore((state) => getCartItemCount(state.items));
@@ -52,7 +79,7 @@ export const Header = () => {
           <div className="pasaj-header-actions">
             <NavLink to={isLoggedIn ? ROUTES.account : ROUTES.login} className="pasaj-login-chip">
               <UserOutlined />
-              <span>Giris Yap</span>
+              <span>{isLoggedIn ? "Hesabım" : "Giriş Yap"}</span>
               <DownOutlined />
             </NavLink>
 
@@ -67,12 +94,23 @@ export const Header = () => {
 
       <div className="pasaj-category-nav-shell">
         <nav className="pasaj-category-nav">
-          {categoryNav.map((item, index) => (
-            <div key={item} className="pasaj-category-nav-item">
-              <Link to={ROUTES.home}>{item}</Link>
-              {index < categoryNav.length - 1 ? <span className="pasaj-nav-separator">•</span> : null}
-            </div>
-          ))}
+          {categoryNav.map((item, index) => {
+            const menuItems = categoryMenus[item] ?? [];
+            const target = menuItems[0]?.to ?? ROUTES.home;
+
+            return (
+              <div key={item} className="pasaj-category-nav-item">
+                <Link to={target}>{item}</Link>
+                {menuItems.length > 0 ? (
+                  <div className="pasaj-mega-menu" aria-label={`${item} menüsü`}>
+                    <div className="pasaj-mega-title">{item}</div>
+                    {renderMegaMenuItems(menuItems)}
+                  </div>
+                ) : null}
+                {index < categoryNav.length - 1 ? <span className="pasaj-nav-separator">•</span> : null}
+              </div>
+            );
+          })}
         </nav>
       </div>
 

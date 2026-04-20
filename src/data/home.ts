@@ -19,11 +19,18 @@ export type CampaignTile = {
   id: number;
   image: string;
   alt: string;
+  to: string;
 };
 
 export type BrandLogo = {
   name: string;
   image: string;
+};
+
+export type CategoryMenuItem = {
+  label: string;
+  to: string;
+  children?: CategoryMenuItem[];
 };
 
 export const topLinks = [
@@ -44,6 +51,63 @@ export const categoryNav = [
   "TV-Ses Sistemleri",
   "Ev-Yasam"
 ];
+
+export const categoryMenus: Record<string, CategoryMenuItem[]> = {
+  "Cep Telefonu-Aksesuar": [
+    {
+      label: "Apple Telefonlar",
+      to: "/category/telefon",
+      children: [
+        { label: "iPhone 17 256 GB", to: "/product/iphone-17-256-gb" },
+        { label: "iPhone 15 128 GB", to: "/product/iphone-15-128-gb" },
+        { label: "iPhone 16 Pro 256 GB", to: "/product/iphone-16-pro-256-gb" }
+      ]
+    },
+    { label: "Android Telefonlar", to: "/category/telefon" },
+    { label: "Yapay Zeka (AI) Telefonlar", to: "/category/telefon" },
+    {
+      label: "Aksesuarlar",
+      to: "/category/aksesuar",
+      children: [
+        { label: "Kulaklıklar", to: "/category/aksesuar" },
+        { label: "Akıllı Saatler", to: "/category/aksesuar" }
+      ]
+    },
+    { label: "Giyilebilir Teknolojiler", to: "/category/aksesuar" },
+    { label: "Tuşlu Telefonlar", to: "/category/telefon" },
+    { label: "Yenilenmiş Telefonlar", to: "/category/telefon" },
+    { label: "5G Uyumlu Telefonlar", to: "/category/telefon" },
+    { label: "Tüm Cep Telefonu-Aksesuar", to: "/category/telefon" }
+  ],
+  "Bilgisayar-Tablet": [
+    { label: "Apple MacBook", to: "/product/macbook-air-m4-13" },
+    { label: "Laptop", to: "/category/bilgisayar" },
+    { label: "Tablet", to: "/category/bilgisayar" },
+    { label: "Oyuncu Bilgisayarları", to: "/category/bilgisayar" },
+    { label: "Tüm Bilgisayar-Tablet", to: "/category/bilgisayar" }
+  ],
+  "Elektrikli Ev Aletleri": [
+    { label: "Kahve Makineleri", to: "/category/aksesuar" },
+    { label: "Süpürgeler", to: "/category/aksesuar" },
+    { label: "Küçük Ev Aletleri", to: "/category/aksesuar" }
+  ],
+  "Saglik-Kisisel Bakim": [
+    { label: "Kişisel Bakım", to: "/category/aksesuar" },
+    { label: "Akıllı Tartılar", to: "/category/aksesuar" }
+  ],
+  "Hobi-Oyun": [
+    { label: "Oyun Konsolları", to: "/category/bilgisayar" },
+    { label: "Oyuncu Aksesuarları", to: "/category/aksesuar" }
+  ],
+  "TV-Ses Sistemleri": [
+    { label: "Kulaklık", to: "/product/airpods-pro-2" },
+    { label: "Hoparlör", to: "/category/aksesuar" }
+  ],
+  "Ev-Yasam": [
+    { label: "Akıllı Ev", to: "/category/aksesuar" },
+    { label: "Yaşam Ürünleri", to: "/category/aksesuar" }
+  ]
+};
 
 export const heroBanners: HeroBanner[] = [
   {
@@ -82,7 +146,7 @@ export const shortcutCategories: ShortcutCategory[] = [
   {
     title: "Apple Urunleri",
     image: "/pasaj/categories/_1775459311458_apple_brand_store.webp",
-    to: "/"
+    to: "/category/telefon"
   },
   {
     title: "Apple Telefonlar",
@@ -136,23 +200,27 @@ export const infoFeatures: CampaignFeature[] = [
 export const campaignTiles: CampaignTile[] = [
   {
     id: 1,
-    image: "/pasaj/campaigns/_1773392029586_kampanya.webp",
-    alt: "Turkcellilere ozel kampanya"
+    image: "/pasaj/campaigns/36-taksit-doalt.webp",
+    alt: "Turkcellilere ozel kampanya",
+    to: "/category/aksesuar"
   },
   {
     id: 2,
-    image: "/pasaj/campaigns/_1764830638038_kredi.webp",
-    alt: "Kredi kampanyasi"
+    image: "/pasaj/campaigns/hg30k-do-alt.webp",
+    alt: "Kredi kampanyasi",
+    to: "/category/telefon"
   },
   {
     id: 3,
-    image: "/pasaj/campaigns/_1774870788465_ayin.webp",
-    alt: "Ayin kampanyasi"
+    image: "/pasaj/campaigns/logitechbanner-doalt.webp",
+    alt: "Logitech Pasaj kampanyasi",
+    to: "/category/aksesuar"
   },
   {
     id: 4,
-    image: "/pasaj/campaigns/_1769681009697_hesap.webp",
-    alt: "Hesap kampanyasi"
+    image: "/pasaj/campaigns/sbs-aksesuar-doalt.webp",
+    alt: "SBS aksesuar kampanyasi",
+    to: "/category/aksesuar"
   }
 ];
 

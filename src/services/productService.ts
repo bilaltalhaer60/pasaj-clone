@@ -16,6 +16,7 @@ import {
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { env } from "../config/env";
 import { firestore, storage } from "../config/firebase";
+import { fallbackProducts } from "../data/fallbackProducts";
 import type { Product, ProductSpec } from "../types/product";
 
 const productsCollectionName = env.productsCollection;
@@ -40,6 +41,39 @@ const fallbackProductValues: Omit<Product, "id"> = {
   highlights: [],
   specs: []
 };
+
+const localProductImages: Record<string, string> = {
+  "iphone-17-256-gb": "/pasaj/products/iphone-17-main.webp",
+  "iphone-15-128-gb": "/pasaj/products/iphone-15.avif",
+  "iphone-17-pro-max-256-gb": "/pasaj/products/iphone-pro-lineup.jpg",
+  "iphone-16-128-gb": "/pasaj/products/iphone-15.avif",
+  "macbook-air-m4-13": "/pasaj/products/macbook-air-main.webp",
+  "macbook-air-m4": "/pasaj/products/macbook-air-main.webp",
+  "xiaomi-redmi-note-15-pro-256gb": "/pasaj/products/bestsellers/redmi-note-15.jpg",
+  "samsung-galaxy-s25-fe-8gb-256gb": "/pasaj/products/bestsellers/s25-fe.jpg",
+  "lenovo-legion-16": "/pasaj/products/bestsellers/lenovo-legion.avif",
+  "ipad-air-11": "/pasaj/products/bestsellers/ipad-air-11.jpg",
+  "philips-kahve-makinesi": "/pasaj/products/bestsellers/philips-kahve.jpg",
+  "dyson-v15-supurge": "/pasaj/products/bestsellers/dyson-v15.webp",
+  "arzum-tost-makinesi": "/pasaj/products/bestsellers/arzum-tost.jpg",
+  "braun-series-7": "/pasaj/products/bestsellers/braun-series-7.jpg",
+  "philips-sac-kurutma": "/pasaj/products/bestsellers/philips-sac-kurutma.avif",
+  "xiaomi-akilli-tarti": "/pasaj/products/bestsellers/xiaomi-akilli-tarti.webp",
+  "playstation-5-slim": "/pasaj/products/bestsellers/ps5-slim.jpg",
+  "logitech-g435": "/pasaj/products/bestsellers/logitech-g435.webp",
+  "xbox-wireless-controller": "/pasaj/products/bestsellers/xbox-controller.jpg",
+  "jbl-flip-6": "/pasaj/products/bestsellers/jbl-flip-6.jpg",
+  "sony-wh-1000xm5": "/pasaj/products/bestsellers/sony-wh-1000xm5.jpg",
+  "samsung-soundbar": "/pasaj/products/bestsellers/samsung-soundbar.jpg",
+  "anker-powerbank-20000": "/pasaj/products/bestsellers/anker-powerbank.jpg",
+  "sbs-hizli-sarj": "/pasaj/products/bestsellers/sbs-charger.webp",
+  "akilli-ev-kamera": "/pasaj/products/bestsellers/akilli-ev-kamerasi.jpg"
+};
+
+const withLocalProductImage = (product: Product): Product => ({
+  ...product,
+  image: localProductImages[product.slug] ?? product.image
+});
 
 const ensureFirestore = () => {
   if (!firestore || !productsCollectionName) {
@@ -78,10 +112,11 @@ const toStringArray = (value: unknown): string[] => {
 
 const mapProduct = (doc: QueryDocumentSnapshot<DocumentData>): Product => {
   const data = doc.data();
+  const slug = typeof data.slug === "string" ? data.slug : fallbackProductValues.slug;
 
   return {
     id: doc.id,
-    slug: typeof data.slug === "string" ? data.slug : fallbackProductValues.slug,
+    slug,
     name: typeof data.name === "string" ? data.name : fallbackProductValues.name,
     brand: typeof data.brand === "string" ? data.brand : fallbackProductValues.brand,
     category:
@@ -105,7 +140,7 @@ const mapProduct = (doc: QueryDocumentSnapshot<DocumentData>): Product => {
         ? data.installment
         : fallbackProductValues.installment,
     badge: typeof data.badge === "string" ? data.badge : fallbackProductValues.badge,
-    image: typeof data.image === "string" ? data.image : fallbackProductValues.image,
+    image: localProductImages[slug] ?? (typeof data.image === "string" ? data.image : fallbackProductValues.image),
     summary: typeof data.summary === "string" ? data.summary : fallbackProductValues.summary,
     shippingNote:
       typeof data.shippingNote === "string"
@@ -117,24 +152,60 @@ const mapProduct = (doc: QueryDocumentSnapshot<DocumentData>): Product => {
 };
 
 export const getFeaturedProducts = async () => {
-  const productsRef = ensureFirestore();
-  const snapshot = await getDocs(query(productsRef, orderBy("popularity", "desc"), limit(4)));
+  try {
+    const productsRef = ensureFirestore();
+    const snapshot = await getDocs(query(productsRef, orderBy("popularity", "desc"), limit(4)));
 
-  return snapshot.docs.map(mapProduct);
+    return snapshot.docs.map(mapProduct).map(withLocalProductImage);
+  } catch {
+    return fallbackProducts.slice(0, 4);
+  }
 };
 
 export const getAllProducts = async () => {
-  const productsRef = ensureFirestore();
-  const snapshot = await getDocs(productsRef);
+  try {
+    const productsRef = ensureFirestore();
+    const snapshot = await getDocs(productsRef);
+    const products = snapshot.docs.map(mapProduct);
+    const productsBySlug = new Map(products.map((product) => [product.slug, product]));
 
-  return snapshot.docs.map(mapProduct).sort((left, right) => right.popularity - left.popularity);
+    fallbackProducts.forEach((product) => {
+      if (!productsBySlug.has(product.slug)) {
+        productsBySlug.set(product.slug, product);
+      }
+    });
+
+    return [...productsBySlug.values()]
+      .map(withLocalProductImage)
+      .sort((left, right) => right.popularity - left.popularity);
+  } catch {
+    return [...fallbackProducts]
+      .map(withLocalProductImage)
+      .sort((left, right) => right.popularity - left.popularity);
+  }
 };
 
 export const getProductsByCategory = async (category: string) => {
-  const productsRef = ensureFirestore();
-  const snapshot = await getDocs(query(productsRef, where("category", "==", category)));
+  try {
+    const productsRef = ensureFirestore();
+    const snapshot = await getDocs(query(productsRef, where("category", "==", category)));
+    const products = snapshot.docs.map(mapProduct);
+    const productsBySlug = new Map(products.map((product) => [product.slug, product]));
 
-  return snapshot.docs.map(mapProduct);
+    fallbackProducts
+      .filter((product) => product.category === category)
+      .forEach((product) => {
+        if (!productsBySlug.has(product.slug)) {
+          productsBySlug.set(product.slug, product);
+        }
+      });
+
+    return [...productsBySlug.values()].map(withLocalProductImage);
+  } catch {
+    return fallbackProducts
+      .filter((product) => product.category === category)
+      .map(withLocalProductImage);
+  }
 };
 
 export const getProductBySlug = async (slug?: string) => {
@@ -142,10 +213,20 @@ export const getProductBySlug = async (slug?: string) => {
     return null;
   }
 
-  const productsRef = ensureFirestore();
-  const snapshot = await getDocs(query(productsRef, where("slug", "==", slug), limit(1)));
+  try {
+    const productsRef = ensureFirestore();
+    const snapshot = await getDocs(query(productsRef, where("slug", "==", slug), limit(1)));
 
-  return snapshot.docs[0] ? mapProduct(snapshot.docs[0]) : null;
+    if (snapshot.docs[0]) {
+      return withLocalProductImage(mapProduct(snapshot.docs[0]));
+    }
+
+    const fallbackProduct = fallbackProducts.find((product) => product.slug === slug);
+    return fallbackProduct ? withLocalProductImage(fallbackProduct) : null;
+  } catch {
+    const fallbackProduct = fallbackProducts.find((product) => product.slug === slug);
+    return fallbackProduct ? withLocalProductImage(fallbackProduct) : null;
+  }
 };
 
 export interface ProductMutationInput {

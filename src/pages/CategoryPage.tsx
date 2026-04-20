@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
+import { HeartOutlined, RightOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { useQuery } from "@tanstack/react-query";
+import { Alert, Button, Empty, Select, Skeleton, Slider, Tag, Typography } from "antd";
 import { Link, useParams } from "react-router-dom";
-import { Alert, Button, Card, Col, Empty, Row, Select, Skeleton, Slider, Space, Tag, Typography } from "antd";
-import { PageShell } from "../app/page-shell";
 import { getProductsByCategory } from "../services/productService";
 import { useCartStore } from "../store/cartStore";
+import type { Product } from "../types/product";
 import { toCategoryTitle } from "../utils/catalog";
 import { formatCurrency } from "../utils/formatCurrency";
 
@@ -14,9 +15,63 @@ const sortOptions = [
   { value: "price-desc", label: "Fiyat azalan" }
 ];
 
+const titleBySlug: Record<string, string> = {
+  telefon: "Cep Telefonu-Aksesuar",
+  bilgisayar: "Bilgisayar-Tablet",
+  aksesuar: "Aksesuar"
+};
+
+const ProductListCard = ({
+  product,
+  onAddToCart
+}: {
+  product: Product;
+  onAddToCart: (product: Product) => void;
+}) => (
+  <article className="pasaj-list-product-card">
+    <button type="button" className="pasaj-list-favorite" aria-label="Favorilere ekle">
+      <HeartOutlined />
+    </button>
+    <Link to={`/product/${product.slug}`} className="pasaj-list-image-wrap">
+      <img src={product.image} alt={product.name} className="pasaj-list-image" />
+    </Link>
+    <div className="pasaj-list-card-body">
+      <div className="pasaj-list-badges">
+        {product.badge ? <Tag color="blue">{product.badge}</Tag> : null}
+        <Tag>{product.brand}</Tag>
+      </div>
+      <Link to={`/product/${product.slug}`} className="pasaj-list-title">
+        {product.name}
+      </Link>
+      <p className="pasaj-list-summary">{product.summary}</p>
+      <div className="pasaj-list-chip-row">
+        <span>Sepette avantaj</span>
+        <span>Ucretsiz Kargo</span>
+      </div>
+      <div className="pasaj-list-price-row">
+        {product.previousPrice > product.price ? (
+          <span className="pasaj-list-old-price">{formatCurrency(product.previousPrice)}</span>
+        ) : null}
+        {product.discount > 0 ? (
+          <span className="pasaj-list-discount">%{product.discount} Indirim</span>
+        ) : null}
+      </div>
+      <strong className="pasaj-list-price">{formatCurrency(product.price)}</strong>
+      <div className="pasaj-list-actions">
+        <Button type="primary" icon={<ShoppingCartOutlined />} onClick={() => onAddToCart(product)}>
+          Sepete Ekle
+        </Button>
+        <Button>
+          <Link to={`/product/${product.slug}`}>Detay</Link>
+        </Button>
+      </div>
+    </div>
+  </article>
+);
+
 export const CategoryPage = () => {
   const { categorySlug } = useParams();
-  const [range, setRange] = useState<[number, number]>([5000, 90000]);
+  const [range, setRange] = useState<[number, number]>([0, 100000]);
   const [sortBy, setSortBy] = useState("popular");
   const addItem = useCartStore((state) => state.addItem);
   const { data = [], isLoading, error } = useQuery({
@@ -24,22 +79,18 @@ export const CategoryPage = () => {
     queryFn: () => getProductsByCategory(categorySlug ?? ""),
     enabled: Boolean(categorySlug)
   });
-  const categoryTitle = toCategoryTitle(categorySlug ?? "kategori");
-  const minPrice = data.length > 0 ? Math.min(...data.map((product) => product.price)) : 1000;
+  const categoryTitle = titleBySlug[categorySlug ?? ""] ?? toCategoryTitle(categorySlug ?? "Kategori");
+  const minPrice = data.length > 0 ? Math.min(...data.map((product) => product.price)) : 0;
   const maxPrice = data.length > 0 ? Math.max(...data.map((product) => product.price)) : 100000;
+  const brands = useMemo(() => [...new Set(data.map((product) => product.brand))], [data]);
 
   useEffect(() => {
-    if (data.length > 0) {
-      setRange([minPrice, maxPrice]);
-    }
-  }, [maxPrice, minPrice, data.length]);
+    setRange([minPrice, maxPrice]);
+  }, [maxPrice, minPrice]);
 
   const filteredProducts = useMemo(() => {
     const scoped = data.filter(
-      (product) =>
-        product.category === categorySlug &&
-        product.price >= range[0] &&
-        product.price <= range[1]
+      (product) => product.price >= range[0] && product.price <= range[1]
     );
 
     return [...scoped].sort((left, right) => {
@@ -53,45 +104,63 @@ export const CategoryPage = () => {
 
       return right.popularity - left.popularity;
     });
-  }, [categorySlug, data, range, sortBy]);
+  }, [data, range, sortBy]);
 
   return (
-    <PageShell
-      badge="5. Hafta Teslimi"
-      title={`${categoryTitle} listesi`}
-      description={`${categoryTitle} kategorisi artik yalnizca Firestore verisiyle besleniyor. Filtre, siralama ve sepete ekleme akislari canli veri uzerinden calisiyor.`}
-      nextTargets={[
-        { label: "Sepete Git", to: "/cart" },
-        { label: "Anasayfaya Don", to: "/" }
-      ]}
-    >
-      <div className="section-heading section-heading-inline">
-        <div>
-          <Typography.Title level={3}>Filtre ve siralama</Typography.Title>
-          <Typography.Paragraph>
-            Fiyat araligi Firestore'dan gelen urunlere gore dinamik olarak olusuyor.
-          </Typography.Paragraph>
-        </div>
-        <Select value={sortBy} options={sortOptions} onChange={setSortBy} style={{ width: 220 }} />
-      </div>
+    <main className="pasaj-category-page">
+      <nav className="pasaj-breadcrumb" aria-label="Kategori yolu">
+        <Link to="/">Pasaj</Link>
+        <RightOutlined />
+        <span>{categoryTitle}</span>
+      </nav>
 
-      <div className="category-layout-block">
-        <aside className="filter-panel">
-          <Typography.Title level={5}>Fiyat araligi</Typography.Title>
-          <Slider
-            range
-            min={minPrice}
-            max={maxPrice}
-            value={range}
-            onChange={(value) => setRange(value as [number, number])}
-          />
-          <div className="filter-tags">
-            <Tag>{formatCurrency(range[0])}</Tag>
-            <Tag>{formatCurrency(range[1])}</Tag>
-          </div>
+      <section className="pasaj-category-heading">
+        <div>
+          <Typography.Title level={1}>{categoryTitle}</Typography.Title>
+          <p>{filteredProducts.length} urun listeleniyor</p>
+        </div>
+        <Select
+          value={sortBy}
+          options={sortOptions}
+          onChange={setSortBy}
+          className="pasaj-category-sort"
+        />
+      </section>
+
+      <div className="pasaj-category-layout">
+        <aside className="pasaj-filter-sidebar">
+          <section className="pasaj-filter-block">
+            <Typography.Title level={5}>Fiyat araligi</Typography.Title>
+            <Slider
+              range
+              min={minPrice}
+              max={maxPrice}
+              value={range}
+              onChange={(value) => setRange(value as [number, number])}
+            />
+            <div className="pasaj-filter-price-row">
+              <span>{formatCurrency(range[0])}</span>
+              <span>{formatCurrency(range[1])}</span>
+            </div>
+          </section>
+
+          <section className="pasaj-filter-block">
+            <Typography.Title level={5}>Marka</Typography.Title>
+            <div className="pasaj-filter-tag-list">
+              {brands.map((brand) => (
+                <Tag key={brand}>{brand}</Tag>
+              ))}
+            </div>
+          </section>
+
+          <section className="pasaj-filter-block">
+            <Typography.Title level={5}>Teslimat</Typography.Title>
+            <label><input type="checkbox" defaultChecked /> Ucretsiz Kargo</label>
+            <label><input type="checkbox" /> Hizli Teslimat</label>
+          </section>
         </aside>
 
-        <section>
+        <section className="pasaj-category-results">
           {error ? (
             <Alert
               type="error"
@@ -100,59 +169,28 @@ export const CategoryPage = () => {
               message={error instanceof Error ? error.message : "Urunler yuklenirken bir hata olustu."}
             />
           ) : null}
+
           {isLoading ? (
-            <Row gutter={[16, 16]}>
+            <div className="pasaj-list-grid">
               {Array.from({ length: 6 }).map((_, index) => (
-                <Col xs={24} md={12} xl={8} key={index}>
-                  <Card className="product-card">
-                    <Skeleton active paragraph={{ rows: 6 }} />
-                  </Card>
-                </Col>
+                <article className="pasaj-list-product-card" key={index}>
+                  <Skeleton active paragraph={{ rows: 8 }} />
+                </article>
               ))}
-            </Row>
+            </div>
           ) : filteredProducts.length === 0 ? (
-            <Card className="empty-card">
+            <div className="pasaj-category-empty">
               <Empty description="Bu filtreye uygun urun bulunamadi." />
-            </Card>
+            </div>
           ) : (
-            <Row gutter={[16, 16]}>
+            <div className="pasaj-list-grid">
               {filteredProducts.map((product) => (
-                <Col xs={24} md={12} xl={8} key={product.id}>
-                  <Card
-                    className="product-card"
-                    cover={<img src={product.image} alt={product.name} className="product-image" />}
-                  >
-                    <Space direction="vertical" size={10} style={{ width: "100%" }}>
-                      <Space wrap>
-                        <Tag color="blue">{product.badge}</Tag>
-                        <Tag>{product.brand}</Tag>
-                      </Space>
-                      <Typography.Title level={5}>{product.name}</Typography.Title>
-                      <Typography.Paragraph type="secondary">
-                        {product.summary}
-                      </Typography.Paragraph>
-                      <Typography.Title level={4} className="product-price">
-                        {formatCurrency(product.price)}
-                      </Typography.Title>
-                      <Typography.Text delete type="secondary">
-                        {formatCurrency(product.previousPrice)}
-                      </Typography.Text>
-                      <Space wrap>
-                        <Button type="primary" onClick={() => addItem(product)}>
-                          Sepete ekle
-                        </Button>
-                        <Button>
-                          <Link to={`/product/${product.slug}`}>Detayi ac</Link>
-                        </Button>
-                      </Space>
-                    </Space>
-                  </Card>
-                </Col>
+                <ProductListCard key={product.id} product={product} onAddToCart={addItem} />
               ))}
-            </Row>
+            </div>
           )}
         </section>
       </div>
-    </PageShell>
+    </main>
   );
 };

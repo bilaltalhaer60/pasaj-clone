@@ -200,6 +200,7 @@ a {
 }
 
 .pasaj-category-nav-item {
+  position: relative;
   display: inline-flex;
   align-items: center;
   white-space: nowrap;
@@ -214,6 +215,96 @@ a {
 .pasaj-nav-separator {
   color: #b8c5d6;
   padding: 0 10px;
+}
+
+.pasaj-mega-menu {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 226px;
+  min-height: 360px;
+  padding: 24px max(54px, calc((100vw - 1660px) / 2));
+  background: #fff;
+  border-top: 2px solid #0f59b2;
+  box-shadow: 0 22px 48px rgba(20, 41, 68, 0.18);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  pointer-events: none;
+  transition: opacity 0.16s ease, transform 0.16s ease, visibility 0.16s ease;
+  z-index: 80;
+}
+
+.pasaj-category-nav-item:hover .pasaj-mega-menu,
+.pasaj-category-nav-item:focus-within .pasaj-mega-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.pasaj-mega-title {
+  width: 360px;
+  color: #aab7c7;
+  font-size: 30px;
+  font-weight: 500;
+  white-space: normal;
+}
+
+.pasaj-mega-menu-list {
+  position: relative;
+  width: min(520px, 45vw);
+  margin-top: 6px;
+}
+
+.pasaj-mega-menu-row {
+  width: 100%;
+}
+
+.pasaj-mega-menu-link {
+  min-height: 45px;
+  padding: 8px 14px 8px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  color: var(--pasaj-text);
+  font-size: 18px;
+}
+
+.pasaj-mega-menu-link:hover,
+.pasaj-mega-submenu-link:hover {
+  color: #0f59b2;
+}
+
+.pasaj-mega-arrow {
+  color: #44566e;
+  font-size: 32px;
+  line-height: 1;
+}
+
+.pasaj-mega-submenu {
+  position: absolute;
+  left: min(520px, 45vw);
+  top: 0;
+  width: 360px;
+  min-height: 260px;
+  padding-left: 46px;
+  display: none;
+  white-space: normal;
+}
+
+.pasaj-mega-menu-row:hover .pasaj-mega-submenu,
+.pasaj-mega-menu-row:focus-within .pasaj-mega-submenu {
+  display: grid;
+  align-content: start;
+  gap: 14px;
+}
+
+.pasaj-mega-submenu-link {
+  color: var(--pasaj-text);
+  font-size: 17px;
+  font-weight: 600;
 }
 
 .pasaj-announcement-bar {
@@ -441,6 +532,19 @@ a {
   object-fit: contain;
 }
 
+.shelf-product-detail-link,
+.shelf-product-name-link {
+  display: block;
+}
+
+.shelf-product-detail-link:hover .shelf-product-image {
+  transform: translateY(-2px);
+}
+
+.shelf-product-image {
+  transition: transform 0.18s ease;
+}
+
 .variant-dots {
   margin-bottom: 10px;
   text-align: center;
@@ -505,18 +609,26 @@ a {
 .campaign-image-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px;
+  gap: 20px;
 }
 
 .campaign-image-link {
   display: block;
-  border-radius: 14px;
+  border-radius: 8px;
   overflow: hidden;
+  background: #edf2f7;
 }
 
 .campaign-image {
   width: 100%;
-  border-radius: 14px;
+  aspect-ratio: 2.72 / 1;
+  object-fit: cover;
+  border-radius: 8px;
+  transition: transform 0.18s ease;
+}
+
+.campaign-image-link:hover .campaign-image {
+  transform: scale(1.015);
 }
 
 .bestseller-tabs {
@@ -540,6 +652,233 @@ a {
   border-bottom: 3px solid #0f59b2;
   padding-bottom: 12px;
   margin-bottom: -13px;
+}
+
+.pasaj-bestseller-tabs {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(130px, 1fr));
+  gap: 0;
+  margin-bottom: 40px;
+  border-bottom: 1px solid #dfe6ef;
+  overflow-x: auto;
+}
+
+.pasaj-bestseller-tabs button {
+  min-height: 92px;
+  padding: 0 12px 14px;
+  border: none;
+  border-bottom: 3px solid transparent;
+  background: #fff;
+  color: #6d7d91;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.pasaj-bestseller-tabs button.active {
+  color: #0f59b2;
+  border-bottom-color: #0f59b2;
+}
+
+.pasaj-bestseller-tabs .anticon {
+  font-size: 34px;
+}
+
+.pasaj-bestseller-tabs span {
+  white-space: nowrap;
+  font-size: 16px;
+}
+
+.pasaj-bestseller-toolbar {
+  margin: -22px 0 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  color: #6a7b91;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.pasaj-bestseller-toolbar a {
+  color: #0f59b2;
+  font-weight: 800;
+}
+
+.pasaj-bestseller-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.pasaj-bestseller-card {
+  position: relative;
+  min-height: 520px;
+  border: 1px solid #cfd9e6;
+  border-radius: 8px;
+  background: #fff;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: 256px auto;
+}
+
+.pasaj-bestseller-badge {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  padding: 9px 13px;
+  border-radius: 8px 0 8px 0;
+  background: #ff9f2b;
+  color: #fff;
+  font-weight: 800;
+  font-size: 14px;
+}
+
+.pasaj-bestseller-fav {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  z-index: 2;
+  border: none;
+  background: transparent;
+  color: #ff6b00;
+  font-size: 26px;
+  cursor: pointer;
+}
+
+.pasaj-bestseller-image-wrap {
+  position: relative;
+  padding: 42px 28px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pasaj-bestseller-image {
+  max-width: 100%;
+  max-height: 188px;
+  object-fit: contain;
+  transition: transform 0.18s ease;
+}
+
+.pasaj-bestseller-card:hover .pasaj-bestseller-image {
+  transform: scale(1.03);
+}
+
+.pasaj-5g-badge {
+  position: absolute;
+  right: 28px;
+  bottom: 18px;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 8px 18px rgba(15, 89, 178, 0.22);
+}
+
+.pasaj-bestseller-color-row {
+  min-height: 24px;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.color-dot {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.color-dot.black {
+  background: #111;
+}
+
+.color-extra {
+  color: #1a2636;
+  font-weight: 800;
+  font-size: 14px;
+}
+
+.mini-dots {
+  width: 42px;
+  height: 12px;
+  margin-left: auto;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle, #243244 0 3px, transparent 4px) 8px center / 10px 10px no-repeat,
+    radial-gradient(circle, #cfd7e2 0 3px, transparent 4px) 18px center / 10px 10px no-repeat,
+    radial-gradient(circle, #cfd7e2 0 3px, transparent 4px) 28px center / 10px 10px no-repeat;
+}
+
+.pasaj-bestseller-title {
+  min-height: 54px;
+  padding: 4px 20px 0;
+  color: #1a2636;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.pasaj-bestseller-chip-row {
+  padding: 0 20px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.pasaj-bestseller-chip-row span {
+  min-height: 40px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: #e8f0fb;
+  color: #0f59b2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 13px;
+  line-height: 1.15;
+  font-weight: 800;
+}
+
+.pasaj-bestseller-price-row {
+  min-height: 28px;
+  padding: 8px 20px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pasaj-bestseller-old {
+  color: #8b98a8;
+  text-decoration: line-through;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.pasaj-bestseller-discount {
+  color: #ef3c4f;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.pasaj-bestseller-price {
+  padding: 0 20px;
+  color: #003b7a;
+  font-size: 21px;
+  line-height: 1;
+}
+
+.pasaj-bestseller-note {
+  padding: 0 20px 20px;
+  color: #003b7a;
+  font-size: 14px;
 }
 
 .brand-card-grid {
@@ -681,6 +1020,248 @@ a {
   font-size: 13px;
 }
 
+.pasaj-footer {
+  margin-top: 46px;
+  background: #00325f;
+  color: #fff;
+}
+
+.pasaj-footer-inner {
+  width: min(1680px, calc(100% - 96px));
+  margin: 0 auto;
+}
+
+.pasaj-footer-social {
+  background: #103f70;
+}
+
+.pasaj-footer-social-grid {
+  min-height: 292px;
+  display: grid;
+  grid-template-columns: minmax(420px, 1fr) minmax(420px, 0.9fr);
+  align-items: center;
+  gap: 72px;
+}
+
+.pasaj-footer-logo {
+  margin-bottom: 30px;
+  display: inline-flex;
+  align-items: center;
+  width: 146px;
+}
+
+.pasaj-footer-logo img {
+  width: 146px;
+  height: auto;
+  filter: brightness(0) invert(1);
+}
+
+.pasaj-footer-brand-block strong,
+.pasaj-footer-app-block strong {
+  display: block;
+  margin-bottom: 8px;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.pasaj-footer-brand-block p,
+.pasaj-footer-app-block p {
+  margin: 0;
+  color: #fff;
+  font-size: 19px;
+  line-height: 1.35;
+}
+
+.pasaj-social-links {
+  margin-top: 22px;
+  display: flex;
+  align-items: center;
+  gap: 26px;
+}
+
+.pasaj-social-links a {
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pasaj-social-links img {
+  max-width: 32px;
+  max-height: 32px;
+  object-fit: contain;
+  filter: grayscale(1) brightness(0) invert(1);
+}
+
+.pasaj-footer-app-block {
+  justify-self: end;
+  width: min(560px, 100%);
+}
+
+.pasaj-footer-qr-row {
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  align-items: center;
+  gap: 24px;
+}
+
+.pasaj-footer-qr {
+  width: 150px;
+  height: 150px;
+  border-radius: 8px;
+  object-fit: cover;
+  background: #fff;
+}
+
+.pasaj-footer-links-section {
+  background: #00325f;
+}
+
+.pasaj-footer-columns {
+  padding: 64px 0 58px;
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 42px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.pasaj-footer-column h3 {
+  min-height: 54px;
+  margin: 0 0 18px;
+  color: #fff;
+  font-size: 20px;
+  line-height: 1.25;
+  font-weight: 900;
+}
+
+.pasaj-footer-column a {
+  margin-bottom: 11px;
+  display: block;
+  color: #fff;
+  font-size: 17px;
+  line-height: 1.35;
+  font-weight: 500;
+}
+
+.pasaj-footer-column button {
+  margin-top: 12px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: #fff;
+  font-size: 17px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.pasaj-footer-column button span {
+  margin-left: 12px;
+  font-size: 20px;
+}
+
+.pasaj-footer-brands-section {
+  background: #00325f;
+}
+
+.pasaj-footer-brands-section .pasaj-footer-inner {
+  padding: 0 0 26px;
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.pasaj-footer-lang-row {
+  min-height: 96px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.pasaj-footer-lang-row button {
+  height: 48px;
+  padding: 0;
+  border: none;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 17px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.pasaj-footer-lang-row button.active {
+  color: #fff;
+  border-bottom-color: #fff;
+}
+
+.pasaj-footer-brand-row {
+  min-height: 120px;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 26px;
+  align-items: center;
+}
+
+.pasaj-footer-brand-logo {
+  color: #fff;
+  font-size: 25px;
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: 0;
+  opacity: 0.96;
+}
+
+.pasaj-footer-brand-logo:nth-child(2),
+.pasaj-footer-brand-logo:nth-child(9),
+.pasaj-footer-brand-logo:nth-child(10),
+.pasaj-footer-brand-logo:nth-child(11) {
+  font-size: 15px;
+  line-height: 1.12;
+}
+
+.pasaj-footer-legal-section {
+  background: #123f70;
+}
+
+.pasaj-footer-legal-row {
+  min-height: 132px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.pasaj-footer-legal-row a,
+.pasaj-footer-legal-row span {
+  color: rgba(255, 255, 255, 0.56);
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.pasaj-footer-legal-row div {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.pasaj-trgo {
+  width: 58px;
+  height: 58px;
+  border: 4px solid #11a7d8;
+  border-right-color: transparent;
+  border-radius: 50%;
+  color: #11a7d8 !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px !important;
+  line-height: 1 !important;
+  text-align: center;
+}
+
 .hero-card,
 .route-card,
 .product-card,
@@ -763,6 +1344,721 @@ a {
   border-radius: 999px;
 }
 
+.pasaj-product-detail-page {
+  padding: 18px 0 46px;
+  color: #15243a;
+}
+
+.pasaj-breadcrumb {
+  min-height: 34px;
+  margin-bottom: 34px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #6d7d91;
+  font-size: 15px;
+}
+
+.pasaj-breadcrumb a {
+  color: #173d75;
+  font-weight: 600;
+}
+
+.pasaj-breadcrumb .anticon {
+  color: #c3ad1a;
+  font-size: 12px;
+}
+
+.pasaj-product-hero {
+  display: grid;
+  grid-template-columns: minmax(360px, 48%) minmax(480px, 1fr);
+  gap: 44px;
+  align-items: start;
+}
+
+.pasaj-product-gallery {
+  display: grid;
+  grid-template-columns: 86px 1fr;
+  gap: 26px;
+  align-items: start;
+}
+
+.pasaj-gallery-thumb-list {
+  display: grid;
+  gap: 12px;
+}
+
+.pasaj-gallery-thumb {
+  width: 76px;
+  height: 86px;
+  border: 1px solid #dfe6ef;
+  border-radius: 8px;
+  background: #fff;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.pasaj-gallery-thumb.active {
+  border-color: #0f59b2;
+  box-shadow: inset 0 0 0 1px #0f59b2;
+}
+
+.pasaj-gallery-thumb .pasaj-product-real-image {
+  width: 68px;
+  height: 68px;
+  object-fit: contain;
+}
+
+.pasaj-product-stage {
+  min-height: 470px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pasaj-product-real-image {
+  max-width: 92%;
+  max-height: 440px;
+  object-fit: contain;
+}
+
+.pasaj-iphone-render {
+  position: relative;
+  width: 390px;
+  height: 430px;
+}
+
+.pasaj-iphone-back,
+.pasaj-iphone-front {
+  position: absolute;
+  bottom: 0;
+  width: 205px;
+  height: 350px;
+  border-radius: 38px;
+  border: 5px solid #12161d;
+  background: linear-gradient(145deg, #11151b 0%, #313a3f 52%, #0b0d10 100%);
+  box-shadow: 0 18px 38px rgba(12, 24, 38, 0.25);
+}
+
+.pasaj-iphone-back {
+  left: 38px;
+}
+
+.pasaj-iphone-back::before {
+  content: "";
+  position: absolute;
+  top: 22px;
+  left: 22px;
+  width: 78px;
+  height: 78px;
+  border-radius: 24px;
+  background: #080a0d;
+}
+
+.pasaj-iphone-back span {
+  position: absolute;
+  top: 32px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #5c666d 0 18%, #080a0d 20% 100%);
+  z-index: 1;
+}
+
+.pasaj-iphone-back span:first-child {
+  left: 34px;
+}
+
+.pasaj-iphone-back span:last-child {
+  left: 68px;
+}
+
+.pasaj-iphone-front {
+  right: 34px;
+  background: linear-gradient(160deg, #dfe7e5 0%, #8c9894 52%, #343b3c 100%);
+  overflow: hidden;
+}
+
+.pasaj-iphone-front::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 10px solid #090b0e;
+  border-radius: 34px;
+}
+
+.pasaj-iphone-island {
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  width: 76px;
+  height: 20px;
+  border-radius: 999px;
+  background: #040506;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+.pasaj-iphone-glow {
+  position: absolute;
+  left: 34px;
+  right: 22px;
+  top: 104px;
+  height: 150px;
+  border-radius: 50%;
+  background: rgba(230, 236, 232, 0.34);
+  filter: blur(2px);
+}
+
+.pasaj-product-summary {
+  min-width: 0;
+}
+
+.pasaj-title-row {
+  display: grid;
+  grid-template-columns: 1fr 48px;
+  gap: 18px;
+  align-items: start;
+}
+
+.pasaj-product-brand {
+  color: #003b7a;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.pasaj-title-row h1.ant-typography {
+  margin: 4px 0 20px;
+  color: #1a2636;
+  font-size: 40px;
+  line-height: 1.18;
+  font-weight: 800;
+}
+
+.pasaj-favorite-detail {
+  width: 48px;
+  height: 48px;
+  border: none;
+  background: transparent;
+  color: #15243a;
+  font-size: 30px;
+  cursor: pointer;
+}
+
+.pasaj-rating-row {
+  min-height: 38px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pasaj-rating-row .ant-rate {
+  color: #c9aa12;
+  font-size: 18px;
+}
+
+.pasaj-rating-score {
+  min-width: 40px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #f0f3f7;
+  color: #42536a;
+  font-weight: 700;
+}
+
+.pasaj-variant-grid {
+  margin-top: 22px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border: 1px solid #cfd9e6;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.pasaj-variant-card {
+  min-height: 104px;
+  padding: 18px 22px;
+  border: none;
+  border-right: 1px solid #cfd9e6;
+  background: #fff;
+  display: grid;
+  gap: 10px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.pasaj-variant-card:last-child {
+  border-right: none;
+}
+
+.pasaj-variant-card span {
+  color: #607188;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.pasaj-variant-card strong {
+  color: #1b2b3f;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.pasaj-color-dot {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+  border-radius: 50%;
+  background: #000;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.pasaj-buy-box {
+  margin-top: 28px;
+  border: 1px solid #003b7a;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.pasaj-price-panel {
+  min-height: 88px;
+  padding: 24px 24px 18px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  gap: 28px;
+  border-bottom: 1px solid #dfe6ef;
+}
+
+.pasaj-price-panel > div {
+  display: grid;
+  justify-items: end;
+  line-height: 1.15;
+}
+
+.pasaj-old-price {
+  color: #9aa7b5;
+  text-decoration: line-through;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.pasaj-discount {
+  color: #0067b1;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.pasaj-price-panel strong {
+  color: #0f3d82;
+  font-size: 30px;
+  line-height: 1;
+}
+
+.pasaj-buy-actions {
+  padding: 18px 22px;
+  display: grid;
+  grid-template-columns: 1fr 150px;
+  gap: 12px;
+  border-bottom: 1px solid #dfe6ef;
+}
+
+.pasaj-buy-actions .ant-btn {
+  height: 52px;
+  border-radius: 8px;
+  font-weight: 800;
+}
+
+.pasaj-buy-actions .ant-btn-primary {
+  background: #ffc72c;
+  border-color: #ffc72c;
+  color: #002e5f;
+}
+
+.pasaj-service-row {
+  min-height: 66px;
+  padding: 0 22px;
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 18px;
+  align-items: center;
+  border-bottom: 1px solid #dfe6ef;
+  color: #3d4f64;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.pasaj-service-row span,
+.pasaj-service-row a {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pasaj-service-row .anticon {
+  color: #1f3763;
+  font-size: 22px;
+}
+
+.pasaj-service-row a,
+.pasaj-buy-footer a {
+  color: #003b7a;
+  font-weight: 800;
+}
+
+.pasaj-buy-footer {
+  min-height: 56px;
+  padding: 0 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.pasaj-payment-methods {
+  margin-top: 30px;
+}
+
+.pasaj-payment-methods h2.ant-typography {
+  margin-bottom: 18px;
+  color: #1a2636;
+  font-size: 26px;
+}
+
+.pasaj-payment-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.pasaj-payment-grid article {
+  min-height: 112px;
+  padding: 18px;
+  border: 1px solid #dfe6ef;
+  border-radius: 8px;
+  background: #fff;
+  display: grid;
+  gap: 8px;
+}
+
+.pasaj-payment-grid strong {
+  color: #003b7a;
+  font-size: 18px;
+}
+
+.pasaj-payment-grid span {
+  color: #66778d;
+}
+
+.pasaj-detail-tabs {
+  margin-top: 32px;
+  border: 1px solid #dfe6ef;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.pasaj-detail-tab-list {
+  min-height: 64px;
+  display: flex;
+  align-items: stretch;
+  border-bottom: 1px solid #dfe6ef;
+}
+
+.pasaj-detail-tab-list button {
+  padding: 0 26px;
+  border: none;
+  border-right: 1px solid #dfe6ef;
+  background: #fff;
+  color: #5a6d85;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.pasaj-detail-tab-list button.active {
+  color: #003b7a;
+  box-shadow: inset 0 -3px 0 #003b7a;
+}
+
+.pasaj-detail-content {
+  padding: 26px;
+  display: grid;
+  grid-template-columns: minmax(260px, 360px) 1fr;
+  gap: 26px;
+}
+
+.pasaj-highlight-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.pasaj-category-page {
+  padding: 18px 0 48px;
+}
+
+.pasaj-category-heading {
+  margin-bottom: 22px;
+  padding: 22px 0 18px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 18px;
+  border-bottom: 1px solid #dfe6ef;
+}
+
+.pasaj-category-heading h1.ant-typography {
+  margin: 0 0 6px;
+  color: #1a2636;
+  font-size: 34px;
+  font-weight: 800;
+}
+
+.pasaj-category-heading p {
+  margin: 0;
+  color: #6a7b91;
+  font-size: 16px;
+}
+
+.pasaj-category-sort {
+  width: 240px;
+}
+
+.pasaj-category-layout {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.pasaj-filter-sidebar {
+  position: sticky;
+  top: 250px;
+  display: grid;
+  gap: 14px;
+}
+
+.pasaj-filter-block {
+  padding: 20px;
+  border: 1px solid #dfe6ef;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.pasaj-filter-block h5.ant-typography {
+  margin: 0 0 14px;
+  color: #1a2636;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.pasaj-filter-block label {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #3d4f64;
+  font-weight: 600;
+}
+
+.pasaj-filter-block .ant-slider-track {
+  background: #ffc72c;
+}
+
+.pasaj-filter-block .ant-slider-handle::after {
+  box-shadow: 0 0 0 2px #ffc72c;
+}
+
+.pasaj-filter-price-row {
+  margin-top: 12px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.pasaj-filter-price-row span {
+  min-width: 82px;
+  padding: 6px 10px;
+  border: 1px solid #dfe6ef;
+  border-radius: 6px;
+  background: #fff;
+  color: #1a2636;
+  font-weight: 700;
+  text-align: center;
+}
+
+.pasaj-filter-tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pasaj-category-results {
+  min-width: 0;
+}
+
+.pasaj-list-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.pasaj-list-product-card {
+  position: relative;
+  min-height: 100%;
+  border: 1px solid #dfe6ef;
+  border-radius: 8px;
+  background: #fff;
+  overflow: hidden;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+}
+
+.pasaj-list-product-card:hover {
+  border-color: #b7c7da;
+  box-shadow: 0 14px 28px rgba(11, 42, 73, 0.1);
+  transform: translateY(-2px);
+}
+
+.pasaj-list-favorite {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 2;
+  width: 38px;
+  height: 38px;
+  border: none;
+  border-radius: 50%;
+  background: #fff;
+  color: #ff6b00;
+  font-size: 22px;
+  box-shadow: 0 8px 18px rgba(31, 55, 99, 0.12);
+  cursor: pointer;
+}
+
+.pasaj-list-image-wrap {
+  height: 245px;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+}
+
+.pasaj-list-image {
+  max-width: 100%;
+  max-height: 205px;
+  object-fit: contain;
+  transition: transform 0.18s ease;
+}
+
+.pasaj-list-product-card:hover .pasaj-list-image {
+  transform: scale(1.03);
+}
+
+.pasaj-list-card-body {
+  padding: 18px 20px 20px;
+  display: grid;
+  gap: 12px;
+}
+
+.pasaj-list-badges {
+  min-height: 28px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pasaj-list-title {
+  min-height: 52px;
+  color: #1a2636;
+  font-size: 19px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.pasaj-list-title:hover {
+  color: #003b7a;
+}
+
+.pasaj-list-summary {
+  min-height: 48px;
+  margin: 0;
+  color: #6a7b91;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.pasaj-list-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pasaj-list-chip-row span {
+  min-height: 34px;
+  padding: 7px 10px;
+  border-radius: 8px;
+  background: #e8f0fb;
+  color: #0f59b2;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.pasaj-list-price-row {
+  min-height: 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pasaj-list-old-price {
+  color: #8b98a8;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: line-through;
+}
+
+.pasaj-list-discount {
+  color: #0067b1;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.pasaj-list-price {
+  color: #003b7a;
+  font-size: 25px;
+  line-height: 1;
+}
+
+.pasaj-list-actions {
+  display: grid;
+  grid-template-columns: 1fr 96px;
+  gap: 10px;
+}
+
+.pasaj-list-actions .ant-btn {
+  height: 42px;
+  border-radius: 8px;
+  font-weight: 800;
+}
+
+.pasaj-list-actions .ant-btn-primary {
+  background: #ffc72c;
+  border-color: #ffc72c;
+  color: #002e5f;
+}
+
+.pasaj-category-empty {
+  padding: 44px;
+  border: 1px solid #dfe6ef;
+  border-radius: 8px;
+  background: #fff;
+}
+
 .cart-layout {
   grid-template-columns: minmax(0, 1fr) 340px;
   align-items: start;
@@ -803,6 +2099,18 @@ a {
   .brand-directory-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
+
+  .pasaj-bestseller-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .pasaj-footer-columns {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .pasaj-footer-brand-row {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 1100px) {
@@ -834,6 +2142,25 @@ a {
   .pasaj-announcement-inner {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .pasaj-footer-inner {
+    width: min(100%, calc(100% - 32px));
+  }
+
+  .pasaj-footer-social-grid {
+    grid-template-columns: 1fr;
+    gap: 34px;
+    padding: 38px 0;
+  }
+
+  .pasaj-footer-app-block {
+    justify-self: start;
+  }
+
+  .pasaj-footer-columns {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px;
   }
 }
 
@@ -869,6 +2196,32 @@ a {
     min-height: 62px;
   }
 
+  .pasaj-mega-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: auto;
+    width: min(92vw, 420px);
+    min-height: auto;
+    padding: 18px;
+  }
+
+  .pasaj-mega-title {
+    width: auto;
+    font-size: 22px;
+  }
+
+  .pasaj-mega-menu-list,
+  .pasaj-mega-submenu {
+    width: 100%;
+  }
+
+  .pasaj-mega-submenu {
+    position: static;
+    min-height: auto;
+    padding: 4px 0 10px 16px;
+  }
+
   .pasaj-category-nav-item,
   .pasaj-announcement-inner,
   .feature-strip-card span,
@@ -881,7 +2234,8 @@ a {
   .feature-strip-grid,
   .campaign-image-grid,
   .brand-card-grid,
-  .brand-directory-grid {
+  .brand-directory-grid,
+  .pasaj-bestseller-grid {
     grid-template-columns: 1fr;
   }
 
@@ -905,6 +2259,86 @@ a {
   .category-layout-block,
   .cart-layout {
     grid-template-columns: 1fr;
+  }
+
+  .pasaj-product-hero,
+  .pasaj-detail-content,
+  .pasaj-payment-grid,
+  .pasaj-category-layout,
+  .pasaj-list-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pasaj-footer-columns,
+  .pasaj-footer-brand-row,
+  .pasaj-footer-qr-row {
+    grid-template-columns: 1fr;
+  }
+
+  .pasaj-footer-legal-row,
+  .pasaj-footer-lang-row {
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .pasaj-footer-lang-row {
+    gap: 6px;
+    padding: 20px 0;
+  }
+
+  .pasaj-social-links {
+    flex-wrap: wrap;
+  }
+
+  .pasaj-category-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .pasaj-category-sort {
+    width: 100%;
+  }
+
+  .pasaj-filter-sidebar {
+    position: static;
+  }
+
+  .pasaj-product-gallery {
+    grid-template-columns: 1fr;
+  }
+
+  .pasaj-gallery-thumb {
+    display: none;
+  }
+
+  .pasaj-product-stage {
+    min-height: 330px;
+  }
+
+  .pasaj-iphone-render {
+    width: 300px;
+    height: 330px;
+    transform: scale(0.76);
+  }
+
+  .pasaj-title-row h1.ant-typography {
+    font-size: 30px;
+  }
+
+  .pasaj-variant-grid,
+  .pasaj-buy-actions,
+  .pasaj-service-row {
+    grid-template-columns: 1fr;
+  }
+
+  .pasaj-price-panel {
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .pasaj-detail-tab-list {
+    overflow-x: auto;
   }
 
   .summary-row {
