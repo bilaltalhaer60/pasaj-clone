@@ -121,5 +121,6 @@ Bu repodaki auth akisi demo store mantigiyla desteklenir.
 
 ## Notlar
 
+- Proje bitti, son kontroller yapiliyor.
 - Uretim build'i sirasinda buyuk vendor chunk uyarisi alinabiliyor; bu su an hata degil, sadece optimizasyon firsatidir.
 - Canli deploy linki bu repo icinde tanimli degil. Proje kodu deploy'a hazir olacak sekilde duzenlenmistir.
