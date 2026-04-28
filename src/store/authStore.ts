@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { fallbackProducts } from "../data/fallbackProducts";
 import type { OrderRecord } from "../types/order";
 
 export type MockOrder = {
@@ -32,8 +33,25 @@ interface AuthState {
   login: (email: string) => void;
   register: (fullName: string, email: string) => void;
   addOrder: (order: OrderRecord) => void;
+  toggleFavorite: (favoriteSlug: string) => void;
   logout: () => void;
 }
+
+const favoriteSlugLookup = new Map(
+  fallbackProducts.flatMap((product) => [
+    [product.slug, product.slug] as const,
+    [product.name, product.slug] as const
+  ])
+);
+
+const normalizeFavorites = (favorites: string[]) =>
+  Array.from(
+    new Set(
+      favorites
+        .map((favorite) => favoriteSlugLookup.get(favorite) ?? favorite)
+        .filter(Boolean)
+    )
+  );
 
 const defaultUser: MockUser = {
   fullName: "Bilal Talha",
@@ -45,7 +63,7 @@ const defaultUser: MockUser = {
     { id: "PSJ-24031", date: "28 Mart 2026", status: "Kargoda", total: 79999 },
     { id: "PSJ-23984", date: "25 Mart 2026", status: "Teslim Edildi", total: 9999 }
   ],
-  favorites: ["iPhone 16 Pro 256 GB", "MacBook Air M4 13 in", "AirPods Pro 2"],
+  favorites: normalizeFavorites(["iphone-16-pro-256-gb", "macbook-air-m4-13", "airpods-pro-2"]),
   addresses: [
     {
       id: "addr-1",
@@ -117,6 +135,24 @@ export const useAuthStore = create<AuthState>()(
             }
           };
         }),
+      toggleFavorite: (favoriteSlug) =>
+        set((state) => {
+          if (!state.user) {
+            return state;
+          }
+
+          const favorites = normalizeFavorites(state.user.favorites);
+          const nextFavorites = favorites.includes(favoriteSlug)
+            ? favorites.filter((item) => item !== favoriteSlug)
+            : [favoriteSlug, ...favorites];
+
+          return {
+            user: {
+              ...state.user,
+              favorites: nextFavorites
+            }
+          };
+        }),
       logout: () =>
         set({
           isLoggedIn: false,
@@ -125,7 +161,15 @@ export const useAuthStore = create<AuthState>()(
     }),
     {
       name: "pasaj-auth-store",
-      partialize: (state) => ({ isLoggedIn: state.isLoggedIn, user: state.user })
+      partialize: (state) => ({
+        isLoggedIn: state.isLoggedIn,
+        user: state.user
+          ? {
+              ...state.user,
+              favorites: normalizeFavorites(state.user.favorites)
+            }
+          : null
+      })
     }
   )
 );

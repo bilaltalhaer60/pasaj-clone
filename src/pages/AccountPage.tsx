@@ -1,12 +1,22 @@
-import { Link } from "react-router-dom";
-import { Button, Card, Col, Empty, List, Row, Space, Statistic, Tabs, Tag, Typography } from "antd";
+import { HeartFilled } from "@ant-design/icons";
+import { useQuery } from "@tanstack/react-query";
+import { Alert, Button, Card, Col, Empty, List, Row, Space, Statistic, Tabs, Tag, Typography, message } from "antd";
+import { Link, useSearchParams } from "react-router-dom";
 import { PageShell } from "../app/page-shell";
 import { ROUTES } from "../constants/routes";
+import { getAllProducts } from "../services/productService";
 import { useAuthStore } from "../store/authStore";
+import type { Product } from "../types/product";
 import { formatCurrency } from "../utils/formatCurrency";
 
 export const AccountPage = () => {
-  const { isLoggedIn, logout, user } = useAuthStore();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { isLoggedIn, logout, toggleFavorite, user } = useAuthStore();
+  const { data: products = [], error: favoritesError } = useQuery({
+    queryKey: ["products"],
+    queryFn: getAllProducts,
+    enabled: isLoggedIn && Boolean(user)
+  });
   const nextTargets =
     user?.role === "admin"
       ? [
@@ -14,6 +24,21 @@ export const AccountPage = () => {
           { label: "Alisverise Don", to: ROUTES.home }
         ]
       : [{ label: "Alisverise Don", to: ROUTES.home }];
+  const favoriteProducts = user
+    ? user.favorites
+        .map((favoriteSlug) => products.find((product) => product.slug === favoriteSlug))
+        .filter((product): product is Product => Boolean(product))
+    : [];
+  const requestedTab = searchParams.get("tab");
+  const activeTabKey =
+    requestedTab === "favorites" || requestedTab === "orders" || requestedTab === "profile"
+      ? requestedTab
+      : "orders";
+
+  const handleRemoveFavorite = (product: Product) => {
+    toggleFavorite(product.slug);
+    message.success("Urun favorilerden kaldirildi.");
+  };
 
   if (!isLoggedIn || !user) {
     return (
@@ -55,11 +80,13 @@ export const AccountPage = () => {
       </Row>
 
       <Tabs
+        activeKey={activeTabKey}
+        onChange={(key) => setSearchParams({ tab: key })}
         items={[
           {
             key: "orders",
             label: "Siparisler",
-            children: (
+            children:
               user.orders.length === 0 ? (
                 <Empty
                   description="Hesabinda henuz siparis yok. Checkout tamamlandiginda yeni siparisler burada listelenir."
@@ -92,20 +119,63 @@ export const AccountPage = () => {
                   )}
                 />
               )
-            )
           },
           {
             key: "favorites",
             label: "Favoriler",
             children: (
-              <List
-                dataSource={user.favorites}
-                renderItem={(item) => (
-                  <List.Item actions={[<Link key={item} to={ROUTES.home}>Incele</Link>]}>
-                    {item}
-                  </List.Item>
+              <>
+                {favoritesError ? (
+                  <Alert
+                    type="warning"
+                    showIcon
+                    style={{ marginBottom: 16 }}
+                    message="Favori urunler yuklenirken bir sorun olustu."
+                  />
+                ) : null}
+                {favoriteProducts.length === 0 ? (
+                  <Empty
+                    description="Henuz favori urun eklemedin. Urun kartlarindaki kalp ikonuyla favori listeni doldurabilirsin."
+                    image={Empty.PRESENTED_IMAGE_SIMPLE}
+                  />
+                ) : (
+                  <List
+                    dataSource={favoriteProducts}
+                    renderItem={(product) => (
+                      <List.Item
+                        actions={[
+                          <Button
+                            key={`${product.slug}-remove`}
+                            type="text"
+                            danger
+                            onClick={() => handleRemoveFavorite(product)}
+                          >
+                            Kaldir
+                          </Button>,
+                          <Link key={product.slug} to={`/product/${product.slug}`}>
+                            Incele
+                          </Link>
+                        ]}
+                      >
+                        <List.Item.Meta
+                          avatar={
+                            <div className="account-favorite-avatar">
+                              <img src={product.image} alt={product.name} className="account-favorite-image" />
+                            </div>
+                          }
+                          title={
+                            <Space size={8}>
+                              <HeartFilled className="account-favorite-icon" />
+                              <Link to={`/product/${product.slug}`}>{product.name}</Link>
+                            </Space>
+                          }
+                          description={`${product.brand} - ${formatCurrency(product.price)}`}
+                        />
+                      </List.Item>
+                    )}
+                  />
                 )}
-              />
+              </>
             )
           },
           {

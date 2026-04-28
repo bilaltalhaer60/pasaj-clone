@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
-import { HeartOutlined, RightOutlined, ShoppingCartOutlined } from "@ant-design/icons";
+import { HeartFilled, HeartOutlined, RightOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { useQuery } from "@tanstack/react-query";
-import { Alert, Button, Empty, Select, Skeleton, Slider, Tag, Typography } from "antd";
+import { Alert, Button, Empty, Select, Skeleton, Slider, Tag, Typography, message } from "antd";
 import { Link, useParams } from "react-router-dom";
 import { getProductsByCategory } from "../services/productService";
+import { useAuthStore } from "../store/authStore";
 import { useCartStore } from "../store/cartStore";
 import type { Product } from "../types/product";
 import { toCategoryTitle } from "../utils/catalog";
@@ -23,14 +24,24 @@ const titleBySlug: Record<string, string> = {
 
 const ProductListCard = ({
   product,
-  onAddToCart
+  isFavorite,
+  onAddToCart,
+  onToggleFavorite
 }: {
   product: Product;
+  isFavorite: boolean;
   onAddToCart: (product: Product) => void;
+  onToggleFavorite: (product: Product) => void;
 }) => (
   <article className="pasaj-list-product-card">
-    <button type="button" className="pasaj-list-favorite" aria-label="Favorilere ekle">
-      <HeartOutlined />
+    <button
+      type="button"
+      className={`pasaj-list-favorite ${isFavorite ? "active" : ""}`}
+      aria-label={isFavorite ? "Favorilerden cikar" : "Favorilere ekle"}
+      aria-pressed={isFavorite}
+      onClick={() => onToggleFavorite(product)}
+    >
+      {isFavorite ? <HeartFilled /> : <HeartOutlined />}
     </button>
     <Link to={`/product/${product.slug}`} className="pasaj-list-image-wrap">
       <img src={product.image} alt={product.name} className="pasaj-list-image" />
@@ -74,6 +85,8 @@ export const CategoryPage = () => {
   const [range, setRange] = useState<[number, number]>([0, 100000]);
   const [sortBy, setSortBy] = useState("popular");
   const addItem = useCartStore((state) => state.addItem);
+  const favoriteSlugs = useAuthStore((state) => state.user?.favorites ?? []);
+  const toggleFavorite = useAuthStore((state) => state.toggleFavorite);
   const { data = [], isLoading, error } = useQuery({
     queryKey: ["products", categorySlug],
     queryFn: () => getProductsByCategory(categorySlug ?? ""),
@@ -83,6 +96,18 @@ export const CategoryPage = () => {
   const minPrice = data.length > 0 ? Math.min(...data.map((product) => product.price)) : 0;
   const maxPrice = data.length > 0 ? Math.max(...data.map((product) => product.price)) : 100000;
   const brands = useMemo(() => [...new Set(data.map((product) => product.brand))], [data]);
+  const favoriteSlugSet = useMemo(() => new Set(favoriteSlugs), [favoriteSlugs]);
+
+  const handleAddToCart = (product: Product) => {
+    addItem(product);
+    message.success(`${product.name} sepete eklendi.`);
+  };
+
+  const handleToggleFavorite = (product: Product) => {
+    const willRemove = favoriteSlugSet.has(product.slug);
+    toggleFavorite(product.slug);
+    message.success(willRemove ? "Urun favorilerden kaldirildi." : "Urun favorilere eklendi.");
+  };
 
   useEffect(() => {
     setRange([minPrice, maxPrice]);
@@ -185,7 +210,13 @@ export const CategoryPage = () => {
           ) : (
             <div className="pasaj-list-grid">
               {filteredProducts.map((product) => (
-                <ProductListCard key={product.id} product={product} onAddToCart={addItem} />
+                <ProductListCard
+                  key={product.id}
+                  product={product}
+                  isFavorite={favoriteSlugSet.has(product.slug)}
+                  onAddToCart={handleAddToCart}
+                  onToggleFavorite={handleToggleFavorite}
+                />
               ))}
             </div>
           )}

@@ -1,5 +1,5 @@
 ﻿import { Link } from "react-router-dom";
-import { Alert, Button, Card, Empty, InputNumber, List, Space, Tag, Typography } from "antd";
+import { Alert, Button, Card, Empty, InputNumber, List, Space, Tag, Typography, message } from "antd";
 import { PageShell } from "../app/page-shell";
 import { env } from "../config/env";
 import {
@@ -19,6 +19,11 @@ export const CartPage = () => {
   const shippingCost = subtotal >= env.shippingThreshold ? 0 : env.shippingCost;
   const total = subtotal + shippingCost;
   const freeShippingRemaining = getCartRemainingForFreeShipping(items, env.shippingThreshold);
+
+  const handleRemoveItem = (productId: string) => {
+    removeItem(productId);
+    message.success("Urun sepetten silindi.");
+  };
 
   return (
     <PageShell
@@ -58,7 +63,7 @@ export const CartPage = () => {
                     <Button key="detail" type="link">
                       <Link to={`/product/${product.slug}`}>Detay</Link>
                     </Button>,
-                    <Button key="remove" danger type="link" onClick={() => removeItem(product.id)}>
+                    <Button key="remove" danger type="link" onClick={() => handleRemoveItem(product.id)}>
                       Sil
                     </Button>
                   ]}

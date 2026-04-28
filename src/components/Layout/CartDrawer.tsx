@@ -1,4 +1,4 @@
-﻿import { Button, Drawer, Empty, InputNumber, Space, Typography } from "antd";
+﻿import { Button, Drawer, Empty, InputNumber, Space, Typography, message } from "antd";
 import { Link } from "react-router-dom";
 import { env } from "../../config/env";
 import { formatCurrency } from "../../utils/formatCurrency";
@@ -21,6 +21,11 @@ export const CartDrawer = () => {
   const shippingCost = subtotal >= env.shippingThreshold ? 0 : env.shippingCost;
   const total = subtotal + shippingCost;
   const freeShippingRemaining = getCartRemainingForFreeShipping(items, env.shippingThreshold);
+
+  const handleRemoveItem = (productId: string) => {
+    removeItem(productId);
+    message.success("Urun sepetten silindi.");
+  };
 
   return (
     <Drawer
@@ -47,7 +52,7 @@ export const CartDrawer = () => {
                     value={quantity}
                     onChange={(value) => updateQuantity(product.id, Number(value ?? 1))}
                   />
-                  <Button type="link" danger onClick={() => removeItem(product.id)}>
+                  <Button type="link" danger onClick={() => handleRemoveItem(product.id)}>
                     Sil
                   </Button>
                 </div>

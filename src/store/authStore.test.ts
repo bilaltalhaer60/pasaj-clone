@@ -42,7 +42,7 @@ describe("authStore", () => {
             { id: "PSJ-24031", date: "28 Mart 2026", status: "Kargoda", total: 79999 },
             { id: "PSJ-23984", date: "25 Mart 2026", status: "Teslim Edildi", total: 9999 }
           ],
-          favorites: ["iPhone 16 Pro 256 GB", "MacBook Air M4 13 in", "AirPods Pro 2"],
+          favorites: ["iphone-16-pro-256-gb", "macbook-air-m4-13", "airpods-pro-2"],
           addresses: [
             {
               id: "addr-1",
@@ -126,6 +126,37 @@ describe("authStore", () => {
     });
 
     expect(useAuthStore.getState().user?.orders[0]?.date).toBe("Bugun");
+  });
+
+  it("adds and removes favorites by product slug", () => {
+    act(() => {
+      useAuthStore.getState().toggleFavorite("iphone-17-256-gb");
+    });
+
+    expect(useAuthStore.getState().user?.favorites[0]).toBe("iphone-17-256-gb");
+
+    act(() => {
+      useAuthStore.getState().toggleFavorite("iphone-17-256-gb");
+    });
+
+    expect(useAuthStore.getState().user?.favorites.includes("iphone-17-256-gb")).toBe(false);
+  });
+
+  it("normalizes legacy favorite names into slugs", () => {
+    act(() => {
+      useAuthStore.setState((state) => ({
+        ...state,
+        user: state.user
+          ? {
+              ...state.user,
+              favorites: ["iPhone 16 Pro 256 GB"]
+            }
+          : null
+      }));
+      useAuthStore.getState().toggleFavorite("airpods-pro-2");
+    });
+
+    expect(useAuthStore.getState().user?.favorites).toEqual(["airpods-pro-2", "iphone-16-pro-256-gb"]);
   });
 
   it("logs out and clears session data", () => {

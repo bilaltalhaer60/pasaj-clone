@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import {
   CheckCircleOutlined,
+  HeartFilled,
   HeartOutlined,
   InfoCircleOutlined,
   RightOutlined,
@@ -8,9 +9,10 @@ import {
   TruckOutlined
 } from "@ant-design/icons";
 import { useQuery } from "@tanstack/react-query";
-import { Alert, Button, Descriptions, Rate, Skeleton, Tag, Typography } from "antd";
+import { Alert, Button, Descriptions, Rate, Skeleton, Tag, Typography, message } from "antd";
 import { Link, useParams } from "react-router-dom";
 import { getProductBySlug } from "../services/productService";
+import { useAuthStore } from "../store/authStore";
 import { useCartStore } from "../store/cartStore";
 import { formatCurrency } from "../utils/formatCurrency";
 
@@ -36,6 +38,8 @@ export const ProductDetailPage = () => {
   const { productSlug } = useParams();
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const addItem = useCartStore((state) => state.addItem);
+  const favoriteSlugs = useAuthStore((state) => state.user?.favorites ?? []);
+  const toggleFavorite = useAuthStore((state) => state.toggleFavorite);
   const { data: product, isLoading, error } = useQuery({
     queryKey: ["product", productSlug],
     queryFn: () => getProductBySlug(productSlug),
@@ -87,6 +91,17 @@ export const ProductDetailPage = () => {
     product.previousPrice > product.price
       ? Math.round(((product.previousPrice - product.price) / product.previousPrice) * 100)
       : product.discount;
+  const isFavorite = favoriteSlugs.includes(product.slug);
+
+  const handleAddToCart = () => {
+    addItem(product);
+    message.success(`${product.name} sepete eklendi.`);
+  };
+
+  const handleToggleFavorite = () => {
+    toggleFavorite(product.slug);
+    message.success(isFavorite ? "Urun favorilerden kaldirildi." : "Urun favorilere eklendi.");
+  };
 
   return (
     <main className="pasaj-product-detail-page">
@@ -126,8 +141,14 @@ export const ProductDetailPage = () => {
               <Typography.Text className="pasaj-product-brand">{product.brand}</Typography.Text>
               <Typography.Title level={1}>{product.name}</Typography.Title>
             </div>
-            <button type="button" className="pasaj-favorite-detail" aria-label="Favorilere ekle">
-              <HeartOutlined />
+            <button
+              type="button"
+              className={`pasaj-favorite-detail ${isFavorite ? "active" : ""}`}
+              aria-label={isFavorite ? "Favorilerden cikar" : "Favorilere ekle"}
+              aria-pressed={isFavorite}
+              onClick={handleToggleFavorite}
+            >
+              {isFavorite ? <HeartFilled /> : <HeartOutlined />}
             </button>
           </div>
 
@@ -165,7 +186,7 @@ export const ProductDetailPage = () => {
                 type="primary"
                 size="large"
                 icon={<ShoppingCartOutlined />}
-                onClick={() => addItem(product)}
+                onClick={handleAddToCart}
               >
                 Sepete Ekle
               </Button>

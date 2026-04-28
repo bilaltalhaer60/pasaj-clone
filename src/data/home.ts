@@ -33,13 +33,18 @@ export type CategoryMenuItem = {
   children?: CategoryMenuItem[];
 };
 
-export const topLinks = [
-  "Kampanyalar",
-  "Markalar",
-  "Favorilerim",
-  "Siparis Sorgulama",
-  "Yardim",
-  "Pasaj Blog"
+export type TopLinkItem = {
+  label: string;
+  to: string;
+};
+
+export const topLinks: TopLinkItem[] = [
+  { label: "Kampanyalar", to: "/" },
+  { label: "Markalar", to: "/" },
+  { label: "Favorilerim", to: "/account?tab=favorites" },
+  { label: "Siparis Sorgulama", to: "/account?tab=orders" },
+  { label: "Yardim", to: "/" },
+  { label: "Pasaj Blog", to: "/" }
 ];
 
 export const categoryNav = [

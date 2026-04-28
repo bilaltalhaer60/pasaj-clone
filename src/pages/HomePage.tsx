@@ -1,5 +1,6 @@
 import { useState } from "react";
 import {
+  HeartFilled,
   CustomerServiceOutlined,
   GiftOutlined,
   HeartOutlined,
@@ -12,7 +13,7 @@ import {
   UserOutlined
 } from "@ant-design/icons";
 import { useQuery } from "@tanstack/react-query";
-import { Alert, Button, Card, Col, Row, Skeleton, Typography } from "antd";
+import { Alert, Button, Card, Col, Row, Skeleton, Typography, message } from "antd";
 import { Link } from "react-router-dom";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -27,6 +28,7 @@ import {
   shortcutCategories
 } from "../data/home";
 import { getAllProducts } from "../services/productService";
+import { useAuthStore } from "../store/authStore";
 import type { Product } from "../types/product";
 import { formatCurrency } from "../utils/formatCurrency";
 
@@ -108,10 +110,24 @@ const brandCounts: Record<string, number> = {
   TCL: 33
 };
 
-const ProductCard = ({ product }: { product: Product }) => (
+const ProductCard = ({
+  product,
+  isFavorite,
+  onToggleFavorite
+}: {
+  product: Product;
+  isFavorite: boolean;
+  onToggleFavorite: (product: Product) => void;
+}) => (
   <Card className="pasaj-shelf-card">
-    <button type="button" className="favorite-button" aria-label="Favorilere ekle">
-      <HeartOutlined />
+    <button
+      type="button"
+      className={`favorite-button ${isFavorite ? "active" : ""}`}
+      aria-label={isFavorite ? "Favorilerden cikar" : "Favorilere ekle"}
+      aria-pressed={isFavorite}
+      onClick={() => onToggleFavorite(product)}
+    >
+      {isFavorite ? <HeartFilled /> : <HeartOutlined />}
     </button>
     <Link to={`/product/${product.slug}`} className="shelf-product-detail-link">
       <div className="shelf-product-image-wrap">
@@ -137,11 +153,25 @@ const ProductCard = ({ product }: { product: Product }) => (
 const formatPasajPrice = (amount: number) =>
   `${new Intl.NumberFormat("tr-TR", { maximumFractionDigits: 0 }).format(amount)} TL`;
 
-const BestsellerPhoneCard = ({ product }: { product: Product }) => (
+const BestsellerPhoneCard = ({
+  product,
+  isFavorite,
+  onToggleFavorite
+}: {
+  product: Product;
+  isFavorite: boolean;
+  onToggleFavorite: (product: Product) => void;
+}) => (
   <article className="pasaj-bestseller-card">
     <span className="pasaj-bestseller-badge">Cok Satan</span>
-    <button type="button" className="pasaj-bestseller-fav" aria-label="Favorilere ekle">
-      <HeartOutlined />
+    <button
+      type="button"
+      className={`pasaj-bestseller-fav ${isFavorite ? "active" : ""}`}
+      aria-label={isFavorite ? "Favorilerden cikar" : "Favorilere ekle"}
+      aria-pressed={isFavorite}
+      onClick={() => onToggleFavorite(product)}
+    >
+      {isFavorite ? <HeartFilled /> : <HeartOutlined />}
     </button>
     <Link to={`/product/${product.slug}`} className="pasaj-bestseller-image-wrap">
       <img src={product.image} alt={product.name} className="pasaj-bestseller-image" />
@@ -180,6 +210,8 @@ const BestsellerPhoneCard = ({ product }: { product: Product }) => (
 
 export const HomePage = () => {
   const [activeBestsellerKey, setActiveBestsellerKey] = useState("telefon");
+  const favoriteSlugs = useAuthStore((state) => state.user?.favorites ?? []);
+  const toggleFavorite = useAuthStore((state) => state.toggleFavorite);
   const { data = [], isLoading, error } = useQuery({
     queryKey: ["products"],
     queryFn: getAllProducts
@@ -190,6 +222,13 @@ export const HomePage = () => {
   const bestsellerProducts = activeBestsellerTab.slugs
     .map((slug) => data.find((product) => product.slug === slug))
     .filter((product): product is Product => Boolean(product));
+  const favoriteSlugSet = new Set(favoriteSlugs);
+
+  const handleToggleFavorite = (product: Product) => {
+    const willRemove = favoriteSlugSet.has(product.slug);
+    toggleFavorite(product.slug);
+    message.success(willRemove ? "Urun favorilerden kaldirildi." : "Urun favorilere eklendi.");
+  };
 
   return (
     <div className="pasaj-homepage">
@@ -264,7 +303,11 @@ export const HomePage = () => {
               ))
             : featuredProducts.map((product) => (
                 <Col xs={24} sm={12} lg={8} xl={4} key={product.id}>
-                  <ProductCard product={product} />
+                  <ProductCard
+                    product={product}
+                    isFavorite={favoriteSlugSet.has(product.slug)}
+                    onToggleFavorite={handleToggleFavorite}
+                  />
                 </Col>
               ))}
         </Row>
@@ -318,7 +361,12 @@ export const HomePage = () => {
                 </article>
               ))
             : bestsellerProducts.map((product) => (
-                <BestsellerPhoneCard product={product} key={`best-${product.id}`} />
+                <BestsellerPhoneCard
+                  product={product}
+                  key={`best-${product.id}`}
+                  isFavorite={favoriteSlugSet.has(product.slug)}
+                  onToggleFavorite={handleToggleFavorite}
+                />
               ))}
         </div>
       </section>

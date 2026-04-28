@@ -5,6 +5,7 @@
   UserOutlined
 } from "@ant-design/icons";
 import { Badge, Button, Input } from "antd";
+import { useEffect, useRef, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import {
   categoryMenus,
@@ -43,6 +44,30 @@ export const Header = () => {
   const itemCount = useCartStore((state) => getCartItemCount(state.items));
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const openCartDrawer = useUiStore((state) => state.openCartDrawer);
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const clearCloseTimer = () => {
+    if (closeTimerRef.current) {
+      clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+  };
+
+  const openCategoryMenu = (item: string) => {
+    clearCloseTimer();
+    setActiveCategory(item);
+  };
+
+  const scheduleCategoryMenuClose = () => {
+    clearCloseTimer();
+    closeTimerRef.current = setTimeout(() => {
+      setActiveCategory(null);
+      closeTimerRef.current = null;
+    }, 160);
+  };
+
+  useEffect(() => clearCloseTimer, []);
 
   return (
     <header className="site-header pasaj-header">
@@ -53,8 +78,8 @@ export const Header = () => {
           </Link>
           <div className="pasaj-top-link-list">
             {topLinks.map((item) => (
-              <Link key={item} to={ROUTES.home} className="pasaj-top-link-item">
-                {item}
+              <Link key={item.label} to={item.to} className="pasaj-top-link-item">
+                {item.label}
               </Link>
             ))}
           </div>
@@ -97,12 +122,25 @@ export const Header = () => {
           {categoryNav.map((item, index) => {
             const menuItems = categoryMenus[item] ?? [];
             const target = menuItems[0]?.to ?? ROUTES.home;
+            const isOpen = activeCategory === item;
 
             return (
-              <div key={item} className="pasaj-category-nav-item">
+              <div
+                key={item}
+                className={`pasaj-category-nav-item${isOpen ? " is-open" : ""}`}
+                onMouseEnter={() => openCategoryMenu(item)}
+                onMouseLeave={scheduleCategoryMenuClose}
+                onFocus={() => openCategoryMenu(item)}
+                onBlur={scheduleCategoryMenuClose}
+              >
                 <Link to={target}>{item}</Link>
                 {menuItems.length > 0 ? (
-                  <div className="pasaj-mega-menu" aria-label={`${item} menüsü`}>
+                  <div
+                    className="pasaj-mega-menu"
+                    aria-label={`${item} menüsü`}
+                    onMouseEnter={clearCloseTimer}
+                    onMouseLeave={scheduleCategoryMenuClose}
+                  >
                     <div className="pasaj-mega-title">{item}</div>
                     {renderMegaMenuItems(menuItems)}
                   </div>
