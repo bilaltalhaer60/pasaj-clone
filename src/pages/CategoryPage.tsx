@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useState } from "react";
+﻿import { useEffect, useMemo, useState } from "react";
 import { HeartFilled, HeartOutlined, RightOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { useQuery } from "@tanstack/react-query";
-import { Alert, Button, Empty, Select, Skeleton, Slider, Tag, Typography, message } from "antd";
+import { Alert, Button, Empty, Select, Skeleton, Slider, Tag, Typography } from "antd";
 import { Link, useParams } from "react-router-dom";
 import { getProductsByCategory } from "../services/productService";
 import { useAuthStore } from "../store/authStore";
@@ -11,7 +11,7 @@ import { toCategoryTitle } from "../utils/catalog";
 import { formatCurrency } from "../utils/formatCurrency";
 
 const sortOptions = [
-  { value: "popular", label: "En cok satanlar" },
+  { value: "popular", label: "En çok satanlar" },
   { value: "price-asc", label: "Fiyat artan" },
   { value: "price-desc", label: "Fiyat azalan" }
 ];
@@ -37,7 +37,7 @@ const ProductListCard = ({
     <button
       type="button"
       className={`pasaj-list-favorite ${isFavorite ? "active" : ""}`}
-      aria-label={isFavorite ? "Favorilerden cikar" : "Favorilere ekle"}
+      aria-label={isFavorite ? "Favorilerden çıkar" : "Favorilere ekle"}
       aria-pressed={isFavorite}
       onClick={() => onToggleFavorite(product)}
     >
@@ -57,14 +57,14 @@ const ProductListCard = ({
       <p className="pasaj-list-summary">{product.summary}</p>
       <div className="pasaj-list-chip-row">
         <span>Sepette avantaj</span>
-        <span>Ucretsiz Kargo</span>
+        <span>Ücretsiz Kargo</span>
       </div>
       <div className="pasaj-list-price-row">
         {product.previousPrice > product.price ? (
           <span className="pasaj-list-old-price">{formatCurrency(product.previousPrice)}</span>
         ) : null}
         {product.discount > 0 ? (
-          <span className="pasaj-list-discount">%{product.discount} Indirim</span>
+          <span className="pasaj-list-discount">%{product.discount} İndirim</span>
         ) : null}
       </div>
       <strong className="pasaj-list-price">{formatCurrency(product.price)}</strong>
@@ -100,13 +100,10 @@ export const CategoryPage = () => {
 
   const handleAddToCart = (product: Product) => {
     addItem(product);
-    message.success(`${product.name} sepete eklendi.`);
   };
 
   const handleToggleFavorite = (product: Product) => {
-    const willRemove = favoriteSlugSet.has(product.slug);
     toggleFavorite(product.slug);
-    message.success(willRemove ? "Urun favorilerden kaldirildi." : "Urun favorilere eklendi.");
   };
 
   useEffect(() => {
@@ -142,7 +139,7 @@ export const CategoryPage = () => {
       <section className="pasaj-category-heading">
         <div>
           <Typography.Title level={1}>{categoryTitle}</Typography.Title>
-          <p>{filteredProducts.length} urun listeleniyor</p>
+          <p>{filteredProducts.length} ürün listeleniyor</p>
         </div>
         <Select
           value={sortBy}
@@ -180,8 +177,8 @@ export const CategoryPage = () => {
 
           <section className="pasaj-filter-block">
             <Typography.Title level={5}>Teslimat</Typography.Title>
-            <label><input type="checkbox" defaultChecked /> Ucretsiz Kargo</label>
-            <label><input type="checkbox" /> Hizli Teslimat</label>
+            <label><input type="checkbox" defaultChecked /> Ücretsiz Kargo</label>
+            <label><input type="checkbox" /> Hızlı Teslimat</label>
           </section>
         </aside>
 
@@ -191,7 +188,7 @@ export const CategoryPage = () => {
               type="error"
               showIcon
               style={{ marginBottom: 16 }}
-              message={error instanceof Error ? error.message : "Urunler yuklenirken bir hata olustu."}
+              message={error instanceof Error ? error.message : "Ürünler yüklenirken bir hata oluştu."}
             />
           ) : null}
 
@@ -205,7 +202,7 @@ export const CategoryPage = () => {
             </div>
           ) : filteredProducts.length === 0 ? (
             <div className="pasaj-category-empty">
-              <Empty description="Bu filtreye uygun urun bulunamadi." />
+              <Empty description="Bu filtreye uygun ürün bulunamadı." />
             </div>
           ) : (
             <div className="pasaj-list-grid">
@@ -225,3 +222,4 @@ export const CategoryPage = () => {
     </main>
   );
 };
+

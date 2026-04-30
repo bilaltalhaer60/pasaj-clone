@@ -1,4 +1,4 @@
-import { Button, Card, Form, Input, Typography } from 'antd';
+﻿import { Button, Card, Form, Input, Typography } from 'antd';
 
 export function RegisterPage() {
   return (
@@ -23,3 +23,4 @@ export function RegisterPage() {
     </div>
   );
 }
+

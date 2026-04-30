@@ -1,4 +1,4 @@
-import type { ReactElement } from "react";
+﻿import type { ReactElement } from "react";
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { AdminRoute } from "./AdminRoute";
@@ -179,3 +179,4 @@ describe("route guards", () => {
     expect(screen.getByText("Nested admin page")).toBeInTheDocument();
   });
 });
+

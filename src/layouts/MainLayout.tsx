@@ -3,12 +3,14 @@ import { Layout } from "antd";
 import { Footer } from "../components/Layout/Footer";
 import { Header } from "../components/Layout/Header";
 import { CartDrawer } from "../components/Layout/CartDrawer";
+import { AppToast } from "../components/Layout/AppToast";
 
 export const MainLayout = () => {
   return (
     <Layout className="app-layout">
       <Header />
       <CartDrawer />
+      <AppToast />
       <Layout.Content className="app-content">
         <Outlet />
       </Layout.Content>
@@ -16,3 +18,4 @@ export const MainLayout = () => {
     </Layout>
   );
 };
+

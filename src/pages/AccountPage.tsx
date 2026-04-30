@@ -1,6 +1,6 @@
-import { HeartFilled } from "@ant-design/icons";
+﻿import { HeartFilled } from "@ant-design/icons";
 import { useQuery } from "@tanstack/react-query";
-import { Alert, Button, Card, Col, Empty, List, Row, Space, Statistic, Tabs, Tag, Typography, message } from "antd";
+import { Alert, Button, Card, Col, Empty, List, Row, Space, Statistic, Tabs, Tag, Typography } from "antd";
 import { Link, useSearchParams } from "react-router-dom";
 import { PageShell } from "../app/page-shell";
 import { ROUTES } from "../constants/routes";
@@ -21,9 +21,9 @@ export const AccountPage = () => {
     user?.role === "admin"
       ? [
           { label: "Admin Panel", to: ROUTES.admin },
-          { label: "Alisverise Don", to: ROUTES.home }
+          { label: "Alışverişe Dön", to: ROUTES.home }
         ]
-      : [{ label: "Alisverise Don", to: ROUTES.home }];
+      : [{ label: "Alışverişe Dön", to: ROUTES.home }];
   const favoriteProducts = user
     ? user.favorites
         .map((favoriteSlug) => products.find((product) => product.slug === favoriteSlug))
@@ -37,18 +37,17 @@ export const AccountPage = () => {
 
   const handleRemoveFavorite = (product: Product) => {
     toggleFavorite(product.slug);
-    message.success("Urun favorilerden kaldirildi.");
   };
 
   if (!isLoggedIn || !user) {
     return (
       <PageShell
         badge="4. Hafta Teslimi"
-        title="Hesabim"
-        description="Bu alan 4. hafta ile birlikte kullanici paneline donustu. Devam etmek icin once giris yap."
+        title="Hesabım"
+        description="Bu alan 4. hafta ile birlikte kullanıcı paneline dönüştü. Devam etmek için önce giriş yap."
         nextTargets={[
-          { label: "Giris", to: ROUTES.login },
-          { label: "Kayit Ol", to: ROUTES.register }
+          { label: "Giriş", to: ROUTES.login },
+          { label: "Kayıt Ol", to: ROUTES.register }
         ]}
       />
     );
@@ -57,24 +56,24 @@ export const AccountPage = () => {
   return (
     <PageShell
       badge="4. Hafta Teslimi"
-      title="Hesabim"
-      description="Kullanici paneli; siparisler, favoriler, adresler ve profil ozetiyle birlikte 4. haftada tamamlandi."
+      title="Hesabım"
+      description="Kullanıcı paneli; siparişler, favoriler, adresler ve profil özetiyle birlikte 4. haftada tamamlandı."
       nextTargets={nextTargets}
     >
       <Row gutter={[16, 16]} className="account-stats-grid">
         <Col xs={24} md={8}>
           <Card className="account-stat-card">
-            <Statistic title="Uyelik" value={user.membership} />
+            <Statistic title="Üyelik" value={user.membership} />
           </Card>
         </Col>
         <Col xs={24} md={8}>
           <Card className="account-stat-card">
-            <Statistic title="Toplam Siparis" value={user.orders.length} />
+            <Statistic title="Toplam Sipariş" value={user.orders.length} />
           </Card>
         </Col>
         <Col xs={24} md={8}>
           <Card className="account-stat-card">
-            <Statistic title="Favori Urun" value={user.favorites.length} />
+            <Statistic title="Favori Ürün" value={user.favorites.length} />
           </Card>
         </Col>
       </Row>
@@ -85,11 +84,11 @@ export const AccountPage = () => {
         items={[
           {
             key: "orders",
-            label: "Siparisler",
+            label: "Siparişler",
             children:
               user.orders.length === 0 ? (
                 <Empty
-                  description="Hesabinda henuz siparis yok. Checkout tamamlandiginda yeni siparisler burada listelenir."
+                  description="Hesabında henüz sipariş yok. Checkout tamamlandığında yeni siparişler burada listelenir."
                   image={Empty.PRESENTED_IMAGE_SIMPLE}
                 />
               ) : (
@@ -130,12 +129,12 @@ export const AccountPage = () => {
                     type="warning"
                     showIcon
                     style={{ marginBottom: 16 }}
-                    message="Favori urunler yuklenirken bir sorun olustu."
+                    message="Favori ürünler yüklenirken bir sorun oluştu."
                   />
                 ) : null}
                 {favoriteProducts.length === 0 ? (
                   <Empty
-                    description="Henuz favori urun eklemedin. Urun kartlarindaki kalp ikonuyla favori listeni doldurabilirsin."
+                    description="Henüz favori ürün eklemedin. Ürün kartlarındaki kalp ikonuyla favori listeni doldurabilirsiniz."
                     image={Empty.PRESENTED_IMAGE_SIMPLE}
                   />
                 ) : (
@@ -150,10 +149,10 @@ export const AccountPage = () => {
                             danger
                             onClick={() => handleRemoveFavorite(product)}
                           >
-                            Kaldir
+                            Kaldır
                           </Button>,
                           <Link key={product.slug} to={`/product/${product.slug}`}>
-                            Incele
+                            İncele
                           </Link>
                         ]}
                       >
@@ -189,7 +188,7 @@ export const AccountPage = () => {
                   <Typography.Paragraph>{user.phone}</Typography.Paragraph>
                 </Card>
                 <Card className="profile-card">
-                  <Typography.Title level={5}>Kayitli adresler</Typography.Title>
+                  <Typography.Title level={5}>Kayıtlı adresler</Typography.Title>
                   {user.addresses.map((address) => (
                     <Typography.Paragraph key={address.id}>
                       <strong>{address.title}:</strong> {address.detail}
@@ -197,7 +196,7 @@ export const AccountPage = () => {
                   ))}
                 </Card>
                 <Button danger onClick={logout}>
-                  Cikis Yap
+                  Çıkış Yap
                 </Button>
               </Space>
             )
@@ -207,3 +206,4 @@ export const AccountPage = () => {
     </PageShell>
   );
 };
+

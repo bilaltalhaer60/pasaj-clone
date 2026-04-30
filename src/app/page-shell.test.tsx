@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+﻿import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { PageShell, RoutePreviewGrid } from "./page-shell";
 
@@ -24,20 +24,21 @@ describe("PageShell", () => {
           <PageShell
             title="Yonlendirme"
             description="Aksiyonlar"
-            nextTargets={[{ label: "Hesabim", to: "/account" }]}
+            nextTargets={[{ label: "Hesabım", to: "/account" }]}
           />
           <RoutePreviewGrid
-            items={[{ title: "Urunler", description: "Listeye git", to: "/category/telefon" }]}
+            items={[{ title: "Ürünler", description: "Listeye git", to: "/category/telefon" }]}
           />
         </>
       </MemoryRouter>
     );
 
-    expect(screen.getByRole("link", { name: "Hesabim" })).toHaveAttribute("href", "/account");
-    expect(screen.getByText("Urunler")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Hesabım" })).toHaveAttribute("href", "/account");
+    expect(screen.getByText("Ürünler")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Ac" })).toHaveAttribute(
       "href",
       "/category/telefon"
     );
   });
 });
+

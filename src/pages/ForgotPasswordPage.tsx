@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Alert, Button, Card, Col, Form, Input, Row, Typography } from "antd";
 import { PageShell } from "../app/page-shell";
@@ -11,11 +11,11 @@ export const ForgotPasswordPage = () => {
   return (
     <PageShell
       badge="8. Hafta Finali"
-      title="Sifre Sifirlama"
-      description="Son hafta final duzenlemeleriyle auth akisi icin sifre sifirlama ekrani da projeye dahil edildi."
+      title="Şifre Sıfırlama"
+      description="Son hafta final düzenlemeleriyle auth akışı için şifre sıfırlama ekranı da projeye dahil edildi."
       nextTargets={[
-        { label: "Giris Yap", to: ROUTES.login },
-        { label: "Kayit Ol", to: ROUTES.register }
+        { label: "Giriş Yap", to: ROUTES.login },
+        { label: "Kayıt Ol", to: ROUTES.register }
       ]}
     >
       <Row gutter={[24, 24]}>
@@ -25,7 +25,7 @@ export const ForgotPasswordPage = () => {
               <Alert
                 type="success"
                 showIcon
-                message={`${submittedEmail} adresi icin sifre sifirlama yonlendirmesi hazirlandi.`}
+                message={`${submittedEmail} adresi için şifre sıfırlama yönlendirmesi hazırlandı.`}
                 style={{ marginBottom: 16 }}
               />
             ) : null}
@@ -33,7 +33,7 @@ export const ForgotPasswordPage = () => {
               <Alert
                 type="info"
                 showIcon
-                message="Firebase ayarlari yoksa bu ekran demo dogrulama akisini gosterir."
+                message="Firebase ayarları yoksa bu ekran demo doğrulama akışını gösterir."
                 style={{ marginBottom: 16 }}
               />
             ) : null}
@@ -46,13 +46,13 @@ export const ForgotPasswordPage = () => {
                 name="email"
                 rules={[
                   { required: true, message: "E-posta zorunlu." },
-                  { type: "email", message: "Gecerli bir e-posta gir." }
+                  { type: "email", message: "Geçerli bir e-posta adresi girin." }
                 ]}
               >
                 <Input type="email" placeholder="ornek@mail.com" />
               </Form.Item>
               <Button type="primary" htmlType="submit" size="large">
-                Sifirlama baglantisi gonder
+                Sıfırlama bağlantısı gönder
               </Button>
             </Form>
           </Card>
@@ -61,10 +61,10 @@ export const ForgotPasswordPage = () => {
           <Card className="auth-side-card">
             <Typography.Title level={4}>Ne olacak?</Typography.Title>
             <Typography.Paragraph>
-              E-posta adresini girdiginde sifreni yenilemek icin yeniden giris akisina donebilirsin.
+              E-posta adresinizi girdiğinizde şifrenizi yenilemek için giriş akışına dönebilirsiniz.
             </Typography.Paragraph>
             <Button>
-              <Link to={ROUTES.login}>Giris ekranina don</Link>
+              <Link to={ROUTES.login}>Giriş ekranına dön</Link>
             </Button>
           </Card>
         </Col>
@@ -72,3 +72,4 @@ export const ForgotPasswordPage = () => {
     </PageShell>
   );
 };
+

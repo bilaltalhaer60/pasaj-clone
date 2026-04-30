@@ -1,4 +1,4 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+﻿import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Alert, Button, Card, Col, Form, Input, Row, Typography } from "antd";
 import { PageShell } from "../app/page-shell";
 import { isFirebaseReady } from "../config/firebase";
@@ -19,18 +19,18 @@ export const LoginPage = () => {
   return (
     <PageShell
       badge="4. Hafta Teslimi"
-      title="Giris"
-      description="Auth akisinin demo surumu 4. haftada tamamlandi. Giris sonrasi kullanici hesap paneline yonleniyor."
+      title="Giriş"
+      description="Auth akışının demo sürümü 4. haftada tamamlandı. Giriş sonrası kullanıcı hesap paneline yönleniyor."
       nextTargets={[
-        { label: "Kayit Ol", to: ROUTES.register },
-        { label: "Hesabim", to: ROUTES.account }
+        { label: "Kayıt Ol", to: ROUTES.register },
+        { label: "Hesabım", to: ROUTES.account }
       ]}
     >
       {!isFirebaseReady ? (
         <Alert
           type="warning"
           showIcon
-          message="Firebase environment degiskenleri henuz tanimli degil. Demo auth akisi ile test etmeye devam edebilirsin."
+          message="Firebase ortam değişkenleri henüz tanımlı değil. Demo auth akışı ile test etmeye devam edebilirsiniz."
           style={{ marginBottom: 16 }}
         />
       ) : null}
@@ -42,22 +42,22 @@ export const LoginPage = () => {
               <Form.Item
                 label="E-posta"
                 name="email"
-                rules={[{ required: true, message: "E-posta girmen gerekiyor." }]}
+                rules={[{ required: true, message: "E-posta adresi girmeniz gerekiyor." }]}
               >
                 <Input type="email" placeholder="ornek@mail.com" />
               </Form.Item>
               <Form.Item
-                label="Sifre"
+                label="Şifre"
                 name="password"
-                rules={[{ required: true, message: "Sifre girmen gerekiyor." }]}
+                rules={[{ required: true, message: "Şifre girmeniz gerekiyor." }]}
               >
                 <Input.Password placeholder="********" />
               </Form.Item>
               <div style={{ marginBottom: 16 }}>
-                <Link to={ROUTES.forgotPassword}>Sifremi unuttum</Link>
+                <Link to={ROUTES.forgotPassword}>Şifremi unuttum</Link>
               </div>
               <Button type="primary" htmlType="submit" size="large">
-                Giris Yap
+                Giriş Yap
               </Button>
             </Form>
           </Card>
@@ -65,15 +65,15 @@ export const LoginPage = () => {
 
         <Col xs={24} lg={10}>
           <Card className="auth-side-card">
-            <Typography.Title level={4}>Demo kullanici akisi</Typography.Title>
+            <Typography.Title level={4}>Demo kullanıcı akışı</Typography.Title>
             <Typography.Paragraph>
-              Giris yaptiginda siparislerini, favorilerini ve adreslerini hesap ekraninda gorebilirsin.
+              Giriş yaptığınızda siparişlerinizi, favorilerinizi ve adreslerinizi hesap ekranında görebilirsiniz.
             </Typography.Paragraph>
             <Typography.Paragraph>
-              Admin paneli de 4. hafta kapsaminda tablo ve metrik kartlariyla genisletildi.
+              Admin paneli de 4. hafta kapsamında tablo ve metrik kartlarıyla genişletildi.
             </Typography.Paragraph>
             <Button>
-              <Link to={ROUTES.register}>Yeni hesap olustur</Link>
+              <Link to={ROUTES.register}>Yeni hesap oluştur</Link>
             </Button>
           </Card>
         </Col>
@@ -81,3 +81,4 @@ export const LoginPage = () => {
     </PageShell>
   );
 };
+

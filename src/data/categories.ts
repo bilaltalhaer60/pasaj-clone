@@ -1,16 +1,17 @@
-import type { CategoryMeta } from "../types/product";
+﻿import type { CategoryMeta } from "../types/product";
 
 export const categoryMeta: CategoryMeta = {
   telefon: {
     title: "Telefon",
-    description: "Amiral gemisi ve fiyat performans telefonlari bu vitrinde listelenir."
+    description: "Amiral gemişi ve fiyat performans telefonlari bu vitrinde listelenir."
   },
   bilgisayar: {
     title: "Bilgisayar",
-    description: "Notebook ve performans odakli bilgisayar urunleri icin secili liste."
+    description: "Notebook ve performans odaklı bilgisayar ürünleri için secili liste."
   },
   aksesuar: {
     title: "Aksesuar",
-    description: "Kulaklik, saat ve gunluk teknoloji aksesuarlari bir arada."
+    description: "Kulaklık, saat ve günlük teknoloji aksesuarlari bir arada."
   }
 };
+

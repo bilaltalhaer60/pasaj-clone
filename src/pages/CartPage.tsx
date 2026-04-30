@@ -1,5 +1,5 @@
 ﻿import { Link } from "react-router-dom";
-import { Alert, Button, Card, Empty, InputNumber, List, Space, Tag, Typography, message } from "antd";
+import { Alert, Button, Card, Empty, InputNumber, List, Space, Tag, Typography } from "antd";
 import { PageShell } from "../app/page-shell";
 import { env } from "../config/env";
 import {
@@ -22,17 +22,16 @@ export const CartPage = () => {
 
   const handleRemoveItem = (productId: string) => {
     removeItem(productId);
-    message.success("Urun sepetten silindi.");
   };
 
   return (
     <PageShell
       badge="6. Hafta Teslimi"
       title="Sepet"
-      description="Sepet sayfasi ve drawer deneyimi birlikte aktif. Adet guncelleme, siparis ozeti ve checkout gecisi 6. hafta akisina baglandi."
+      description="Sepet sayfası ve drawer deneyimi birlikte aktif. Adet güncelleme, sipariş özeti ve checkout geçişi 6. hafta akışına bağlandı."
       nextTargets={[
-        { label: "Odeme Sayfasi", to: "/checkout" },
-        { label: "Alisverise Don", to: "/" }
+        { label: "Ödeme Sayfasi", to: "/checkout" },
+        { label: "Alışverişe Dön", to: "/" }
       ]}
     >
       <Alert
@@ -40,8 +39,8 @@ export const CartPage = () => {
         showIcon
         message={
           freeShippingRemaining === 0
-            ? `Sepette ${getCartItemCount(items)} urun var. Ucretsiz kargo aktif.`
-            : `Sepette ${getCartItemCount(items)} urun var. Ucretsiz kargo icin ${formatCurrency(
+            ? `Sepette ${getCartItemCount(items)} ürün var. Ücretsiz kargo aktif.`
+            : `Sepette ${getCartItemCount(items)} ürün var. Ücretsiz kargo için ${formatCurrency(
                 freeShippingRemaining
               )} daha ekleyebilirsin.`
         }
@@ -51,7 +50,7 @@ export const CartPage = () => {
         <Card className="cart-items-card">
           {items.length === 0 ? (
             <Empty
-              description="Sepetin su anda bos. Kategori ekranindan urun ekleyebilirsin."
+              description="Sepetiniz şu anda boş. Kategori ekranından ürün ekleyebilirsiniz."
               image={Empty.PRESENTED_IMAGE_SIMPLE}
             />
           ) : (
@@ -96,7 +95,7 @@ export const CartPage = () => {
           )}
         </Card>
 
-        <Card className="cart-summary-card" title="Siparis ozeti">
+        <Card className="cart-summary-card" title="Sipariş özeti">
           <Space direction="vertical" size={14} style={{ width: "100%" }}>
             <div className="summary-row">
               <span>Ara toplam</span>
@@ -104,14 +103,14 @@ export const CartPage = () => {
             </div>
             <div className="summary-row">
               <span>Kargo</span>
-              <strong>{shippingCost === 0 ? "Ucretsiz" : formatCurrency(shippingCost)}</strong>
+              <strong>{shippingCost === 0 ? "Ücretsiz" : formatCurrency(shippingCost)}</strong>
             </div>
             <div className="summary-row total-row">
               <span>Toplam</span>
               <strong>{formatCurrency(total)}</strong>
             </div>
             <Button type="primary" size="large" block disabled={items.length === 0}>
-              <Link to="/checkout">3 adimli odeme akisini baslat</Link>
+              <Link to="/checkout">3 adımlı ödeme akışını başlat</Link>
             </Button>
           </Space>
         </Card>
@@ -119,3 +118,4 @@ export const CartPage = () => {
     </PageShell>
   );
 };
+

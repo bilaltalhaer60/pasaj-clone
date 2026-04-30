@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+﻿import { useMemo, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
@@ -55,10 +55,10 @@ type ProductFormValues = {
 };
 
 const ORDER_STATUS_OPTIONS: Array<OrderRecord["status"]> = [
-  "Hazirlaniyor",
+  "Hazırlanıyor",
   "Kargoda",
   "Teslim Edildi",
-  "Iptal Edildi"
+  "İptal Edildi"
 ];
 
 const formatOrderDate = (value: string) =>
@@ -101,16 +101,16 @@ const ProductForm = ({
     <Row gutter={16}>
       <Col xs={24} md={12}>
         <Form.Item
-          label="Urun adi"
+          label="Ürün adı"
           name="name"
-          rules={[{ required: true, message: "Urun adi zorunlu." }]}
+          rules={[{ required: true, message: "Ürün adı zorunlu." }]}
         >
           <Input placeholder="Samsung Galaxy S25" />
         </Form.Item>
       </Col>
       <Col xs={24} md={12}>
         <Form.Item label="Slug" name="slug">
-          <Input placeholder="Bos birakilirsa otomatik uretilir" />
+          <Input placeholder="Boş bırakılırsa otomatik üretilir" />
         </Form.Item>
       </Col>
       <Col xs={24} md={12}>
@@ -133,7 +133,7 @@ const ProductForm = ({
         </Form.Item>
       </Col>
       <Col xs={24} md={8}>
-        <Form.Item label="Satis fiyati" name="price" rules={[{ required: true, message: "Fiyat zorunlu." }]}>
+        <Form.Item label="Satış fiyatı" name="price" rules={[{ required: true, message: "Fiyat zorunlu." }]}>
           <InputNumber min={0} style={{ width: "100%" }} />
         </Form.Item>
       </Col>
@@ -143,7 +143,7 @@ const ProductForm = ({
         </Form.Item>
       </Col>
       <Col xs={24}>
-        <Form.Item label="Gorsel URL" name="image">
+        <Form.Item label="Görsel URL" name="image">
           <Input placeholder="https://..." />
         </Form.Item>
         <input
@@ -152,17 +152,17 @@ const ProductForm = ({
           onChange={(event) => setSelectedFile(event.target.files?.[0] ?? null)}
         />
         <Typography.Paragraph type="secondary" style={{ marginTop: 8, marginBottom: 0 }}>
-          Firebase Storage aktifse secilen dosya yuklenir. Dosya secmezsen mevcut URL kullanilir.
+          Firebase Storage aktifse seçilen dosya yüklenir. Dosya seçmezseniz mevcut URL kullanılır.
         </Typography.Paragraph>
         {selectedFile ? (
           <Typography.Paragraph style={{ marginTop: 8, marginBottom: 0 }}>
-            Secilen dosya: {selectedFile.name}
+            Seçilen dosya: {selectedFile.name}
           </Typography.Paragraph>
         ) : null}
       </Col>
       <Col xs={24}>
-        <Form.Item label="Kisa aciklama" name="summary">
-          <Input.TextArea rows={3} placeholder="Urun yonetim panelinden eklendi." />
+        <Form.Item label="Kısa açıklama" name="summary">
+          <Input.TextArea rows={3} placeholder="Ürün yönetim panelinden eklendi." />
         </Form.Item>
       </Col>
     </Row>
@@ -250,12 +250,12 @@ export const AdminPage = () => {
     onSuccess: async () => {
       await invalidateAdminData();
       messageApi.success(
-        editingProduct ? "Urun kaydi guncellendi." : "Yeni urun basariyla eklendi."
+        editingProduct ? "Ürün kaydı güncellendi." : "Yeni ürün başarıyla eklendi."
       );
       resetProductModal();
     },
     onError: (error) => {
-      messageApi.error(error instanceof Error ? error.message : "Urun kaydi tamamlanamadi.");
+      messageApi.error(error instanceof Error ? error.message : "Ürün kaydı tamamlanamadı.");
     }
   });
 
@@ -263,10 +263,10 @@ export const AdminPage = () => {
     mutationFn: deleteProductById,
     onSuccess: async () => {
       await invalidateAdminData();
-      messageApi.success("Urun silindi.");
+      messageApi.success("Ürün silindi.");
     },
     onError: (error) => {
-      messageApi.error(error instanceof Error ? error.message : "Urun silinemedi.");
+      messageApi.error(error instanceof Error ? error.message : "Ürün silinemedi.");
     }
   });
 
@@ -275,10 +275,10 @@ export const AdminPage = () => {
       updateOrderStatus(orderId, status),
     onSuccess: async () => {
       await invalidateAdminData();
-      messageApi.success("Siparis durumu guncellendi.");
+      messageApi.success("Sipariş durumu güncellendi.");
     },
     onError: (error) => {
-      messageApi.error(error instanceof Error ? error.message : "Siparis durumu guncellenemedi.");
+      messageApi.error(error instanceof Error ? error.message : "Sipariş durumu güncellenemedi.");
     }
   });
 
@@ -323,7 +323,7 @@ export const AdminPage = () => {
 
   const productColumns: TableColumnsType<Product> = [
     {
-      title: "Urun",
+      title: "Ürün",
       dataIndex: "name",
       render: (_, record) => (
         <Space direction="vertical" size={2}>
@@ -346,16 +346,16 @@ export const AdminPage = () => {
       )
     },
     {
-      title: "Islemler",
+      title: "İşlemler",
       key: "actions",
       render: (_, record) => (
         <Space wrap>
-          <Button onClick={() => openEditModal(record)}>Duzenle</Button>
+          <Button onClick={() => openEditModal(record)}>Düzenle</Button>
           <Popconfirm
-            title="Urun silinsin mi?"
-            description="Bu islem Firestore kaydini kaldirir."
+            title="Ürün silinsin mi?"
+            description="Bu işlem Firestore kaydını kaldırır."
             okText="Sil"
-            cancelText="Iptal"
+            cancelText="İptal"
             onConfirm={() => deleteMutation.mutate(record.id)}
           >
             <Button danger loading={deleteMutation.isPending}>
@@ -369,7 +369,7 @@ export const AdminPage = () => {
 
   const orderColumns: TableColumnsType<OrderRecord> = [
     {
-      title: "Siparis",
+      title: "Sipariş",
       dataIndex: "orderNumber",
       render: (value: string, record) => (
         <Space direction="vertical" size={2}>
@@ -379,7 +379,7 @@ export const AdminPage = () => {
       )
     },
     {
-      title: "Musteri",
+      title: "Müşteri",
       key: "customer",
       render: (_, record) => (
         <Space direction="vertical" size={2}>
@@ -420,9 +420,9 @@ export const AdminPage = () => {
     <PageShell
       badge="7. Hafta Teslimi"
       title="Admin Panel"
-      description="Dashboard, urun CRUD, siparis yonetimi ve Firebase Storage gorsel yukleme akisi tek panelde aktif."
+      description="Dashboard, ürün CRUD, sipariş yönetimi ve Firebase Storage görsel yükleme akışı tek panelde aktif."
       nextTargets={[
-        { label: "Hesabim", to: ROUTES.account },
+        { label: "Hesabım", to: ROUTES.account },
         { label: "Anasayfa", to: ROUTES.home }
       ]}
     >
@@ -431,7 +431,7 @@ export const AdminPage = () => {
         <Alert
           type="warning"
           showIcon
-          message="Firebase ayarlari eksik oldugu icin admin panelindeki veri islemeleri calismayabilir."
+          message="Firebase ayarları eksik olduğu için admin panelindeki veri işlemeleri çalışmayabilir."
           style={{ marginBottom: 16 }}
         />
       ) : null}
@@ -439,7 +439,7 @@ export const AdminPage = () => {
         <Alert
           type="info"
           showIcon
-          message="Firebase Storage baglantisi yok. Gorsel icin dogrudan URL girebilirsin."
+          message="Firebase Storage bağlantısı yok. Görsel için doğrudan URL girebilirsiniz."
           style={{ marginBottom: 16 }}
         />
       ) : null}
@@ -458,12 +458,12 @@ export const AdminPage = () => {
                   <Row gutter={[16, 16]}>
                     <Col xs={24} md={12} xl={6}>
                       <Card className="admin-stat-card">
-                        <Statistic title="Toplam Urun" value={products.length} />
+                        <Statistic title="Toplam Ürün" value={products.length} />
                       </Card>
                     </Col>
                     <Col xs={24} md={12} xl={6}>
                       <Card className="admin-stat-card">
-                        <Statistic title="Bugunku Siparis" value={todaysOrderCount} />
+                        <Statistic title="Bugünkü Sipariş" value={todaysOrderCount} />
                       </Card>
                     </Col>
                     <Col xs={24} md={12} xl={6}>
@@ -477,16 +477,16 @@ export const AdminPage = () => {
                     </Col>
                     <Col xs={24} md={12} xl={6}>
                       <Card className="admin-stat-card">
-                        <Statistic title="Dusuk Stok" value={lowStockCount} suffix="/ kritik" />
+                        <Statistic title="Düşük Stok" value={lowStockCount} suffix="/ kritik" />
                       </Card>
                     </Col>
                   </Row>
 
                   <Row gutter={[16, 16]}>
                     <Col xs={24} xl={14}>
-                      <Card className="admin-panel-card" title="Son 7 gun siparis grafigi">
+                      <Card className="admin-panel-card" title="Son 7 gün sipariş grafiği">
                         {orders.length === 0 ? (
-                          <Empty description="Henuz siparis kaydi yok." image={Empty.PRESENTED_IMAGE_SIMPLE} />
+                          <Empty description="Henüz sipariş kaydı yok." image={Empty.PRESENTED_IMAGE_SIMPLE} />
                         ) : (
                           <div className="admin-chart-wrap">
                             <svg viewBox="0 0 420 180" className="admin-chart">
@@ -526,10 +526,10 @@ export const AdminPage = () => {
                       </Card>
                     </Col>
                     <Col xs={24} xl={10}>
-                      <Card className="admin-panel-card" title="Operasyon ozeti">
+                      <Card className="admin-panel-card" title="Operasyon özeti">
                         <Space direction="vertical" size={14} style={{ width: "100%" }}>
                           <div className="admin-summary-row">
-                            <span>Toplam siparis</span>
+                            <span>Toplam sipariş</span>
                             <strong>{orders.length}</strong>
                           </div>
                           <div className="admin-summary-row">
@@ -541,8 +541,8 @@ export const AdminPage = () => {
                             <strong>{orders.filter((order) => order.status === "Kargoda").length}</strong>
                           </div>
                           <div className="admin-summary-row">
-                            <span>Iptal edilen</span>
-                            <strong>{orders.filter((order) => order.status === "Iptal Edildi").length}</strong>
+                            <span>İptal edilen</span>
+                            <strong>{orders.filter((order) => order.status === "İptal Edildi").length}</strong>
                           </div>
                         </Space>
                       </Card>
@@ -553,14 +553,14 @@ export const AdminPage = () => {
           },
           {
             key: "products",
-            label: "Urun Yonetimi",
+            label: "Ürün Yönetimi",
             children: (
               <Card
                 className="admin-panel-card"
-                title="Firestore urun kayitlari"
+                title="Firestore ürün kayıtları"
                 extra={
                   <Button type="primary" icon={<PlusOutlined />} onClick={openCreateModal}>
-                    Yeni urun
+                    Yeni ürün
                   </Button>
                 }
               >
@@ -571,7 +571,7 @@ export const AdminPage = () => {
                     message={
                       productsQuery.error instanceof Error
                         ? productsQuery.error.message
-                        : "Urunler yuklenemedi."
+                        : "Ürünler yüklenemedi."
                     }
                   />
                 ) : (
@@ -588,9 +588,9 @@ export const AdminPage = () => {
           },
           {
             key: "orders",
-            label: "Siparis Yonetimi",
+            label: "Sipariş Yönetimi",
             children: (
-              <Card className="admin-panel-card" title="Tum siparisler">
+              <Card className="admin-panel-card" title="Tüm siparişler">
                 {ordersQuery.error ? (
                   <Alert
                     type="error"
@@ -598,7 +598,7 @@ export const AdminPage = () => {
                     message={
                       ordersQuery.error instanceof Error
                         ? ordersQuery.error.message
-                        : "Siparisler yuklenemedi."
+                        : "Siparişler yüklenemedi."
                     }
                   />
                 ) : (
@@ -617,13 +617,13 @@ export const AdminPage = () => {
       />
 
       <Modal
-        title={editingProduct ? "Urunu duzenle" : "Yeni urun ekle"}
+        title={editingProduct ? "Ürünü düzenle" : "Yeni ürün ekle"}
         open={modalOpen}
         onCancel={resetProductModal}
         onOk={handleProductSubmit}
         confirmLoading={productMutation.isPending}
-        okText={editingProduct ? "Kaydet" : "Olustur"}
-        cancelText="Iptal"
+        okText={editingProduct ? "Kaydet" : "Oluştur"}
+        cancelText="İptal"
         width={760}
       >
         <ProductForm form={form} selectedFile={selectedFile} setSelectedFile={setSelectedFile} />
@@ -631,3 +631,4 @@ export const AdminPage = () => {
     </PageShell>
   );
 };
+

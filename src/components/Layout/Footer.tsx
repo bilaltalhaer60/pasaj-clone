@@ -2,61 +2,61 @@
 
 const footerColumns = [
   {
-    title: "Hakkimizda",
+    title: "Hakkımızda",
     items: [
-      "Pasaj Genel Bakis",
+      "Pasaj Genel Bakış",
       "Haberler & Duyurular",
-      "Kurumsal Iletisim ve Surdurulebilirlik",
+      "Kurumsal İletişim ve Sürdürülebilirlik",
       "Kariyer",
-      "Gizlilik ve Guvenlik",
-      "Pasaj Iletisim",
+      "Gizlilik ve Güvenlik",
+      "Pasaj İletişim",
       "Pasaj Blog",
       "Pasaj Gaming",
       "Turkcell Blog",
-      "Akilli Ev"
+      "Akıllı Ev"
     ]
   },
   {
-    title: "Populer Kategoriler",
+    title: "Popüler Kategoriler",
     items: [
       "Cep Telefonu",
       "Android Telefonlar",
       "iPhone Modelleri",
-      "Ikinci El / Yenilenmis Telefonlar",
-      "Yenilenmis iPhone",
+      "İkinci El / Yenilenmiş Telefonlar",
+      "Yenilenmiş iPhone",
       "5G Uyumlu Telefonlar",
-      "Akilli Saatler",
-      "Bluetooth Kulakliklar",
+      "Akıllı Saatler",
+      "Bluetooth Kulaklıklar",
       "Tabletler",
       "Laptop"
     ]
   },
   {
-    title: "Yardim",
+    title: "Yardım",
     items: [
-      "Yardim Merkezi",
-      "Islem Rehberi",
-      "Urun Guvenligi Temas Noktasi",
-      "Nasil Iade Edebilirim?",
-      "Pasaj Siparis Sorgulama",
-      "iPhone Karsilastirma",
-      "Televizyon (TV) Karsilastirma",
+      "Yardım Merkezi",
+      "İşlem Rehberi",
+      "Ürün Güvenliği Temas Noktası",
+      "Nasıl İade Edebilirim?",
+      "Pasaj Sipariş Sorgulama",
+      "iPhone Karşılaştırma",
+      "Televizyon (TV) Karşılaştırma",
       "Telefon Sat"
     ]
   },
   {
-    title: "Populer Marka Kategoriler",
+    title: "Popüler Marka Kategoriler",
     items: [
       "Samsung Telefonlar",
-      "JBL Kulaklik",
+      "JBL Kulaklık",
       "Philips Kahve Makinesi",
       "Samsung Tablet",
-      "Dyson Sac Duzlestirici",
-      "Philips Dikey Supurge",
-      "Philips Supurge",
+      "Dyson Saç Düzleştirici",
+      "Philips Dikey Süpürge",
+      "Philips Süpürge",
       "Karaca Kahve Makinesi",
       "Philips Airfryer",
-      "Apple Kulaklik"
+      "Apple Kulaklık"
     ]
   },
   {
@@ -64,22 +64,22 @@ const footerColumns = [
     items: ["Apple", "Samsung", "Dyson", "Anker", "Arzum", "Beko", "Bosch", "Braun", "Casper", "Delonghi"]
   },
   {
-    title: "Ozel Gunler & Kampanyalar",
+    title: "Özel Günler & Kampanyalar",
     items: [
-      "Apple Egitim",
-      "Dugun Ceyiz Paketleri",
-      "Firsatlar Pasaji",
-      "Pasaj Gunleri",
-      "Uykusu Kacanlar Kulubu",
-      "Sevgililer Gunu Hediyeleri",
+      "Apple Eğitim",
+      "Düğün Çeyiz Paketleri",
+      "Fırsatlar Pasajı",
+      "Pasaj Günleri",
+      "Uykusu Kaçanlar Kulübü",
+      "Sevgililer Günü Hediyeleri",
       "Vergisiz Telefonlar",
       "Vergisiz Bilgisayarlar",
       "Karne Hediyeleri",
-      "Kurban Bayrami Kampanyasi"
+      "Kurban Bayramı Kampanyası"
     ]
   },
   {
-    title: "Populer Urunler",
+    title: "Popüler Ürünler",
     items: [
       "iPhone 17",
       "iPhone 16",
@@ -129,7 +129,7 @@ export const Footer = () => {
               <img src="/pasaj/footer-icons/PasajHeaderLogo.svg" alt="Pasaj" />
             </Link>
             <strong>Bizi Takip Edin</strong>
-            <p>Sosyal medya hesaplarimizdan bizi takip edin, firsatlari kacirmayin.</p>
+            <p>Sosyal medya hesaplarımızdan bizi takip edin, fırsatları kaçırmayın.</p>
             <div className="pasaj-social-links">
               {socialLinks.map((item) => (
                 <a href={item.href} key={item.label} aria-label={item.label} target="_blank" rel="noreferrer">
@@ -140,12 +140,12 @@ export const Footer = () => {
           </div>
 
           <div className="pasaj-footer-app-block">
-            <strong>Turkcell Uygulamasini Indir</strong>
+            <strong>Turkcell Uygulamasını İndir</strong>
             <div className="pasaj-footer-qr-row">
-              <img src="/pasaj/footer-icons/pasaj-qr.webp" alt="Turkcell uygulamasi QR kodu" className="pasaj-footer-qr" />
+              <img src="/pasaj/footer-icons/pasaj-qr.webp" alt="Turkcell uygulaması QR kodu" className="pasaj-footer-qr" />
               <p>
-                QR kodunu taratarak uygulamayi hemen indirebilirsin. Pasaj ile ilgili tum islemlerinizi Turkcell
-                Uygulamasindan hizlica gerceklestirebilirsiniz.
+                QR kodunu taratarak uygulamayı hemen indirebilirsiniz. Pasaj ile ilgili tüm işlemlerinizi Turkcell
+                Uygulaması'ndan hızlıca gerçekleştirebilirsiniz.
               </p>
             </div>
           </div>
@@ -160,7 +160,7 @@ export const Footer = () => {
               {column.items.map((item) => (
                 <Link to="/" key={item}>{item}</Link>
               ))}
-              <button type="button">Tumunu Gor <span>⌄</span></button>
+              <button type="button">Tümünü Gör <span>⌄</span></button>
             </nav>
           ))}
         </div>
@@ -169,7 +169,7 @@ export const Footer = () => {
       <section className="pasaj-footer-brands-section">
         <div className="pasaj-footer-inner">
           <div className="pasaj-footer-lang-row">
-            <button type="button" className="active">Turkce</button>
+            <button type="button" className="active">Türkçe</button>
             <button type="button">English</button>
             <button type="button">عربي</button>
             <button type="button">русский</button>
@@ -184,7 +184,7 @@ export const Footer = () => {
 
       <section className="pasaj-footer-legal-section">
         <div className="pasaj-footer-inner pasaj-footer-legal-row">
-          <Link to="/">Gizlilik ve Guvenlik</Link>
+          <Link to="/">Gizlilik ve Güvenlik</Link>
           <div>
             <span className="pasaj-trgo">TR<br />GO</span>
             <span>© 2026 Turkcell</span>
@@ -194,3 +194,4 @@ export const Footer = () => {
     </footer>
   );
 };
+

@@ -1,12 +1,13 @@
-import { create } from "zustand";
+﻿import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { fallbackProducts } from "../data/fallbackProducts";
 import type { OrderRecord } from "../types/order";
+import { useUiStore } from "./uiStore";
 
 export type MockOrder = {
   id: string;
   date: string;
-  status: "Hazirlaniyor" | "Kargoda" | "Teslim Edildi";
+  status: "Hazırlanıyor" | "Kargoda" | "Teslim Edildi";
   total: number;
 };
 
@@ -68,12 +69,12 @@ const defaultUser: MockUser = {
     {
       id: "addr-1",
       title: "Ev",
-      detail: "Istanbul / Pendik, Orta Mah. Demo Sok. No:18 D:5"
+      detail: "İstanbul / Pendik, Orta Mah. Demo Sok. No:18 D:5"
     },
     {
       id: "addr-2",
       title: "Staj Ofisi",
-      detail: "Istanbul / Kartal, Teknoloji Cad. No:42 Kat:3"
+      detail: "İstanbul / Kartal, Teknoloji Cad. No:42 Kat:3"
     }
   ]
 };
@@ -82,7 +83,7 @@ const formatOrderDate = (createdAt: string) => {
   const date = new Date(createdAt);
 
   return Number.isNaN(date.getTime())
-    ? "Bugun"
+    ? "Bugün"
     : new Intl.DateTimeFormat("tr-TR", {
         day: "numeric",
         month: "long",
@@ -124,7 +125,7 @@ export const useAuthStore = create<AuthState>()(
           const nextOrder: MockOrder = {
             id: order.orderNumber,
             date: formatOrderDate(order.createdAt),
-            status: "Hazirlaniyor",
+            status: "Hazırlanıyor",
             total: order.total
           };
 
@@ -135,13 +136,18 @@ export const useAuthStore = create<AuthState>()(
             }
           };
         }),
-      toggleFavorite: (favoriteSlug) =>
+      toggleFavorite: (favoriteSlug) => {
+        let wasRemoved = false;
+        let didChange = false;
+
         set((state) => {
           if (!state.user) {
             return state;
           }
 
           const favorites = normalizeFavorites(state.user.favorites);
+          wasRemoved = favorites.includes(favoriteSlug);
+          didChange = true;
           const nextFavorites = favorites.includes(favoriteSlug)
             ? favorites.filter((item) => item !== favoriteSlug)
             : [favoriteSlug, ...favorites];
@@ -152,7 +158,14 @@ export const useAuthStore = create<AuthState>()(
               favorites: nextFavorites
             }
           };
-        }),
+        });
+
+        if (didChange) {
+          useUiStore
+            .getState()
+            .showToast(wasRemoved ? "Ürün favorilerden kaldırıldı." : "Ürün favorilere eklendi.");
+        }
+      },
       logout: () =>
         set({
           isLoggedIn: false,
@@ -173,3 +186,4 @@ export const useAuthStore = create<AuthState>()(
     }
   )
 );
+

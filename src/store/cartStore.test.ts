@@ -1,4 +1,4 @@
-import { act } from "@testing-library/react";
+﻿import { act } from "@testing-library/react";
 import {
   getCartItemCount,
   getCartRemainingForFreeShipping,
@@ -24,7 +24,7 @@ const product = (overrides: Partial<Product> = {}): Product => ({
   badge: "Yeni",
   image: "/phone.png",
   summary: "Demo",
-  shippingNote: "Hizli teslimat",
+  shippingNote: "Hızlı teslimat",
   highlights: ["A", "B"],
   specs: [{ label: "RAM", value: "8 GB" }],
   ...overrides
@@ -127,3 +127,4 @@ describe("cartStore", () => {
     expect(getCartRemainingForFreeShipping(items, 1000)).toBe(0);
   });
 });
+

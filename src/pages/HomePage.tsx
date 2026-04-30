@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import {
   HeartFilled,
   CustomerServiceOutlined,
@@ -13,7 +13,7 @@ import {
   UserOutlined
 } from "@ant-design/icons";
 import { useQuery } from "@tanstack/react-query";
-import { Alert, Button, Card, Col, Row, Skeleton, Typography, message } from "antd";
+import { Alert, Button, Card, Col, Row, Skeleton, Typography } from "antd";
 import { Link } from "react-router-dom";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -63,8 +63,8 @@ const bestsellerTabs = [
     slugs: ["philips-kahve-makinesi", "dyson-v15-supurge", "arzum-tost-makinesi"]
   },
   {
-    key: "saglik",
-    label: "Saglik-Kisisel Bakim",
+    key: "sağlık",
+    label: "Sağlık-Kişisel Bakım",
     icon: HeartOutlined,
     to: "/category/aksesuar",
     slugs: ["braun-series-7", "philips-sac-kurutma", "xiaomi-akilli-tarti"]
@@ -84,8 +84,8 @@ const bestsellerTabs = [
     slugs: ["jbl-flip-6", "sony-wh-1000xm5", "samsung-soundbar"]
   },
   {
-    key: "ev-yasam",
-    label: "Ev-Yasam",
+    key: "ev-yaşam",
+    label: "Ev-Yaşam",
     icon: GiftOutlined,
     to: "/category/aksesuar",
     slugs: ["anker-powerbank-20000", "sbs-hizli-sarj", "akilli-ev-kamera"]
@@ -123,7 +123,7 @@ const ProductCard = ({
     <button
       type="button"
       className={`favorite-button ${isFavorite ? "active" : ""}`}
-      aria-label={isFavorite ? "Favorilerden cikar" : "Favorilere ekle"}
+      aria-label={isFavorite ? "Favorilerden çıkar" : "Favorilere ekle"}
       aria-pressed={isFavorite}
       onClick={() => onToggleFavorite(product)}
     >
@@ -140,11 +140,11 @@ const ProductCard = ({
     </Link>
     <div className="product-chip-row">
       <span className="product-chip">Pasaj Limitinle Ode</span>
-      <span className="product-chip">Ucretsiz Kargo</span>
+      <span className="product-chip">Ücretsiz Kargo</span>
     </div>
     <div className="shelf-price-row">
       {product.previousPrice > 0 ? <span className="old-price">{formatCurrency(product.previousPrice)}</span> : null}
-      {product.discount > 0 ? <span className="discount-text">{product.discount}.000 TL Indirim</span> : null}
+      {product.discount > 0 ? <span className="discount-text">{product.discount}.000 TL İndirim</span> : null}
     </div>
     <div className="current-price">{formatCurrency(product.price)}</div>
   </Card>
@@ -163,11 +163,11 @@ const BestsellerPhoneCard = ({
   onToggleFavorite: (product: Product) => void;
 }) => (
   <article className="pasaj-bestseller-card">
-    <span className="pasaj-bestseller-badge">Cok Satan</span>
+    <span className="pasaj-bestseller-badge">Çok Satan</span>
     <button
       type="button"
       className={`pasaj-bestseller-fav ${isFavorite ? "active" : ""}`}
-      aria-label={isFavorite ? "Favorilerden cikar" : "Favorilere ekle"}
+      aria-label={isFavorite ? "Favorilerden çıkar" : "Favorilere ekle"}
       aria-pressed={isFavorite}
       onClick={() => onToggleFavorite(product)}
     >
@@ -189,7 +189,7 @@ const BestsellerPhoneCard = ({
     </Link>
     <div className="pasaj-bestseller-chip-row">
       <span>Pasaj Limitinle Ode</span>
-      <span>Ucretsiz Kargo</span>
+      <span>Ücretsiz Kargo</span>
     </div>
     <div className="pasaj-bestseller-price-row">
       {product.previousPrice > product.price ? (
@@ -197,13 +197,13 @@ const BestsellerPhoneCard = ({
       ) : null}
       {product.discount > 0 ? (
         <span className="pasaj-bestseller-discount">
-          {formatPasajPrice(product.previousPrice - product.price)} Indirim
+          {formatPasajPrice(product.previousPrice - product.price)} İndirim
         </span>
       ) : null}
     </div>
     <strong className="pasaj-bestseller-price">{formatPasajPrice(product.price)}</strong>
     {product.slug === "iphone-16-128-gb" ? (
-      <span className="pasaj-bestseller-note">Son 30 gunun en dusuk fiyati</span>
+      <span className="pasaj-bestseller-note">Son 30 günün en düşük fiyatı</span>
     ) : null}
   </article>
 );
@@ -225,9 +225,7 @@ export const HomePage = () => {
   const favoriteSlugSet = new Set(favoriteSlugs);
 
   const handleToggleFavorite = (product: Product) => {
-    const willRemove = favoriteSlugSet.has(product.slug);
     toggleFavorite(product.slug);
-    message.success(willRemove ? "Urun favorilerden kaldirildi." : "Urun favorilere eklendi.");
   };
 
   return (
@@ -282,14 +280,14 @@ export const HomePage = () => {
 
       <section className="product-rack-section">
         <div className="pasaj-section-header">
-          <Typography.Title level={2}>Sana Ozel Urunler</Typography.Title>
+          <Typography.Title level={2}>Sana Özel Ürünler</Typography.Title>
         </div>
         {error ? (
           <Alert
             type="error"
             showIcon
             style={{ marginBottom: 20 }}
-            message={error instanceof Error ? error.message : "Urunler yuklenirken hata olustu."}
+            message={error instanceof Error ? error.message : "Ürünler yüklenirken hata oluştu."}
           />
         ) : null}
         <Row gutter={[24, 24]}>
@@ -316,7 +314,7 @@ export const HomePage = () => {
       <section className="campaign-grid-section">
         <div className="pasaj-section-header with-action">
           <Typography.Title level={2}>Kampanyalar</Typography.Title>
-          <Button className="soft-pill-button">Tumu</Button>
+          <Button className="soft-pill-button">Tümü</Button>
         </div>
         <div className="campaign-image-grid">
           {campaignTiles.map((tile) => (
@@ -329,7 +327,7 @@ export const HomePage = () => {
 
       <section className="product-rack-section bestseller-section">
         <div className="pasaj-section-header">
-          <Typography.Title level={2}>Cok Satanlar</Typography.Title>
+          <Typography.Title level={2}>Çok Satanlar</Typography.Title>
         </div>
         <div className="pasaj-bestseller-tabs">
           {bestsellerTabs.map((tab) => {
@@ -350,8 +348,8 @@ export const HomePage = () => {
           })}
         </div>
         <div className="pasaj-bestseller-toolbar">
-          <span>{activeBestsellerTab.label} kategorisinde cok satan urunler</span>
-          <Link to={activeBestsellerTab.to}>Tumunu Gor</Link>
+          <span>{activeBestsellerTab.label} kategorisinde çok satan ürünler</span>
+          <Link to={activeBestsellerTab.to}>Tümünü Gör</Link>
         </div>
         <div className="pasaj-bestseller-grid">
           {isLoading
@@ -373,8 +371,8 @@ export const HomePage = () => {
 
       <section className="brands-section">
         <div className="pasaj-section-header with-action">
-          <Typography.Title level={2}>Populer Markalar</Typography.Title>
-          <Button className="soft-pill-button">Tumu</Button>
+          <Typography.Title level={2}>Popüler Markalar</Typography.Title>
+          <Button className="soft-pill-button">Tümü</Button>
         </div>
         <div className="brand-card-grid">
           {popularBrands.map((brand) => (
@@ -394,9 +392,9 @@ export const HomePage = () => {
             <LeftOutlined />
           </button>
           <div className="filter-pills">
-            <span className="filter-pill active">Populer Markalar</span>
-            <span className="filter-pill">Tumu</span>
-            <span className="filter-pill">Diger</span>
+            <span className="filter-pill active">Popüler Markalar</span>
+            <span className="filter-pill">Tümü</span>
+            <span className="filter-pill">Diğer</span>
             <span className="filter-pill">A</span>
             <span className="filter-pill">B</span>
             <span className="filter-pill">C</span>
@@ -414,11 +412,11 @@ export const HomePage = () => {
             <LeftOutlined />
           </button>
           <div className="filter-pills category-pills">
-            <span className="filter-pill active">Tumu</span>
+            <span className="filter-pill active">Tümü</span>
             <span className="filter-pill">Cep Telefonu-Aksesuar</span>
             <span className="filter-pill">Bilgisayar-Tablet</span>
             <span className="filter-pill">Elektrikli Ev Aletleri</span>
-            <span className="filter-pill">Saglik-Kisisel Bakim</span>
+            <span className="filter-pill">Sağlık-Kişisel Bakım</span>
             <span className="filter-pill">Hobi-Oyun</span>
             <span className="filter-pill">TV-Ses Sistemleri</span>
           </div>
@@ -430,7 +428,7 @@ export const HomePage = () => {
           {popularBrands.map((brand) => (
             <article key={`directory-${brand.name}`} className="brand-directory-card">
               <img src={brand.image} alt={brand.name} className="brand-directory-image" />
-              <span>{brandCounts[brand.name] ?? 50} Urun</span>
+              <span>{brandCounts[brand.name] ?? 50} Ürün</span>
             </article>
           ))}
         </div>
@@ -440,3 +438,4 @@ export const HomePage = () => {
     </div>
   );
 };
+

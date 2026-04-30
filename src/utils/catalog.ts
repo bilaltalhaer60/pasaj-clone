@@ -1,11 +1,11 @@
-import type { Product } from "../types/product";
+﻿import type { Product } from "../types/product";
 
 export type CategorySummary = {
   slug: string;
   title: string;
   description: string;
   productCount: number;
-  startingPrice: number;
+  startıngPrice: number;
   topBrands: string[];
   accent: string;
 };
@@ -53,9 +53,9 @@ export const buildCategorySummaries = (products: Product[]): CategorySummary[] =
       return {
         slug,
         title: toCategoryTitle(slug),
-        description: `${scopedProducts.length} urun, ${topBrands.join(", ")} ve daha fazlasi Firestore uzerinden listeleniyor.`,
+        description: `${scopedProducts.length} ürün, ${topBrands.join(", ")} ve daha fazlası Firestore üzerinden listeleniyor.`,
         productCount: scopedProducts.length,
-        startingPrice: sortedByPrice[0]?.price ?? 0,
+        startıngPrice: sortedByPrice[0]?.price ?? 0,
         topBrands,
         accent: categoryAccentPalette[index % categoryAccentPalette.length]
       };
@@ -69,7 +69,7 @@ export const buildCampaignSummaries = (products: Product[]): CampaignSummary[] =
     .slice(0, 3)
     .map((product, index) => ({
       id: product.id,
-      title: `${product.name} icin ozel firsat`,
+      title: `${product.name} için özel fırsat`,
       description: `${product.brand} ${product.category} kategorisinde %${product.discount} indirim ve ${product.installment.toLowerCase()} secenegiyle one cikiyor.`,
       to: `/product/${product.slug}`,
       accent: campaignAccentPalette[index % campaignAccentPalette.length],
@@ -86,3 +86,4 @@ export const getAverageRating = (products: Product[]) => {
 
 export const getTotalReviewCount = (products: Product[]) =>
   products.reduce((sum, product) => sum + product.reviewCount, 0);
+

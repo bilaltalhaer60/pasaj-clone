@@ -1,4 +1,4 @@
-﻿import { Button, Drawer, Empty, InputNumber, Space, Typography, message } from "antd";
+﻿import { Button, Drawer, Empty, InputNumber, Space, Typography } from "antd";
 import { Link } from "react-router-dom";
 import { env } from "../../config/env";
 import { formatCurrency } from "../../utils/formatCurrency";
@@ -24,7 +24,6 @@ export const CartDrawer = () => {
 
   const handleRemoveItem = (productId: string) => {
     removeItem(productId);
-    message.success("Urun sepetten silindi.");
   };
 
   return (
@@ -36,7 +35,7 @@ export const CartDrawer = () => {
       onClose={closeDrawer}
     >
       {items.length === 0 ? (
-        <Empty description="Sepetin bos." image={Empty.PRESENTED_IMAGE_SIMPLE} />
+        <Empty description="Sepetin boş." image={Empty.PRESENTED_IMAGE_SIMPLE} />
       ) : (
         <Space direction="vertical" size={16} style={{ width: "100%" }}>
           {items.map(({ product, quantity }) => (
@@ -66,7 +65,7 @@ export const CartDrawer = () => {
             </div>
             <div className="summary-row">
               <span>Kargo</span>
-              <strong>{shippingCost === 0 ? "Ucretsiz" : formatCurrency(shippingCost)}</strong>
+              <strong>{shippingCost === 0 ? "Ücretsiz" : formatCurrency(shippingCost)}</strong>
             </div>
             <div className="summary-row total-row">
               <span>Toplam</span>
@@ -74,18 +73,19 @@ export const CartDrawer = () => {
             </div>
             <Typography.Text type="secondary">
               {freeShippingRemaining === 0
-                ? "Ucretsiz kargo aktif."
-                : `Ucretsiz kargo icin ${formatCurrency(freeShippingRemaining)} daha ekleyin.`}
+                ? "Ücretsiz kargo aktif."
+                : `Ücretsiz kargo için ${formatCurrency(freeShippingRemaining)} daha ekleyin.`}
             </Typography.Text>
           </div>
           <Button block size="large" onClick={closeDrawer}>
-            <Link to="/cart">Sepet sayfasina git</Link>
+            <Link to="/cart">Sepet sayfasına git</Link>
           </Button>
           <Button type="primary" block size="large" onClick={closeDrawer}>
-            <Link to="/checkout">Siparisi tamamla</Link>
+            <Link to="/checkout">Siparişi tamamla</Link>
           </Button>
         </Space>
       )}
     </Drawer>
   );
 };
+

@@ -76,6 +76,50 @@ a {
   z-index: 40;
   background: #fff;
   border-bottom: 1px solid rgba(0, 46, 95, 0.08);
+  --pasaj-mega-menu-top: 226px;
+}
+
+.pasaj-toast {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  z-index: 2000;
+  min-width: min(360px, calc(100vw - 32px));
+  max-width: calc(100vw - 32px);
+  padding: 13px 18px;
+  border-radius: 8px;
+  background: #fff;
+  border: 1px solid #d8e3ef;
+  box-shadow: 0 16px 38px rgba(14, 37, 66, 0.18);
+  color: #15345f;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-weight: 700;
+  text-align: center;
+  transform: translateX(-50%);
+  animation: pasaj-toast-in 0.18s ease;
+}
+
+.pasaj-toast-success .anticon {
+  color: #16a34a;
+}
+
+.pasaj-toast-info .anticon {
+  color: #0f59b2;
+}
+
+@keyframes pasaj-toast-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
 }
 
 .pasaj-top-links {
@@ -221,7 +265,7 @@ a {
   position: fixed;
   left: 0;
   right: 0;
-  top: 226px;
+  top: var(--pasaj-mega-menu-top);
   min-height: 360px;
   padding: 24px max(54px, calc((100vw - 1660px) / 2));
   background: #fff;
@@ -235,8 +279,6 @@ a {
   z-index: 80;
 }
 
-.pasaj-category-nav-item:hover .pasaj-mega-menu,
-.pasaj-category-nav-item:focus-within .pasaj-mega-menu,
 .pasaj-category-nav-item.is-open .pasaj-mega-menu {
   opacity: 1;
   visibility: visible;
@@ -2224,11 +2266,11 @@ a {
   }
 
   .pasaj-mega-menu {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: auto;
-    width: min(92vw, 420px);
+    position: fixed;
+    top: var(--pasaj-mega-menu-top);
+    left: 12px;
+    right: 12px;
+    width: auto;
     min-height: auto;
     padding: 18px;
   }

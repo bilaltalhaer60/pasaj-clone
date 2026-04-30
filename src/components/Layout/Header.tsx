@@ -5,7 +5,7 @@
   UserOutlined
 } from "@ant-design/icons";
 import { Badge, Button, Input } from "antd";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
 import { Link, NavLink } from "react-router-dom";
 import {
   categoryMenus,
@@ -18,18 +18,18 @@ import { useAuthStore } from "../../store/authStore";
 import { getCartItemCount, useCartStore } from "../../store/cartStore";
 import { useUiStore } from "../../store/uiStore";
 
-const renderMegaMenuItems = (items: CategoryMenuItem[]) => (
+const renderMegaMenuItems = (items: CategoryMenuItem[], onNavigate: () => void) => (
   <div className="pasaj-mega-menu-list">
     {items.map((item) => (
       <div key={item.label} className="pasaj-mega-menu-row">
-        <Link to={item.to} className="pasaj-mega-menu-link">
+        <Link to={item.to} className="pasaj-mega-menu-link" onClick={onNavigate}>
           <span>{item.label}</span>
           {item.children ? <span className="pasaj-mega-arrow">›</span> : null}
         </Link>
         {item.children ? (
           <div className="pasaj-mega-submenu">
             {item.children.map((child) => (
-              <Link key={child.label} to={child.to} className="pasaj-mega-submenu-link">
+              <Link key={child.label} to={child.to} className="pasaj-mega-submenu-link" onClick={onNavigate}>
                 {child.label}
               </Link>
             ))}
@@ -45,7 +45,17 @@ export const Header = () => {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const openCartDrawer = useUiStore((state) => state.openCartDrawer);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [menuTop, setMenuTop] = useState(226);
+  const navShellRef = useRef<HTMLDivElement | null>(null);
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const updateMenuTop = useCallback(() => {
+    const navBottom = navShellRef.current?.getBoundingClientRect().bottom;
+
+    if (typeof navBottom === "number") {
+      setMenuTop(Math.max(0, Math.round(navBottom)));
+    }
+  }, []);
 
   const clearCloseTimer = () => {
     if (closeTimerRef.current) {
@@ -56,6 +66,7 @@ export const Header = () => {
 
   const openCategoryMenu = (item: string) => {
     clearCloseTimer();
+    updateMenuTop();
     setActiveCategory(item);
   };
 
@@ -67,10 +78,28 @@ export const Header = () => {
     }, 160);
   };
 
-  useEffect(() => clearCloseTimer, []);
+  const closeCategoryMenu = () => {
+    clearCloseTimer();
+    setActiveCategory(null);
+  };
+
+  useEffect(() => {
+    updateMenuTop();
+    window.addEventListener("resize", updateMenuTop);
+    window.addEventListener("scroll", updateMenuTop, true);
+
+    return () => {
+      clearCloseTimer();
+      window.removeEventListener("resize", updateMenuTop);
+      window.removeEventListener("scroll", updateMenuTop, true);
+    };
+  }, [updateMenuTop]);
 
   return (
-    <header className="site-header pasaj-header">
+    <header
+      className="site-header pasaj-header"
+      style={{ "--pasaj-mega-menu-top": `${menuTop}px` } as CSSProperties}
+    >
       <div className="pasaj-top-links">
         <div className="pasaj-top-links-inner">
           <Link to={ROUTES.home} className="pasaj-domain-link">
@@ -97,7 +126,7 @@ export const Header = () => {
               className="pasaj-search"
               size="large"
               prefix={<SearchOutlined />}
-              placeholder="Urun, marka veya kategori ara"
+              placeholder="Ürün, marka veya kategori ara"
             />
           </div>
 
@@ -117,7 +146,7 @@ export const Header = () => {
         </div>
       </div>
 
-      <div className="pasaj-category-nav-shell">
+      <div className="pasaj-category-nav-shell" ref={navShellRef}>
         <nav className="pasaj-category-nav">
           {categoryNav.map((item, index) => {
             const menuItems = categoryMenus[item] ?? [];
@@ -129,11 +158,15 @@ export const Header = () => {
                 key={item}
                 className={`pasaj-category-nav-item${isOpen ? " is-open" : ""}`}
                 onMouseEnter={() => openCategoryMenu(item)}
+                onPointerEnter={() => openCategoryMenu(item)}
+                onPointerMove={() => openCategoryMenu(item)}
                 onMouseLeave={scheduleCategoryMenuClose}
                 onFocus={() => openCategoryMenu(item)}
                 onBlur={scheduleCategoryMenuClose}
               >
-                <Link to={target}>{item}</Link>
+                <Link to={target} onClick={closeCategoryMenu}>
+                  {item}
+                </Link>
                 {menuItems.length > 0 ? (
                   <div
                     className="pasaj-mega-menu"
@@ -142,7 +175,7 @@ export const Header = () => {
                     onMouseLeave={scheduleCategoryMenuClose}
                   >
                     <div className="pasaj-mega-title">{item}</div>
-                    {renderMegaMenuItems(menuItems)}
+                    {renderMegaMenuItems(menuItems, closeCategoryMenu)}
                   </div>
                 ) : null}
                 {index < categoryNav.length - 1 ? <span className="pasaj-nav-separator">•</span> : null}
@@ -154,10 +187,11 @@ export const Header = () => {
 
       <div className="pasaj-announcement-bar">
         <div className="pasaj-announcement-inner">
-          <span>5G Uyumlu Telefonlarda Platinuma Ozel 1000 TL Indirim!</span>
-          <Button className="pasaj-announcement-button">Incele</Button>
+          <span>5G Uyumlu Telefonlarda Platinum'a Özel 1000 TL İndirim!</span>
+          <Button className="pasaj-announcement-button">İncele</Button>
         </div>
       </div>
     </header>
   );
 };
+

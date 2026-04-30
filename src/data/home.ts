@@ -1,4 +1,4 @@
-export type HeroBanner = {
+﻿export type HeroBanner = {
   id: number;
   image: string;
   alt: string;
@@ -42,8 +42,8 @@ export const topLinks: TopLinkItem[] = [
   { label: "Kampanyalar", to: "/" },
   { label: "Markalar", to: "/" },
   { label: "Favorilerim", to: "/account?tab=favorites" },
-  { label: "Siparis Sorgulama", to: "/account?tab=orders" },
-  { label: "Yardim", to: "/" },
+  { label: "Sipariş Sorgulama", to: "/account?tab=orders" },
+  { label: "Yardım", to: "/" },
   { label: "Pasaj Blog", to: "/" }
 ];
 
@@ -51,10 +51,10 @@ export const categoryNav = [
   "Cep Telefonu-Aksesuar",
   "Bilgisayar-Tablet",
   "Elektrikli Ev Aletleri",
-  "Saglik-Kisisel Bakim",
+  "Sağlık-Kişisel Bakım",
   "Hobi-Oyun",
   "TV-Ses Sistemleri",
-  "Ev-Yasam"
+  "Ev-Yaşam"
 ];
 
 export const categoryMenus: Record<string, CategoryMenuItem[]> = {
@@ -96,7 +96,7 @@ export const categoryMenus: Record<string, CategoryMenuItem[]> = {
     { label: "Süpürgeler", to: "/category/aksesuar" },
     { label: "Küçük Ev Aletleri", to: "/category/aksesuar" }
   ],
-  "Saglik-Kisisel Bakim": [
+  "Sağlık-Kişisel Bakım": [
     { label: "Kişisel Bakım", to: "/category/aksesuar" },
     { label: "Akıllı Tartılar", to: "/category/aksesuar" }
   ],
@@ -108,7 +108,7 @@ export const categoryMenus: Record<string, CategoryMenuItem[]> = {
     { label: "Kulaklık", to: "/product/airpods-pro-2" },
     { label: "Hoparlör", to: "/category/aksesuar" }
   ],
-  "Ev-Yasam": [
+  "Ev-Yaşam": [
     { label: "Akıllı Ev", to: "/category/aksesuar" },
     { label: "Yaşam Ürünleri", to: "/category/aksesuar" }
   ]
@@ -118,7 +118,7 @@ export const heroBanners: HeroBanner[] = [
   {
     id: 1,
     image: "/pasaj/hero/ip0326-new-hero-web.webp",
-    alt: "5G uyumlu telefonlara gecin kampanyasi"
+    alt: "5G uyumlu telefonlara gecin kampanyası"
   },
   {
     id: 2,
@@ -133,7 +133,7 @@ export const heroBanners: HeroBanner[] = [
   {
     id: 4,
     image: "/pasaj/hero/skg0203-new-hero-web.webp",
-    alt: "SKG masaj urunleri banner"
+    alt: "SKG masaj ürünleri banner"
   },
   {
     id: 5,
@@ -144,12 +144,12 @@ export const heroBanners: HeroBanner[] = [
 
 export const shortcutCategories: ShortcutCategory[] = [
   {
-    title: "Apple Egitim",
+    title: "Apple Eğitim",
     image: "/pasaj/categories/_1772535591727_appleegitim.webp",
     to: "/"
   },
   {
-    title: "Apple Urunleri",
+    title: "Apple Ürünleri",
     image: "/pasaj/categories/_1775459311458_apple_brand_store.webp",
     to: "/category/telefon"
   },
@@ -159,7 +159,7 @@ export const shortcutCategories: ShortcutCategory[] = [
     to: "/category/telefon"
   },
   {
-    title: "Hediye Cekilerim",
+    title: "Hediye Çeklerim",
     image: "/pasaj/categories/hediye-ceki164px.webp",
     to: "/"
   },
@@ -169,7 +169,7 @@ export const shortcutCategories: ShortcutCategory[] = [
     to: "/"
   },
   {
-    title: "Cok Satanlar",
+    title: "Çok Satanlar",
     image: "/pasaj/categories/cok-satan164px.webp",
     to: "/"
   },
@@ -179,7 +179,7 @@ export const shortcutCategories: ShortcutCategory[] = [
     to: "/"
   },
   {
-    title: "Akilli Ev",
+    title: "Akıllı Ev",
     image: "/pasaj/categories/akilli-ev164px.webp",
     to: "/"
   },
@@ -189,42 +189,42 @@ export const shortcutCategories: ShortcutCategory[] = [
     to: "/"
   },
   {
-    title: "Kulakliklar",
+    title: "Kulaklıklar",
     image: "/pasaj/categories/kulaklik164px.webp",
     to: "/"
   }
 ];
 
 export const infoFeatures: CampaignFeature[] = [
-  { title: "Garaj Gunleri", icon: "parti" },
-  { title: "Limitine Uygun Urunler Burada!", icon: "limit" },
-  { title: "Superbox 5G Yeni Nesil Ev Interneti", icon: "yildiz" },
-  { title: "Hediye Ceklerim", icon: "kullanici" }
+  { title: "Garaj Günleri", icon: "parti" },
+  { title: "Limitine Uygun Ürünler Burada!", icon: "limit" },
+  { title: "Superbox 5G Yeni Nesil Ev İnterneti", icon: "yildiz" },
+  { title: "Hediye Çeklerim", icon: "kullanıcı" }
 ];
 
 export const campaignTiles: CampaignTile[] = [
   {
     id: 1,
     image: "/pasaj/campaigns/36-taksit-doalt.webp",
-    alt: "Turkcellilere ozel kampanya",
+    alt: "Turkcellilere özel kampanya",
     to: "/category/aksesuar"
   },
   {
     id: 2,
     image: "/pasaj/campaigns/hg30k-do-alt.webp",
-    alt: "Kredi kampanyasi",
+    alt: "Kredi kampanyası",
     to: "/category/telefon"
   },
   {
     id: 3,
     image: "/pasaj/campaigns/logitechbanner-doalt.webp",
-    alt: "Logitech Pasaj kampanyasi",
+    alt: "Logitech Pasaj kampanyası",
     to: "/category/aksesuar"
   },
   {
     id: 4,
     image: "/pasaj/campaigns/sbs-aksesuar-doalt.webp",
-    alt: "SBS aksesuar kampanyasi",
+    alt: "SBS aksesuar kampanyası",
     to: "/category/aksesuar"
   }
 ];
@@ -247,3 +247,4 @@ export const popularBrands: BrandLogo[] = [
   { name: "Realme", image: "/pasaj/brands/realme-logo.webp" },
   { name: "TCL", image: "/pasaj/brands/tcl-logo.webp" }
 ];
+

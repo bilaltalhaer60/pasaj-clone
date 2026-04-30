@@ -1,4 +1,4 @@
-import type { Product } from "../types/product";
+﻿import type { Product } from "../types/product";
 
 export const fallbackProducts: Product[] = [
   {
@@ -66,17 +66,17 @@ export const fallbackProducts: Product[] = [
     popularity: 97,
     rating: 4.5,
     reviewCount: 74,
-    installment: "Pasaj Limitiyle Ode",
-    badge: "Cok Satan",
+    installment: "Pasaj Limitiyle Öde",
+    badge: "Çok Satan",
     image: "/pasaj/categories/cep-telefonu164px.webp",
-    summary: "Yuksek depolama, guclu pil ve gunluk kullanim icin hizli Android deneyimi.",
-    shippingNote: "Ucretsiz kargo, hizli teslimat.",
-    highlights: ["256 GB", "8 GB RAM", "Hizli sarj", "Ucretsiz kargo"],
+    summary: "Yüksek depolama, güçlü pil ve günlük kullanım için hızlı Android deneyimi.",
+    shippingNote: "Ücretsiz kargo, hızlı teslimat.",
+    highlights: ["256 GB", "8 GB RAM", "Hızlı şarj", "Ücretsiz kargo"],
     specs: [
       { label: "Marka", value: "Xiaomi" },
       { label: "Depolama", value: "256 GB" },
       { label: "Bellek", value: "8 GB" },
-      { label: "Teslimat", value: "Hizli teslimat" }
+      { label: "Teslimat", value: "Hızlı teslimat" }
     ]
   },
   {
@@ -92,17 +92,17 @@ export const fallbackProducts: Product[] = [
     popularity: 96,
     rating: 4.6,
     reviewCount: 83,
-    installment: "Pasaj Limitiyle Ode",
-    badge: "Cok Satan",
+    installment: "Pasaj Limitiyle Öde",
+    badge: "Çok Satan",
     image: "/pasaj/categories/cep-telefonu164px.webp",
-    summary: "5G uyumlu, genis ekranli ve performans odakli Samsung telefon.",
-    shippingNote: "Ucretsiz kargo, hizli teslimat.",
+    summary: "5G uyumlu, genis ekranli ve performans odaklı Samsung telefon.",
+    shippingNote: "Ücretsiz kargo, hızlı teslimat.",
     highlights: ["5G uyumlu", "256 GB", "8 GB RAM", "AMOLED ekran"],
     specs: [
       { label: "Marka", value: "Samsung" },
       { label: "Depolama", value: "256 GB" },
       { label: "Bellek", value: "8 GB" },
-      { label: "Baglanti", value: "5G" }
+      { label: "Bağlantı", value: "5G" }
     ]
   },
   {
@@ -118,17 +118,17 @@ export const fallbackProducts: Product[] = [
     popularity: 95,
     rating: 4.9,
     reviewCount: 112,
-    installment: "Pasaj Limitiyle Ode",
-    badge: "Cok Satan",
+    installment: "Pasaj Limitiyle Öde",
+    badge: "Çok Satan",
     image: "/pasaj/products/iphone-pro-lineup.jpg",
     summary: "Pro kamera sistemi, buyuk ekran ve premium Apple deneyimi.",
-    shippingNote: "Ucretsiz kargo, hizli teslimat.",
+    shippingNote: "Ücretsiz kargo, hızlı teslimat.",
     highlights: ["Pro Max", "256 GB", "5G uyumlu", "Apple garantili"],
     specs: [
       { label: "Marka", value: "Apple" },
       { label: "Model", value: "iPhone 17 Pro Max" },
       { label: "Depolama", value: "256 GB" },
-      { label: "Baglanti", value: "5G" }
+      { label: "Bağlantı", value: "5G" }
     ]
   },
   {
@@ -144,17 +144,17 @@ export const fallbackProducts: Product[] = [
     popularity: 93,
     rating: 4.7,
     reviewCount: 166,
-    installment: "Pasaj Limitiyle Ode",
-    badge: "Cok Satan",
+    installment: "Pasaj Limitiyle Öde",
+    badge: "Çok Satan",
     image: "/pasaj/products/iphone-15.avif",
-    summary: "5G destekli, guclu kamera ve gunluk kullanim icin hizli iPhone deneyimi.",
-    shippingNote: "Son 30 gunun en dusuk fiyati.",
-    highlights: ["128 GB", "5G uyumlu", "Ucretsiz kargo", "Apple garantili"],
+    summary: "5G destekli, güçlü kamera ve günlük kullanım için hızlı iPhone deneyimi.",
+    shippingNote: "Son 30 günün en düşük fiyatı.",
+    highlights: ["128 GB", "5G uyumlu", "Ücretsiz kargo", "Apple garantili"],
     specs: [
       { label: "Marka", value: "Apple" },
       { label: "Model", value: "iPhone 16" },
       { label: "Depolama", value: "128 GB" },
-      { label: "Baglanti", value: "5G" }
+      { label: "Bağlantı", value: "5G" }
     ]
   },
   {
@@ -199,7 +199,7 @@ export const fallbackProducts: Product[] = [
     installment: "3 ay ertelemeli kredi seçeneği",
     badge: "Kampanya",
     image: "/pasaj/categories/cep-telefonu164px.webp",
-    summary: "Yapay zeka destekli kamera ve büyük ekran isteyenler için amiral gemisi deneyimi.",
+    summary: "Yapay zeka destekli kamera ve büyük ekran isteyenler için amiral gemişi deneyimi.",
     shippingNote: "Sınırlı stokla hızlı teslimata uygun.",
     highlights: ["512 GB", "S Pen", "AMOLED ekran", "5G"],
     specs: [
@@ -274,11 +274,11 @@ export const fallbackProducts: Product[] = [
     popularity: 86,
     rating: 4.6,
     reviewCount: 47,
-    installment: "Pasaj Limitiyle Ode",
-    badge: "Cok Satan",
+    installment: "Pasaj Limitiyle Öde",
+    badge: "Çok Satan",
     image: "/pasaj/products/bestsellers/lenovo-legion.avif",
-    summary: "Oyun ve performans odakli kullanim icin guclu laptop.",
-    shippingNote: "Ucretsiz kargo, hizli teslimat.",
+    summary: "Oyun ve performans odaklı kullanım için güçlü laptop.",
+    shippingNote: "Ücretsiz kargo, hızlı teslimat.",
     highlights: ["16 in ekran", "32 GB RAM", "1 TB SSD", "Oyuncu laptop"],
     specs: [
       { label: "Marka", value: "Lenovo" },
@@ -300,11 +300,11 @@ export const fallbackProducts: Product[] = [
     popularity: 84,
     rating: 4.8,
     reviewCount: 91,
-    installment: "Pesin fiyatina taksit",
-    badge: "Cok Satan",
+    installment: "Peşin fiyatına taksit",
+    badge: "Çok Satan",
     image: "/pasaj/categories/_1775459311458_apple_brand_store.webp",
-    summary: "Hafif tasarim ve guclu performans isteyenler icin tablet deneyimi.",
-    shippingNote: "Ucretsiz kargo.",
+    summary: "Hafif tasarım ve güçlü performans isteyenler için tablet deneyimi.",
+    shippingNote: "Ücretsiz kargo.",
     highlights: ["128 GB", "11 in ekran", "Apple Pencil uyumlu"],
     specs: [
       { label: "Marka", value: "Apple" },
@@ -326,21 +326,21 @@ export const fallbackProducts: Product[] = [
     rating: 4.5,
     reviewCount: 58,
     installment: "36 aya varan taksit",
-    badge: "Cok Satan",
+    badge: "Çok Satan",
     image: "/pasaj/campaigns/36-taksit-doalt.webp",
-    summary: "Evde pratik kahve keyfi icin tam otomatik cozum.",
-    shippingNote: "Ucretsiz kargo.",
+    summary: "Evde pratik kahve keyfi için tam otomatik çözüm.",
+    shippingNote: "Ücretsiz kargo.",
     highlights: ["Otomatik kahve", "Kolay temizlik", "Taksit firsati"],
     specs: [
       { label: "Marka", value: "Philips" },
       { label: "Tip", value: "Kahve makinesi" },
-      { label: "Garanti", value: "2 yil" }
+      { label: "Garanti", value: "2 yıl" }
     ]
   },
   {
     id: "dyson-v15-supurge",
     slug: "dyson-v15-supurge",
-    name: "Dyson V15 Kablosuz Supurge",
+    name: "Dyson V15 Kablosuz Süpürge",
     brand: "Dyson",
     category: "aksesuar",
     stock: 7,
@@ -350,16 +350,16 @@ export const fallbackProducts: Product[] = [
     popularity: 82,
     rating: 4.7,
     reviewCount: 66,
-    installment: "Pasaj Limitiyle Ode",
-    badge: "Cok Satan",
+    installment: "Pasaj Limitiyle Öde",
+    badge: "Çok Satan",
     image: "/pasaj/categories/akilli-ev164px.webp",
-    summary: "Kablosuz temizlik ve guclu emis performansi.",
-    shippingNote: "Hizli teslimat.",
-    highlights: ["Kablosuz", "Guclu motor", "Hizli teslimat"],
+    summary: "Kablosuz temizlik ve güçlü emiş performansı.",
+    shippingNote: "Hızlı teslimat.",
+    highlights: ["Kablosuz", "Güçlü motor", "Hızlı teslimat"],
     specs: [
       { label: "Marka", value: "Dyson" },
       { label: "Tip", value: "Kablosuz supurge" },
-      { label: "Teslimat", value: "Hizli" }
+      { label: "Teslimat", value: "Hızlı" }
     ]
   },
   {
@@ -376,15 +376,15 @@ export const fallbackProducts: Product[] = [
     rating: 4.4,
     reviewCount: 40,
     installment: "Sepette avantaj",
-    badge: "Firsat",
+    badge: "Fırsat",
     image: "/pasaj/categories/kahve-makinasi164px.webp",
-    summary: "Gunluk mutfak kullanimi icin pratik tost makinesi.",
-    shippingNote: "Ucretsiz kargo.",
-    highlights: ["Cikarilabilir plaka", "Kompakt tasarim", "Uygun fiyat"],
+    summary: "Günlük mutfak kullanımi için pratik tost makinesi.",
+    shippingNote: "Ücretsiz kargo.",
+    highlights: ["Çıkarılabilir plaka", "Kompakt tasarım", "Uygun fiyat"],
     specs: [
       { label: "Marka", value: "Arzum" },
       { label: "Tip", value: "Tost makinesi" },
-      { label: "Garanti", value: "2 yil" }
+      { label: "Garanti", value: "2 yıl" }
     ]
   },
   {
@@ -400,22 +400,22 @@ export const fallbackProducts: Product[] = [
     popularity: 79,
     rating: 4.6,
     reviewCount: 52,
-    installment: "Pasaj Limitiyle Ode",
-    badge: "Cok Satan",
+    installment: "Pasaj Limitiyle Öde",
+    badge: "Çok Satan",
     image: "/pasaj/brands/braun-logo.webp",
-    summary: "Hassas tiras ve kolay temizlik icin kisisel bakim urunu.",
-    shippingNote: "Ucretsiz kargo.",
-    highlights: ["Islak kuru kullanim", "Sarjli", "Kisisel bakim"],
+    summary: "Hassas tıraş ve kolay temizlik için kişisel bakım ürünü.",
+    shippingNote: "Ücretsiz kargo.",
+    highlights: ["Islak kuru kullanım", "Şarjlı", "Kişisel bakım"],
     specs: [
       { label: "Marka", value: "Braun" },
-      { label: "Tip", value: "Tiras makinesi" },
-      { label: "Kullanim", value: "Islak kuru" }
+      { label: "Tip", value: "Tıraş makinesi" },
+      { label: "Kullanım", value: "Islak kuru" }
     ]
   },
   {
     id: "philips-sac-kurutma",
     slug: "philips-sac-kurutma",
-    name: "Philips Sac Kurutma Makinesi",
+    name: "Philips Saç Kurutma Makinesi",
     brand: "Philips",
     category: "aksesuar",
     stock: 21,
@@ -426,21 +426,21 @@ export const fallbackProducts: Product[] = [
     rating: 4.4,
     reviewCount: 38,
     installment: "Sepette avantaj",
-    badge: "Firsat",
+    badge: "Fırsat",
     image: "/pasaj/brands/philips-logo.webp",
-    summary: "Gunluk sac bakimi icin hafif ve guclu kurutma makinesi.",
-    shippingNote: "Hizli teslimat.",
-    highlights: ["Hafif govde", "Guclu motor", "Hizli teslimat"],
+    summary: "Günlük saç bakımı için hafif ve güçlü kurutma makinesi.",
+    shippingNote: "Hızlı teslimat.",
+    highlights: ["Hafif gövde", "Güçlü motor", "Hızlı teslimat"],
     specs: [
       { label: "Marka", value: "Philips" },
-      { label: "Tip", value: "Sac kurutma" },
-      { label: "Garanti", value: "2 yil" }
+      { label: "Tip", value: "Saç kurutma" },
+      { label: "Garanti", value: "2 yıl" }
     ]
   },
   {
     id: "xiaomi-akilli-tarti",
     slug: "xiaomi-akilli-tarti",
-    name: "Xiaomi Akilli Tarti",
+    name: "Xiaomi Akıllı Tartı",
     brand: "Xiaomi",
     category: "aksesuar",
     stock: 25,
@@ -450,16 +450,16 @@ export const fallbackProducts: Product[] = [
     popularity: 76,
     rating: 4.3,
     reviewCount: 31,
-    installment: "Ucretsiz kargo",
+    installment: "Ücretsiz kargo",
     badge: "Yeni",
     image: "/pasaj/brands/mi-logo.webp",
-    summary: "Akilli takip ozellikleriyle saglik ve yasam yardimcisi.",
-    shippingNote: "Ucretsiz kargo.",
-    highlights: ["Akilli takip", "Mobil uygulama", "Kompakt"],
+    summary: "Akıllı takip özellikleriyle sağlık ve yaşam yardımcısı.",
+    shippingNote: "Ücretsiz kargo.",
+    highlights: ["Akıllı takip", "Mobil uygulama", "Kompakt"],
     specs: [
       { label: "Marka", value: "Xiaomi" },
-      { label: "Tip", value: "Akilli tarti" },
-      { label: "Baglanti", value: "Bluetooth" }
+      { label: "Tip", value: "Akıllı tartı" },
+      { label: "Bağlantı", value: "Bluetooth" }
     ]
   },
   {
@@ -475,12 +475,12 @@ export const fallbackProducts: Product[] = [
     popularity: 78,
     rating: 4.9,
     reviewCount: 102,
-    installment: "Pasaj Limitiyle Ode",
-    badge: "Cok Satan",
+    installment: "Pasaj Limitiyle Öde",
+    badge: "Çok Satan",
     image: "/pasaj/categories/oyun-konsolu164px.webp",
-    summary: "Yeni nesil oyun deneyimi icin kompakt PS5 konsolu.",
-    shippingNote: "Hizli teslimat.",
-    highlights: ["PS5", "Slim kasa", "Hizli SSD"],
+    summary: "Yeni nesil oyun deneyimi için kompakt PS5 konsolu.",
+    shippingNote: "Hızlı teslimat.",
+    highlights: ["PS5", "Slim kasa", "Hızlı SSD"],
     specs: [
       { label: "Marka", value: "Sony" },
       { label: "Tip", value: "Oyun konsolu" },
@@ -490,7 +490,7 @@ export const fallbackProducts: Product[] = [
   {
     id: "logitech-g435",
     slug: "logitech-g435",
-    name: "Logitech G435 Oyuncu Kulakligi",
+    name: "Logitech G435 Oyuncu Kulaklığı",
     brand: "Logitech",
     category: "aksesuar",
     stock: 19,
@@ -501,15 +501,15 @@ export const fallbackProducts: Product[] = [
     rating: 4.4,
     reviewCount: 45,
     installment: "Sepette avantaj",
-    badge: "Cok Satan",
+    badge: "Çok Satan",
     image: "/pasaj/campaigns/logitechbanner-doalt.webp",
-    summary: "Hafif tasarimli kablosuz oyuncu kulakligi.",
-    shippingNote: "Ucretsiz kargo.",
+    summary: "Hafif tasarımlı kablosuz oyuncu kulaklığı.",
+    shippingNote: "Ücretsiz kargo.",
     highlights: ["Kablosuz", "Oyuncu", "Hafif"],
     specs: [
       { label: "Marka", value: "Logitech" },
-      { label: "Tip", value: "Oyuncu kulakligi" },
-      { label: "Baglanti", value: "Kablosuz" }
+      { label: "Tip", value: "Oyuncu kulaklığı" },
+      { label: "Bağlantı", value: "Kablosuz" }
     ]
   },
   {
@@ -525,22 +525,22 @@ export const fallbackProducts: Product[] = [
     popularity: 74,
     rating: 4.5,
     reviewCount: 36,
-    installment: "Ucretsiz kargo",
-    badge: "Firsat",
+    installment: "Ücretsiz kargo",
+    badge: "Fırsat",
     image: "/pasaj/categories/oyun-konsolu164px.webp",
-    summary: "PC ve konsol oyunculari icin kablosuz kontrolcu.",
-    shippingNote: "Ucretsiz kargo.",
+    summary: "PC ve konsol oyuncuları için kablosuz kontrolcü.",
+    shippingNote: "Ücretsiz kargo.",
     highlights: ["Kablosuz", "PC uyumlu", "Ergonomik"],
     specs: [
       { label: "Marka", value: "Microsoft" },
-      { label: "Tip", value: "Kontrolcu" },
-      { label: "Baglanti", value: "Bluetooth" }
+      { label: "Tip", value: "Kontrolcü" },
+      { label: "Bağlantı", value: "Bluetooth" }
     ]
   },
   {
     id: "jbl-flip-6",
     slug: "jbl-flip-6",
-    name: "JBL Flip 6 Bluetooth Hoparlor",
+    name: "JBL Flip 6 Bluetooth Hoparlör",
     brand: "JBL",
     category: "aksesuar",
     stock: 20,
@@ -550,22 +550,22 @@ export const fallbackProducts: Product[] = [
     popularity: 73,
     rating: 4.6,
     reviewCount: 64,
-    installment: "Pasaj Limitiyle Ode",
-    badge: "Cok Satan",
+    installment: "Pasaj Limitiyle Öde",
+    badge: "Çok Satan",
     image: "/pasaj/brands/jbl-logo.webp",
-    summary: "Guclu ses ve tasinabilir tasarimla kablosuz hoparlor.",
-    shippingNote: "Hizli teslimat.",
-    highlights: ["Bluetooth", "Tasinabilir", "Guclu ses"],
+    summary: "Güçlü ses ve taşınabilir tasarımla kablosuz hoparlör.",
+    shippingNote: "Hızlı teslimat.",
+    highlights: ["Bluetooth", "Taşınabilir", "Güçlü ses"],
     specs: [
       { label: "Marka", value: "JBL" },
-      { label: "Tip", value: "Bluetooth hoparlor" },
-      { label: "Baglanti", value: "Bluetooth" }
+      { label: "Tip", value: "Bluetooth hoparlör" },
+      { label: "Bağlantı", value: "Bluetooth" }
     ]
   },
   {
     id: "sony-wh-1000xm5",
     slug: "sony-wh-1000xm5",
-    name: "Sony WH-1000XM5 Kulaklik",
+    name: "Sony WH-1000XM5 Kulaklık",
     brand: "Sony",
     category: "aksesuar",
     stock: 12,
@@ -575,16 +575,16 @@ export const fallbackProducts: Product[] = [
     popularity: 72,
     rating: 4.8,
     reviewCount: 88,
-    installment: "Pasaj Limitiyle Ode",
-    badge: "Cok Satan",
+    installment: "Pasaj Limitiyle Öde",
+    badge: "Çok Satan",
     image: "/pasaj/brands/sony-logo.webp",
-    summary: "Aktif gurultu engelleme ve premium ses deneyimi.",
-    shippingNote: "Ucretsiz kargo.",
+    summary: "Aktif gürültü engelleme ve premium ses deneyimi.",
+    shippingNote: "Ücretsiz kargo.",
     highlights: ["ANC", "Kablosuz", "Premium ses"],
     specs: [
       { label: "Marka", value: "Sony" },
-      { label: "Tip", value: "Kulaklik" },
-      { label: "Ozellik", value: "ANC" }
+      { label: "Tip", value: "Kulaklık" },
+      { label: "Özellik", value: "ANC" }
     ]
   },
   {
@@ -601,15 +601,15 @@ export const fallbackProducts: Product[] = [
     rating: 4.5,
     reviewCount: 42,
     installment: "Sepette avantaj",
-    badge: "Firsat",
+    badge: "Fırsat",
     image: "/pasaj/brands/samsung-logo.webp",
-    summary: "TV keyfini guclendiren kablosuz soundbar.",
-    shippingNote: "Ucretsiz kargo.",
-    highlights: ["TV uyumlu", "Kablosuz", "Guclu bas"],
+    summary: "TV keyfini güçlendiren kablosuz soundbar.",
+    shippingNote: "Ücretsiz kargo.",
+    highlights: ["TV uyumlu", "Kablosuz", "Güçlü bas"],
     specs: [
       { label: "Marka", value: "Samsung" },
       { label: "Tip", value: "Soundbar" },
-      { label: "Baglanti", value: "Bluetooth" }
+      { label: "Bağlantı", value: "Bluetooth" }
     ]
   },
   {
@@ -625,22 +625,22 @@ export const fallbackProducts: Product[] = [
     popularity: 70,
     rating: 4.5,
     reviewCount: 73,
-    installment: "Ucretsiz kargo",
-    badge: "Cok Satan",
+    installment: "Ücretsiz kargo",
+    badge: "Çok Satan",
     image: "/pasaj/brands/anker-logo.webp",
-    summary: "Gunluk kullanim icin yuksek kapasiteli tasinabilir sarj.",
-    shippingNote: "Ucretsiz kargo.",
-    highlights: ["20000 mAh", "Hizli sarj", "Tasinabilir"],
+    summary: "Günlük kullanım için yüksek kapasiteli taşınabilir şarj.",
+    shippingNote: "Ücretsiz kargo.",
+    highlights: ["20000 mAh", "Hızlı şarj", "Taşınabilir"],
     specs: [
       { label: "Marka", value: "Anker" },
       { label: "Kapasite", value: "20000 mAh" },
-      { label: "Baglanti", value: "USB-C" }
+      { label: "Bağlantı", value: "USB-C" }
     ]
   },
   {
     id: "sbs-hizli-sarj",
     slug: "sbs-hizli-sarj",
-    name: "SBS 65W Hizli Sarj Adaptoru",
+    name: "SBS 65W Hızlı Şarj Adaptörü",
     brand: "SBS",
     category: "aksesuar",
     stock: 31,
@@ -653,19 +653,19 @@ export const fallbackProducts: Product[] = [
     installment: "Sepette avantaj",
     badge: "Yeni",
     image: "/pasaj/campaigns/sbs-aksesuar-doalt.webp",
-    summary: "Telefon ve tabletler icin 65W hizli sarj cozumu.",
-    shippingNote: "Hizli teslimat.",
-    highlights: ["65W", "USB-C", "Hizli sarj"],
+    summary: "Telefon ve tabletler için 65W hızlı şarj çözümü.",
+    shippingNote: "Hızlı teslimat.",
+    highlights: ["65W", "USB-C", "Hızlı şarj"],
     specs: [
       { label: "Marka", value: "SBS" },
-      { label: "Guc", value: "65W" },
-      { label: "Baglanti", value: "USB-C" }
+      { label: "Güç", value: "65W" },
+      { label: "Bağlantı", value: "USB-C" }
     ]
   },
   {
     id: "akilli-ev-kamera",
     slug: "akilli-ev-kamera",
-    name: "Akilli Ev Kamerasi",
+    name: "Akıllı Ev Kamerası",
     brand: "TCL",
     category: "aksesuar",
     stock: 17,
@@ -675,16 +675,17 @@ export const fallbackProducts: Product[] = [
     popularity: 68,
     rating: 4.3,
     reviewCount: 34,
-    installment: "Ucretsiz kargo",
-    badge: "Firsat",
+    installment: "Ücretsiz kargo",
+    badge: "Fırsat",
     image: "/pasaj/categories/akilli-ev164px.webp",
-    summary: "Ev guvenligi icin kolay kurulumlu akilli kamera.",
-    shippingNote: "Ucretsiz kargo.",
-    highlights: ["Akilli ev", "Gece gorusu", "Mobil takip"],
+    summary: "Ev güvenliği için kolay kurulumlu akıllı kamera.",
+    shippingNote: "Ücretsiz kargo.",
+    highlights: ["Akıllı ev", "Gece görüşü", "Mobil takip"],
     specs: [
       { label: "Marka", value: "TCL" },
-      { label: "Tip", value: "Akilli kamera" },
-      { label: "Baglanti", value: "Wi-Fi" }
+      { label: "Tip", value: "Akıllı kamera" },
+      { label: "Bağlantı", value: "Wi-Fi" }
     ]
   }
 ];
+

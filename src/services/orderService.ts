@@ -1,4 +1,4 @@
-import {
+﻿import {
   addDoc,
   collection,
   doc,
@@ -14,7 +14,7 @@ import { env } from "../config/env";
 import { firestore } from "../config/firebase";
 import type { CreateOrderPayload, OrderRecord } from "../types/order";
 
-const orderStatuses = ["Hazirlaniyor", "Kargoda", "Teslim Edildi", "Iptal Edildi"] as const;
+const orderStatuses = ["Hazırlanıyor", "Kargoda", "Teslim Edildi", "İptal Edildi"] as const;
 
 const buildOrderNumber = () => {
   const randomPart = Math.floor(100000 + Math.random() * 900000);
@@ -35,7 +35,7 @@ const mapOrder = (snapshot: QueryDocumentSnapshot<DocumentData>): OrderRecord =>
     status:
       typeof data.status === "string" && orderStatuses.includes(data.status as never)
         ? data.status
-        : "Hazirlaniyor",
+        : "Hazırlanıyor",
     createdAt,
     customer: {
       fullName: data.customer?.fullName ?? "",
@@ -59,13 +59,13 @@ const mapOrder = (snapshot: QueryDocumentSnapshot<DocumentData>): OrderRecord =>
 
 export const createOrder = async (payload: CreateOrderPayload): Promise<OrderRecord> => {
   if (!firestore || !env.ordersCollection) {
-    throw new Error("Siparis kaydi icin Firebase ayarlari eksik.");
+    throw new Error("Sipariş kaydı için Firebase ayarları eksik.");
   }
 
   const orderNumber = buildOrderNumber();
   const orderData = {
     orderNumber,
-    status: "Hazirlaniyor",
+    status: "Hazırlanıyor",
     createdAt: serverTimestamp(),
     customer: payload.customer,
     payment: {
@@ -85,7 +85,7 @@ export const createOrder = async (payload: CreateOrderPayload): Promise<OrderRec
   return {
     id: docRef.id,
     orderNumber,
-    status: "Hazirlaniyor",
+    status: "Hazırlanıyor",
     createdAt: new Date().toISOString(),
     customer: payload.customer,
     payment: {
@@ -103,7 +103,7 @@ export const createOrder = async (payload: CreateOrderPayload): Promise<OrderRec
 
 export const getAllOrders = async (): Promise<OrderRecord[]> => {
   if (!firestore || !env.ordersCollection) {
-    throw new Error("Siparis verisi su anda yuklenemiyor.");
+    throw new Error("Sipariş verisi şu anda yüklenemiyor.");
   }
 
   const snapshot = await getDocs(
@@ -115,7 +115,7 @@ export const getAllOrders = async (): Promise<OrderRecord[]> => {
 
 export const updateOrderStatus = async (orderId: string, status: OrderRecord["status"]) => {
   if (!firestore || !env.ordersCollection) {
-    throw new Error("Siparis durumu guncellenemedi.");
+    throw new Error("Sipariş durumu güncellenemedi.");
   }
 
   await updateDoc(doc(collection(firestore, env.ordersCollection), orderId), {
@@ -123,3 +123,4 @@ export const updateOrderStatus = async (orderId: string, status: OrderRecord["st
     updatedAt: serverTimestamp()
   });
 };
+

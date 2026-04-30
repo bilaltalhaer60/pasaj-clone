@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import {
   CheckCircleOutlined,
   HeartFilled,
@@ -9,7 +9,7 @@ import {
   TruckOutlined
 } from "@ant-design/icons";
 import { useQuery } from "@tanstack/react-query";
-import { Alert, Button, Descriptions, Rate, Skeleton, Tag, Typography, message } from "antd";
+import { Alert, Button, Descriptions, Rate, Skeleton, Tag, Typography } from "antd";
 import { Link, useParams } from "react-router-dom";
 import { getProductBySlug } from "../services/productService";
 import { useAuthStore } from "../store/authStore";
@@ -64,7 +64,7 @@ export const ProductDetailPage = () => {
         <Alert
           type="error"
           showIcon
-          message={error instanceof Error ? error.message : "Urun yuklenirken beklenmeyen bir hata olustu."}
+          message={error instanceof Error ? error.message : "Ürün yüklenirken beklenmeyen bir hata oluştu."}
         />
       </main>
     );
@@ -73,7 +73,7 @@ export const ProductDetailPage = () => {
   if (!product) {
     return (
       <main className="pasaj-product-detail-page">
-        <Alert type="warning" showIcon message="Istenen urun bulunamadi." />
+        <Alert type="warning" showIcon message="İstenen ürün bulunamadı." />
       </main>
     );
   }
@@ -95,17 +95,15 @@ export const ProductDetailPage = () => {
 
   const handleAddToCart = () => {
     addItem(product);
-    message.success(`${product.name} sepete eklendi.`);
   };
 
   const handleToggleFavorite = () => {
     toggleFavorite(product.slug);
-    message.success(isFavorite ? "Urun favorilerden kaldirildi." : "Urun favorilere eklendi.");
   };
 
   return (
     <main className="pasaj-product-detail-page">
-      <nav className="pasaj-breadcrumb" aria-label="Urun yolu">
+      <nav className="pasaj-breadcrumb" aria-label="Ürün yolu">
         <Link to="/">Pasaj</Link>
         <RightOutlined />
         <Link to={`/category/${product.category}`}>{categoryTitle}</Link>
@@ -123,7 +121,7 @@ export const ProductDetailPage = () => {
                 type="button"
                 key={image}
                 className={`pasaj-gallery-thumb ${selectedImageIndex === index ? "active" : ""}`}
-                aria-label={`${product.name} gorsel ${index + 1}`}
+                aria-label={`${product.name} görsel ${index + 1}`}
                 onClick={() => setSelectedImageIndex(index)}
               >
                 <ProductVisual image={image} name={product.name} />
@@ -144,7 +142,7 @@ export const ProductDetailPage = () => {
             <button
               type="button"
               className={`pasaj-favorite-detail ${isFavorite ? "active" : ""}`}
-              aria-label={isFavorite ? "Favorilerden cikar" : "Favorilere ekle"}
+              aria-label={isFavorite ? "Favorilerden çıkar" : "Favorilere ekle"}
               aria-pressed={isFavorite}
               onClick={handleToggleFavorite}
             >
@@ -176,7 +174,7 @@ export const ProductDetailPage = () => {
                 {product.previousPrice > product.price ? (
                   <span className="pasaj-old-price">{formatCurrency(product.previousPrice)}</span>
                 ) : null}
-                {discountRate > 0 ? <span className="pasaj-discount">%{discountRate} Indirim</span> : null}
+                {discountRate > 0 ? <span className="pasaj-discount">%{discountRate} İndirim</span> : null}
               </div>
               <strong>{formatCurrency(product.price)}</strong>
             </div>
@@ -196,46 +194,46 @@ export const ProductDetailPage = () => {
             </div>
 
             <div className="pasaj-service-row">
-              <span><CheckCircleOutlined /> 1 Is Gununde Kargoda</span>
-              <span><TruckOutlined /> Ucretsiz Kargo</span>
-              <Link to={`/category/${product.category}`}>Indirim Bilgileri <InfoCircleOutlined /></Link>
+              <span><CheckCircleOutlined /> 1 İş Günunde Kargoda</span>
+              <span><TruckOutlined /> Ücretsiz Kargo</span>
+              <Link to={`/category/${product.category}`}>İndirim Bilgileri <InfoCircleOutlined /></Link>
             </div>
 
             <div className="pasaj-buy-footer">
               <Link to="#questions">{product.reviewCount} Soru & Cevap</Link>
-              <Link to={`/category/${product.category}`}>Diger Saticilar (10)</Link>
+              <Link to={`/category/${product.category}`}>Diğer Satıcılar (10)</Link>
             </div>
           </aside>
         </div>
       </section>
 
       <section className="pasaj-payment-methods">
-        <Typography.Title level={2}>Alternatif Odeme Yontemleri</Typography.Title>
+        <Typography.Title level={2}>Alternatif Ödeme Yöntemleri</Typography.Title>
         <div className="pasaj-payment-grid">
           <article>
             <strong>Pasaj Limitiyle Al</strong>
-            <span>Turkcell Pasaj limitini kullanarak kolayca alisveris yap.</span>
+            <span>Turkcell Pasaj limitini kullanarak kolayca alışveriş yap.</span>
           </article>
           <article>
             <strong>Kredi Karti</strong>
-            <span>Secili bankalarda pesin fiyatina taksit firsatlari.</span>
+            <span>Seçili bankalarda pesin fiyatına taksit fırsatları.</span>
           </article>
           <article>
-            <strong>Hizli Teslimat</strong>
-            <span>Uygun urunlerde ayni gun veya ertesi gun teslimat.</span>
+            <strong>Hızlı Teslimat</strong>
+            <span>Uygun ürünlerde ayni gün veya ertesi gün teslimat.</span>
           </article>
         </div>
       </section>
 
       <section className="pasaj-detail-tabs">
         <div className="pasaj-detail-tab-list">
-          <button type="button" className="active">Urun Ozellikleri</button>
-          <button type="button">Degerlendirmeler</button>
+          <button type="button" className="active">Ürün Özellikleri</button>
+          <button type="button">Değerlendirmeler</button>
           <button type="button" id="questions">Soru & Cevap</button>
         </div>
         <div className="pasaj-detail-content">
           <div>
-            <Typography.Title level={3}>One Cikan Ozellikler</Typography.Title>
+            <Typography.Title level={3}>Öne Çıkan Özellikler</Typography.Title>
             <div className="pasaj-highlight-list">
               {product.highlights.map((item) => (
                 <Tag key={item}>{item}</Tag>
@@ -254,3 +252,4 @@ export const ProductDetailPage = () => {
     </main>
   );
 };
+

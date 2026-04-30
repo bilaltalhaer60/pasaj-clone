@@ -22,3 +22,4 @@ export const env = {
     appId: getEnv("VITE_FIREBASE_APP_ID")
   }
 };
+

@@ -1,4 +1,4 @@
-import { Button, Result } from "antd";
+﻿import { Button, Result } from "antd";
 import { Link } from "react-router-dom";
 
 export const NotFoundPage = () => {
@@ -6,7 +6,7 @@ export const NotFoundPage = () => {
     <Result
       status="404"
       title="Sayfa bulunamadı"
-      subTitle="Tanımlanmayan bir rotaya gittin."
+      subTitle="Tanımlanmayan bir rotaya gittiniz."
       extra={
         <Button type="primary">
           <Link to="/">Anasayfaya Dön</Link>
@@ -15,3 +15,4 @@ export const NotFoundPage = () => {
     />
   );
 };
+

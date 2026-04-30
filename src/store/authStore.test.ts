@@ -1,16 +1,16 @@
-import { act } from "@testing-library/react";
+﻿import { act } from "@testing-library/react";
 import { useAuthStore } from "./authStore";
 import type { OrderRecord } from "../types/order";
 
 const sampleOrder: OrderRecord = {
   id: "order-1",
   orderNumber: "PSJ-100001",
-  status: "Hazirlaniyor",
+  status: "Hazırlanıyor",
   createdAt: "2026-04-18T10:00:00.000Z",
   customer: {
     fullName: "Bilal Talha",
     phone: "05555555555",
-    city: "Istanbul",
+    city: "İstanbul",
     district: "Kartal",
     address: "Demo adres"
   },
@@ -18,7 +18,7 @@ const sampleOrder: OrderRecord = {
     cardName: "BILAL TALHA",
     cardNumberLast4: "4242",
     expireDate: "12/30",
-    installment: "Pesin"
+    installment: "Peşin"
   },
   items: [],
   subtotal: 1200,
@@ -47,7 +47,7 @@ describe("authStore", () => {
             {
               id: "addr-1",
               title: "Ev",
-              detail: "Istanbul / Pendik"
+              detail: "İstanbul / Pendik"
             }
           ]
         }
@@ -87,11 +87,11 @@ describe("authStore", () => {
 
   it("registers a new user and forces the user role", () => {
     act(() => {
-      useAuthStore.getState().register("Yeni Kullanici", "new@example.com");
+      useAuthStore.getState().register("Yeni Kullanıcı", "new@example.com");
     });
 
     const user = useAuthStore.getState().user;
-    expect(user?.fullName).toBe("Yeni Kullanici");
+    expect(user?.fullName).toBe("Yeni Kullanıcı");
     expect(user?.email).toBe("new@example.com");
     expect(user?.role).toBe("user");
   });
@@ -116,7 +116,7 @@ describe("authStore", () => {
     expect(useAuthStore.getState().user).toBeNull();
   });
 
-  it("falls back to 'Bugun' for invalid order dates", () => {
+  it("falls back to 'Bugün' for invalid order dates", () => {
     act(() => {
       useAuthStore.getState().addOrder({
         ...sampleOrder,
@@ -125,7 +125,7 @@ describe("authStore", () => {
       });
     });
 
-    expect(useAuthStore.getState().user?.orders[0]?.date).toBe("Bugun");
+    expect(useAuthStore.getState().user?.orders[0]?.date).toBe("Bugün");
   });
 
   it("adds and removes favorites by product slug", () => {
@@ -168,3 +168,4 @@ describe("authStore", () => {
     expect(useAuthStore.getState().user).toBeNull();
   });
 });
+

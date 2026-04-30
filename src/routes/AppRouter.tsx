@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from 'react-router-dom';
+﻿import { Navigate, Route, Routes } from 'react-router-dom';
 import { MainLayout } from '../components/Layout/MainLayout';
 import { HomePage } from '../features/home/HomePage';
 import { NotFoundPage } from '../features/misc/NotFoundPage';
@@ -25,9 +25,9 @@ export function AppRouter() {
         <Route path={ROUTES.account} element={<AccountPage />} />
         <Route path={ROUTES.admin} element={<AdminPage />} />
         <Route path={ROUTES.login} element={<LoginPage />} />
-        <Route path="/giris" element={<LoginPage />} />
+        <Route path="/giriş" element={<LoginPage />} />
         <Route path={ROUTES.register} element={<RegisterPage />} />
-        <Route path="/kayit" element={<RegisterPage />} />
+        <Route path="/kayıt" element={<RegisterPage />} />
         <Route path={ROUTES.forgotPassword} element={<ForgotPasswordPage />} />
         <Route path="/404" element={<NotFoundPage />} />
         <Route path="*" element={<Navigate to="/404" replace />} />
@@ -35,3 +35,4 @@ export function AppRouter() {
     </Routes>
   );
 }
+

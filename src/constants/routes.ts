@@ -1,4 +1,4 @@
-export const ROUTES = {
+﻿export const ROUTES = {
   home: "/",
   category: "/category/:categorySlug",
   product: "/product/:productSlug",
@@ -10,3 +10,4 @@ export const ROUTES = {
   account: "/account",
   admin: "/admin"
 } as const;
+

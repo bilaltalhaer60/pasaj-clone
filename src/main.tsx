@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import ReactDOM from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ConfigProvider, Space, Spin, Typography } from "antd";
@@ -27,7 +27,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             <div className="page-loader">
               <Space direction="vertical" size="middle" align="center">
                 <Spin size="large" />
-                <Typography.Text>Sayfa yukleniyor...</Typography.Text>
+                <Typography.Text>Sayfa yükleniyor...</Typography.Text>
               </Space>
             </div>
           }
@@ -36,3 +36,4 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     </ConfigProvider>
   </React.StrictMode>
 );
+

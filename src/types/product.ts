@@ -1,4 +1,4 @@
-export interface ProductSpec {
+﻿export interface ProductSpec {
   label: string;
   value: string;
 }
@@ -26,3 +26,4 @@ export interface Product {
 }
 
 export type CategoryMeta = Record<string, { title: string; description: string }>;
+

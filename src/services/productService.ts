@@ -1,4 +1,4 @@
-import {
+﻿import {
   addDoc,
   collection,
   deleteDoc,
@@ -77,7 +77,7 @@ const withLocalProductImage = (product: Product): Product => ({
 
 const ensureFirestore = () => {
   if (!firestore || !productsCollectionName) {
-    throw new Error("Urun verisi su anda yuklenemiyor.");
+    throw new Error("Ürün verisi şu anda yüklenemiyor.");
   }
 
   return collection(firestore, productsCollectionName);
@@ -270,11 +270,11 @@ const buildProductPayload = (input: ProductMutationInput) => {
     popularity: 0,
     rating: 0,
     reviewCount: 0,
-    installment: "Pesin fiyatina 3 taksit",
-    badge: discount > 0 ? `%${discount} indirim` : "Yeni Urun",
-    summary: input.summary?.trim() || `${input.name.trim()} icin yonetim panelinden eklenen urun kaydi.`,
-    shippingNote: "Hizli teslimat icin uygun",
-    highlights: ["Hizli teslimat", "Resmi distributor urunu", "Pasaj guvencesi"],
+    installment: "Peşin fiyatına 3 taksit",
+    badge: discount > 0 ? `%${discount} indirim` : "Yeni Ürün",
+    summary: input.summary?.trim() || `${input.name.trim()} için yönetim panelinden eklenen ürün kaydı.`,
+    shippingNote: "Hızlı teslimat için uygun",
+    highlights: ["Hızlı teslimat", "Resmi distributor ürünü", "Pasaj güvencesi"],
     specs: [
       { label: "Marka", value: input.brand.trim() },
       { label: "Kategori", value: input.category.trim() },
@@ -308,7 +308,7 @@ export const deleteProductById = async (productId: string) => {
 
 export const uploadProductImage = async (file: File) => {
   if (!storage) {
-    throw new Error("Firebase Storage ayarlari eksik.");
+    throw new Error("Firebase Storage ayarları eksik.");
   }
 
   const fileName = `${Date.now()}-${file.name.replace(/\s+/g, "-")}`;
@@ -317,3 +317,4 @@ export const uploadProductImage = async (file: File) => {
 
   return getDownloadURL(snapshot.ref);
 };
+

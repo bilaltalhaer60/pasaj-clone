@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+﻿import { createBrowserRouter } from "react-router-dom";
 import { MainLayout } from "../layouts/MainLayout";
 import { ROUTES } from "../constants/routes";
 import { AdminRoute } from "../routes/AdminRoute";
@@ -99,3 +99,4 @@ export const router = createBrowserRouter([
     ]
   }
 ]);
+

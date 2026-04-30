@@ -1,6 +1,7 @@
-import { create } from "zustand";
+﻿import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { Product } from "../types/product";
+import { useUiStore } from "./uiStore";
 
 export interface CartItem {
   product: Product;
@@ -19,7 +20,7 @@ export const useCartStore = create<CartState>()(
   persist(
     (set) => ({
       items: [],
-      addItem: (product) =>
+      addItem: (product) => {
         set((state) => {
           const existing = state.items.find((item) => item.product.id === product.id);
 
@@ -34,9 +35,13 @@ export const useCartStore = create<CartState>()(
           }
 
           return { items: [...state.items, { product, quantity: 1 }] };
-        }),
-      removeItem: (productId) =>
-        set((state) => ({ items: state.items.filter((item) => item.product.id !== productId) })),
+        });
+        useUiStore.getState().showToast(`${product.name} sepete eklendi.`);
+      },
+      removeItem: (productId) => {
+        set((state) => ({ items: state.items.filter((item) => item.product.id !== productId) }));
+        useUiStore.getState().showToast("Ürün sepetten silindi.");
+      },
       updateQuantity: (productId, quantity) =>
         set((state) => ({
           items: state.items
@@ -64,3 +69,4 @@ export const getCartSubtotal = (items: CartItem[]) =>
 
 export const getCartRemainingForFreeShipping = (items: CartItem[], threshold: number) =>
   Math.max(threshold - getCartSubtotal(items), 0);
+

@@ -12,7 +12,7 @@ import type { CreateOrderPayload, OrderRecord } from "../types/order";
 
 const stepItems = [
   { title: "Teslimat" },
-  { title: "Odeme" },
+  { title: "Ödeme" },
   { title: "Onay" }
 ];
 
@@ -52,10 +52,10 @@ export const CheckoutPage = () => {
       setCompletedOrder(order);
       addOrder(order);
       clearCart();
-      message.success("Siparis basariyla olusturuldu.");
+      message.success("Sipariş başarıyla oluşturuldu.");
     },
     onError: (error) => {
-      message.error(error instanceof Error ? error.message : "Siparis olusturulamadi.");
+      message.error(error instanceof Error ? error.message : "Sipariş oluşturulamadı.");
     }
   });
 
@@ -99,8 +99,8 @@ export const CheckoutPage = () => {
     return (
       <PageShell
         badge="6. Hafta Teslimi"
-        title="Siparis tamamlandi"
-        description="Siparis Firestore'a kaydedildi ve checkout akisinin 3 adimi tamamlandi."
+        title="Sipariş tamamlandı"
+        description="Sipariş Firestore'a kaydedildi ve checkout akışının 3 adımı tamamlandı."
         nextTargets={[
           { label: "Anasayfa", to: "/" },
           { label: "Sepet", to: "/cart" }
@@ -108,11 +108,11 @@ export const CheckoutPage = () => {
       >
         <Result
           status="success"
-          title="Siparisiniz alindi"
-          subTitle={`Siparis numarasi: ${completedOrder.orderNumber}`}
+          title="Siparişiniz alındı"
+          subTitle={`Sipariş numarası: ${completedOrder.orderNumber}`}
           extra={[
             <Button key="home" type="primary" onClick={() => navigate("/")}>
-              Anasayfaya don
+              Anasayfaya dön
             </Button>
           ]}
         />
@@ -123,10 +123,10 @@ export const CheckoutPage = () => {
   return (
     <PageShell
       badge="6. Hafta Teslimi"
-      title="Odeme"
-      description="Checkout artik 3 adimli akista calisiyor ve siparisi Firestore'a kaydediyor."
+      title="Ödeme"
+      description="Checkout artık 3 adımlı akışta çalışıyor ve siparişi Firestore'a kaydediyor."
       nextTargets={[
-        { label: "Sepete Don", to: "/cart" },
+        { label: "Sepete Dön", to: "/cart" },
         { label: "Anasayfa", to: "/" }
       ]}
     >
@@ -134,7 +134,7 @@ export const CheckoutPage = () => {
         <Alert
           type="warning"
           showIcon
-          message="Checkout'a devam etmek icin once sepete urun eklemelisin."
+          message="Checkout'a devam etmek için önce sepete ürün eklemelisiniz."
         />
       ) : null}
 
@@ -143,7 +143,7 @@ export const CheckoutPage = () => {
       <Row gutter={[24, 24]}>
         <Col xs={24} lg={15}>
           <Card className="checkout-card">
-            <Form layout="vertical" form={form} initialValues={{ installment: "Pesin" }}>
+            <Form layout="vertical" form={form} initialValues={{ installment: "Peşin" }}>
               {currentStep === 0 ? (
                 <Row gutter={[16, 0]}>
                   <Col xs={24} md={12}>
@@ -158,17 +158,17 @@ export const CheckoutPage = () => {
                   </Col>
                   <Col xs={24}>
                     <Form.Item label="Adres" name="address" rules={[{ required: true, message: "Adres zorunlu." }]}>
-                      <Input.TextArea rows={4} placeholder="Teslimat adresini gir" />
+                      <Input.TextArea rows={4} placeholder="Teslimat adresini girin" />
                     </Form.Item>
                   </Col>
                   <Col xs={24} md={12}>
-                    <Form.Item label="Sehir" name="city" rules={[{ required: true, message: "Sehir zorunlu." }]}>
-                      <Input placeholder="Istanbul" />
+                    <Form.Item label="Şehir" name="city" rules={[{ required: true, message: "Şehir zorunlu." }]}>
+                      <Input placeholder="İstanbul" />
                     </Form.Item>
                   </Col>
                   <Col xs={24} md={12}>
-                    <Form.Item label="Ilce" name="district" rules={[{ required: true, message: "Ilce zorunlu." }]}>
-                      <Input placeholder="Kadikoy" />
+                    <Form.Item label="İlçe" name="district" rules={[{ required: true, message: "İlçe zorunlu." }]}>
+                      <Input placeholder="Kadıköy" />
                     </Form.Item>
                   </Col>
                 </Row>
@@ -177,24 +177,24 @@ export const CheckoutPage = () => {
               {currentStep === 1 ? (
                 <Row gutter={[16, 0]}>
                   <Col xs={24}>
-                    <Form.Item label="Kart uzerindeki ad" name="cardName" rules={[{ required: true, message: "Kart sahibi zorunlu." }]}>
+                    <Form.Item label="Kart üzerindeki ad" name="cardName" rules={[{ required: true, message: "Kart sahibi zorunlu." }]}>
                       <Input placeholder="BILAL TALHA" />
                     </Form.Item>
                   </Col>
                   <Col xs={24}>
                     <Form.Item
-                      label="Kart numarasi"
+                      label="Kart numarası"
                       name="cardNumber"
                       rules={[
-                        { required: true, message: "Kart numarasi zorunlu." },
-                        { min: 16, message: "Kart numarasi eksik gorunuyor." }
+                        { required: true, message: "Kart numarası zorunlu." },
+                        { min: 16, message: "Kart numarası eksik görünüyor." }
                       ]}
                     >
                       <Input placeholder="0000 0000 0000 0000" maxLength={19} />
                     </Form.Item>
                   </Col>
                   <Col xs={24} md={8}>
-                    <Form.Item label="Ay / Yil" name="expireDate" rules={[{ required: true, message: "Tarih zorunlu." }]}>
+                    <Form.Item label="Ay / Yıl" name="expireDate" rules={[{ required: true, message: "Tarih zorunlu." }]}>
                       <Input placeholder="12/28" />
                     </Form.Item>
                   </Col>
@@ -204,8 +204,8 @@ export const CheckoutPage = () => {
                     </Form.Item>
                   </Col>
                   <Col xs={24} md={8}>
-                    <Form.Item label="Taksit" name="installment" rules={[{ required: true, message: "Taksit secimi zorunlu." }]}>
-                      <Input placeholder="Pesin / 3 / 6" />
+                    <Form.Item label="Taksit" name="installment" rules={[{ required: true, message: "Taksit seçimi zorunlu." }]}>
+                      <Input placeholder="Peşin / 3 / 6" />
                     </Form.Item>
                   </Col>
                 </Row>
@@ -213,13 +213,13 @@ export const CheckoutPage = () => {
 
               {currentStep === 2 ? (
                 <Space direction="vertical" size={16} style={{ width: "100%" }}>
-                  <Typography.Title level={4}>Siparis ozeti ve onay</Typography.Title>
+                  <Typography.Title level={4}>Sipariş özeti ve onay</Typography.Title>
                   <Typography.Paragraph>
-                    Teslimat, odeme ve sepet bilgilerini kontrol et. "Siparisi olustur" dediginde kayit Firestore'a yazilacak.
+                    Teslimat, ödeme ve sepet bilgilerini kontrol edin. "Siparişi oluştur" dediğinizde kayıt Firestore'a yazılacak.
                   </Typography.Paragraph>
                   <div className="checkout-review-box">
                     <div className="summary-row">
-                      <span>Teslimat alicisi</span>
+                      <span>Teslimat alıcısı</span>
                       <strong>{deliverySummary.fullName || "-"}</strong>
                     </div>
                     <div className="summary-row">
@@ -235,8 +235,8 @@ export const CheckoutPage = () => {
                   </div>
                   <div className="checkout-review-box">
                     <div className="summary-row">
-                      <span>Odeme yontemi</span>
-                      <strong>{paymentSummary.installment || "Pesin"}</strong>
+                      <span>Ödeme yöntemi</span>
+                      <strong>{paymentSummary.installment || "Peşin"}</strong>
                     </div>
                     <div className="summary-row">
                       <span>Kart sahibi</span>
@@ -252,9 +252,9 @@ export const CheckoutPage = () => {
                     </div>
                   </div>
                   <div className="checkout-review-box">
-                    <div className="summary-row"><span>Toplam urun</span><strong>{items.length}</strong></div>
+                    <div className="summary-row"><span>Toplam ürün</span><strong>{items.length}</strong></div>
                     <div className="summary-row"><span>Ara toplam</span><strong>{formatCurrency(subtotal)}</strong></div>
-                    <div className="summary-row"><span>Kargo</span><strong>{shippingCost === 0 ? "Ucretsiz" : formatCurrency(shippingCost)}</strong></div>
+                    <div className="summary-row"><span>Kargo</span><strong>{shippingCost === 0 ? "Ücretsiz" : formatCurrency(shippingCost)}</strong></div>
                     <div className="summary-row total-row"><span>Genel toplam</span><strong>{formatCurrency(total)}</strong></div>
                   </div>
                 </Space>
@@ -271,7 +271,7 @@ export const CheckoutPage = () => {
                 </Button>
               ) : (
                 <Button type="primary" onClick={submitOrder} loading={createOrderMutation.isPending} disabled={items.length === 0}>
-                  Siparisi olustur
+                  Siparişi oluştur
                 </Button>
               )}
             </div>
@@ -279,7 +279,7 @@ export const CheckoutPage = () => {
         </Col>
 
         <Col xs={24} lg={9}>
-          <Card title="Siparis ozeti" className="checkout-card">
+          <Card title="Sipariş özeti" className="checkout-card">
             <Space direction="vertical" size={14} style={{ width: "100%" }}>
               {items.map((item) => (
                 <div key={item.product.id} className="summary-row checkout-item-row">
@@ -295,14 +295,14 @@ export const CheckoutPage = () => {
               </div>
               <div className="summary-row">
                 <span>Kargo</span>
-                <strong>{shippingCost === 0 ? "Ucretsiz" : formatCurrency(shippingCost)}</strong>
+                <strong>{shippingCost === 0 ? "Ücretsiz" : formatCurrency(shippingCost)}</strong>
               </div>
               <div className="summary-row total-row">
                 <span>Genel toplam</span>
                 <strong>{formatCurrency(total)}</strong>
               </div>
               <Typography.Paragraph type="secondary" className="checkout-note">
-                Bu ekran artik demo degil. Form tamamlandiginda siparis kaydi Firestore koleksiyonuna eklenir.
+                Bu ekran artik demo değil. Form tamamlandığında sipariş kaydı Firestore koleksiyonuna eklenir.
               </Typography.Paragraph>
             </Space>
           </Card>
@@ -311,3 +311,4 @@ export const CheckoutPage = () => {
     </PageShell>
   );
 };
+
