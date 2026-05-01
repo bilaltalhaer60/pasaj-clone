@@ -34,6 +34,7 @@ import { formatCurrency } from "../utils/formatCurrency";
 
 const featureIcons = [GiftOutlined, StarOutlined, StarOutlined, UserOutlined];
 const loadingCards = Array.from({ length: 5 });
+const emptyFavoriteSlugs: string[] = [];
 const bestsellerTabs = [
   {
     key: "telefon",
@@ -210,7 +211,7 @@ const BestsellerPhoneCard = ({
 
 export const HomePage = () => {
   const [activeBestsellerKey, setActiveBestsellerKey] = useState("telefon");
-  const favoriteSlugs = useAuthStore((state) => state.user?.favorites ?? []);
+  const favoriteSlugs = useAuthStore((state) => state.user?.favorites ?? emptyFavoriteSlugs);
   const toggleFavorite = useAuthStore((state) => state.toggleFavorite);
   const { data = [], isLoading, error } = useQuery({
     queryKey: ["products"],

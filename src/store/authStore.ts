@@ -97,28 +97,39 @@ const getRoleFromEmail = (email: string): MockUser["role"] =>
 export const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
-      isLoggedIn: true,
-      user: defaultUser,
+      isLoggedIn: false,
+      user: null,
       login: (email) =>
-        set((state) => ({
-          isLoggedIn: true,
-          user: state.user
+        set((state) => {
+          const user = state.user
             ? { ...state.user, email, role: getRoleFromEmail(email) }
-            : { ...defaultUser, email, role: getRoleFromEmail(email) }
-        })),
+            : { ...defaultUser, email, role: getRoleFromEmail(email) };
+
+          useUiStore.getState().showToast("Giriş başarılı.");
+
+          return {
+            isLoggedIn: true,
+            user
+          };
+        }),
       register: (fullName, email) =>
-        set(() => ({
-          isLoggedIn: true,
-          user: {
-            ...defaultUser,
-            fullName,
-            email,
-            role: "user"
-          }
-        })),
+        set(() => {
+          useUiStore.getState().showToast("Kayıt başarılı. Hesabınız oluşturuldu.");
+
+          return {
+            isLoggedIn: true,
+            user: {
+              ...defaultUser,
+              fullName,
+              email,
+              role: "user"
+            }
+          };
+        }),
       addOrder: (order) =>
         set((state) => {
           if (!state.user) {
+            useUiStore.getState().showToast("Favorilere eklemek için giriş yapın.", "info");
             return state;
           }
 
@@ -167,9 +178,13 @@ export const useAuthStore = create<AuthState>()(
         }
       },
       logout: () =>
-        set({
-          isLoggedIn: false,
-          user: null
+        set(() => {
+          useUiStore.getState().showToast("Çıkış yapıldı.", "info");
+
+          return {
+            isLoggedIn: false,
+            user: null
+          };
         })
     }),
     {

@@ -1,5 +1,6 @@
 ﻿import {
   DownOutlined,
+  LogoutOutlined,
   SearchOutlined,
   ShoppingOutlined,
   UserOutlined
@@ -43,6 +44,7 @@ const renderMegaMenuItems = (items: CategoryMenuItem[], onNavigate: () => void) 
 export const Header = () => {
   const itemCount = useCartStore((state) => getCartItemCount(state.items));
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const logout = useAuthStore((state) => state.logout);
   const openCartDrawer = useUiStore((state) => state.openCartDrawer);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [menuTop, setMenuTop] = useState(226);
@@ -136,6 +138,13 @@ export const Header = () => {
               <span>{isLoggedIn ? "Hesabım" : "Giriş Yap"}</span>
               <DownOutlined />
             </NavLink>
+
+            {isLoggedIn ? (
+              <button type="button" className="pasaj-logout-chip" onClick={logout}>
+                <LogoutOutlined />
+                <span>Çıkış Yap</span>
+              </button>
+            ) : null}
 
             <button type="button" className="pasaj-cart-chip pasaj-cart-button" onClick={openCartDrawer}>
               <ShoppingOutlined />

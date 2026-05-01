@@ -21,6 +21,7 @@ const titleBySlug: Record<string, string> = {
   bilgisayar: "Bilgisayar-Tablet",
   aksesuar: "Aksesuar"
 };
+const emptyFavoriteSlugs: string[] = [];
 
 const ProductListCard = ({
   product,
@@ -85,7 +86,7 @@ export const CategoryPage = () => {
   const [range, setRange] = useState<[number, number]>([0, 100000]);
   const [sortBy, setSortBy] = useState("popular");
   const addItem = useCartStore((state) => state.addItem);
-  const favoriteSlugs = useAuthStore((state) => state.user?.favorites ?? []);
+  const favoriteSlugs = useAuthStore((state) => state.user?.favorites ?? emptyFavoriteSlugs);
   const toggleFavorite = useAuthStore((state) => state.toggleFavorite);
   const { data = [], isLoading, error } = useQuery({
     queryKey: ["products", categorySlug],

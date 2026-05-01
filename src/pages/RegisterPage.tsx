@@ -1,4 +1,5 @@
-﻿import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Alert, Button, Card, Col, Form, Input, Row, Typography } from "antd";
 import { PageShell } from "../app/page-shell";
 import { isFirebaseReady } from "../config/firebase";
@@ -6,11 +7,21 @@ import { ROUTES } from "../constants/routes";
 import { useAuthStore } from "../store/authStore";
 
 export const RegisterPage = () => {
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [formError, setFormError] = useState("");
   const navigate = useNavigate();
   const register = useAuthStore((state) => state.register);
 
-  const onFinish = (values: { fullName: string; email: string }) => {
-    register(values.fullName, values.email);
+  const handleRegister = () => {
+    if (!fullName.trim() || !email.trim() || !password.trim()) {
+      setFormError("Hesap oluşturmak için ad soyad, e-posta ve şifre alanlarını doldurun.");
+      return;
+    }
+
+    setFormError("");
+    register(fullName.trim(), email.trim());
     navigate(ROUTES.account);
   };
 
@@ -18,7 +29,7 @@ export const RegisterPage = () => {
     <PageShell
       badge="4. Hafta Teslimi"
       title="Kayıt Ol"
-      description="4. haftada auth akışının demo versiyonu tamamlandı. Kayıt formu hesap ekranına yönleniyor."
+      description="Yeni kullanıcı kaydı oluşturduğunuzda hesap paneline yönlendirilirsiniz."
       nextTargets={[
         { label: "Giriş Yap", to: ROUTES.login },
         { label: "Şifre Sıfırla", to: ROUTES.forgotPassword },
@@ -37,29 +48,36 @@ export const RegisterPage = () => {
       <Row gutter={[24, 24]}>
         <Col xs={24} lg={14}>
           <Card className="auth-card">
-            <Form layout="vertical" onFinish={onFinish}>
-              <Form.Item
-                label="Ad Soyad"
-                name="fullName"
-                rules={[{ required: true, message: "Ad soyad girmeniz gerekiyor." }]}
-              >
-                <Input placeholder="Bilal Talha" />
+            {formError ? (
+              <Alert type="error" showIcon message={formError} style={{ marginBottom: 16 }} />
+            ) : null}
+            <Form layout="vertical">
+              <Form.Item label="Ad Soyad">
+                <Input
+                  placeholder="Bilal Talha"
+                  value={fullName}
+                  onChange={(event) => setFullName(event.target.value)}
+                  onPressEnter={handleRegister}
+                />
               </Form.Item>
-              <Form.Item
-                label="E-posta"
-                name="email"
-                rules={[{ required: true, message: "E-posta adresi girmeniz gerekiyor." }]}
-              >
-                <Input type="email" placeholder="ornek@mail.com" />
+              <Form.Item label="E-posta">
+                <Input
+                  type="email"
+                  placeholder="ornek@mail.com"
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
+                  onPressEnter={handleRegister}
+                />
               </Form.Item>
-              <Form.Item
-                label="Şifre"
-                name="password"
-                rules={[{ required: true, message: "Şifre girmeniz gerekiyor." }]}
-              >
-                <Input.Password placeholder="********" />
+              <Form.Item label="Şifre">
+                <Input.Password
+                  placeholder="********"
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
+                  onPressEnter={handleRegister}
+                />
               </Form.Item>
-              <Button type="primary" htmlType="submit" size="large">
+              <Button type="primary" htmlType="button" size="large" onClick={handleRegister}>
                 Hesap oluştur
               </Button>
             </Form>
@@ -68,12 +86,10 @@ export const RegisterPage = () => {
 
         <Col xs={24} lg={10}>
           <Card className="auth-side-card">
-            <Typography.Title level={4}>4. hafta eklemeleri</Typography.Title>
+            <Typography.Title level={4}>Kayıt ve giriş akışı</Typography.Title>
             <Typography.Paragraph>
-              Kayıt ve giriş ekranları artık hesap sayfasına bağlı çalışıyor.
-            </Typography.Paragraph>
-            <Typography.Paragraph>
-              Hazırlanan demo akışta siparişler, favoriler ve adresler tek panelde görüntülenebiliyor.
+              Kayıt işlemi tamamlandığında kullanıcı oturumu açılır, hesap sayfası aktif hale gelir ve çıkış işlemi
+              header ile profil alanından yapılabilir.
             </Typography.Paragraph>
             <Button>
               <Link to={ROUTES.login}>Zaten üyeyim</Link>
@@ -84,4 +100,3 @@ export const RegisterPage = () => {
     </PageShell>
   );
 };
-

@@ -12,6 +12,8 @@ import { LoginPage } from '../pages/LoginPage';
 import { ProductDetailPage } from '../pages/ProductDetailPage';
 import { RegisterPage } from '../pages/RegisterPage';
 import { ROUTES } from '../constants/routes';
+import { AdminRoute } from './AdminRoute';
+import { ProtectedRoute } from './ProtectedRoute';
 
 export function AppRouter() {
   return (
@@ -21,9 +23,30 @@ export function AppRouter() {
         <Route path="/category/:categorySlug" element={<ProductListPage />} />
         <Route path={ROUTES.product} element={<ProductDetailPage />} />
         <Route path={ROUTES.cart} element={<CartPage />} />
-        <Route path={ROUTES.checkout} element={<CheckoutPage />} />
-        <Route path={ROUTES.account} element={<AccountPage />} />
-        <Route path={ROUTES.admin} element={<AdminPage />} />
+        <Route
+          path={ROUTES.checkout}
+          element={
+            <ProtectedRoute>
+              <CheckoutPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={ROUTES.account}
+          element={
+            <ProtectedRoute>
+              <AccountPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={ROUTES.admin}
+          element={
+            <AdminRoute>
+              <AdminPage />
+            </AdminRoute>
+          }
+        />
         <Route path={ROUTES.login} element={<LoginPage />} />
         <Route path="/giriş" element={<LoginPage />} />
         <Route path={ROUTES.register} element={<RegisterPage />} />

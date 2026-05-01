@@ -1,10 +1,12 @@
 ﻿import { useEffect, useState } from "react";
 import {
   CheckCircleOutlined,
+  CreditCardOutlined,
   HeartFilled,
   HeartOutlined,
   InfoCircleOutlined,
   RightOutlined,
+  ShopOutlined,
   ShoppingCartOutlined,
   TruckOutlined
 } from "@ant-design/icons";
@@ -17,6 +19,7 @@ import { useCartStore } from "../store/cartStore";
 import { formatCurrency } from "../utils/formatCurrency";
 
 const memoryOptions = ["128 GB", "256 GB", "512 GB"];
+const emptyFavoriteSlugs: string[] = [];
 
 const galleryBySlug: Record<string, string[]> = {
   "iphone-17-256-gb": [
@@ -30,6 +33,11 @@ const galleryBySlug: Record<string, string[]> = {
 const getMemoryValue = (name: string) =>
   memoryOptions.find((option) => name.includes(option)) ?? "256 GB";
 
+const getColorMeta = (category: string) =>
+  category === "telefon"
+    ? { name: "Siyah", style: { background: "#1d2229" } }
+    : { name: "Gümüş", style: { background: "#d8dde2" } };
+
 const ProductVisual = ({ image, name }: { image: string; name: string }) => (
   <img src={image} alt={name} className="pasaj-product-real-image" />
 );
@@ -38,7 +46,7 @@ export const ProductDetailPage = () => {
   const { productSlug } = useParams();
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const addItem = useCartStore((state) => state.addItem);
-  const favoriteSlugs = useAuthStore((state) => state.user?.favorites ?? []);
+  const favoriteSlugs = useAuthStore((state) => state.user?.favorites ?? emptyFavoriteSlugs);
   const toggleFavorite = useAuthStore((state) => state.toggleFavorite);
   const { data: product, isLoading, error } = useQuery({
     queryKey: ["product", productSlug],
@@ -83,15 +91,16 @@ export const ProductDetailPage = () => {
   const isPhone = product.category === "telefon";
   const categoryTitle = isPhone ? "Cep Telefonu-Aksesuar" : "Bilgisayar-Tablet";
   const brandCategoryTitle = isPhone ? `${product.brand} Telefonlar` : `${product.brand} MacBook`;
-  const variantLabel = isPhone ? "DAHILI HAFIZA" : "DEPOLAMA";
+  const variantLabel = isPhone ? "DAHİLİ HAFIZA" : "DEPOLAMA";
   const variantValue = isPhone ? getMemoryValue(product.name) : "512 GB SSD";
-  const colorName = isPhone ? "Yesil" : "Gumus";
-  const colorStyle = { background: isPhone ? "#c6d2aa" : "#d8dde2" };
+  const colorMeta = getColorMeta(product.category);
   const discountRate =
     product.previousPrice > product.price
       ? Math.round(((product.previousPrice - product.price) / product.previousPrice) * 100)
       : product.discount;
   const isFavorite = favoriteSlugs.includes(product.slug);
+  const monthlyPrice = Math.ceil(product.price / 3);
+  const sellerName = "Turkcell Satış A.Ş.";
 
   const handleAddToCart = () => {
     addItem(product);
@@ -115,6 +124,7 @@ export const ProductDetailPage = () => {
 
       <section className="pasaj-product-hero">
         <div className="pasaj-product-gallery">
+          {discountRate > 0 ? <span className="pasaj-gallery-campaign">%{discountRate} indirim</span> : null}
           <div className="pasaj-gallery-thumb-list">
             {galleryImages.map((image, index) => (
               <button
@@ -136,7 +146,6 @@ export const ProductDetailPage = () => {
         <div className="pasaj-product-summary">
           <div className="pasaj-title-row">
             <div>
-              <Typography.Text className="pasaj-product-brand">{product.brand}</Typography.Text>
               <Typography.Title level={1}>{product.name}</Typography.Title>
             </div>
             <button
@@ -153,13 +162,14 @@ export const ProductDetailPage = () => {
           <div className="pasaj-rating-row">
             <Rate allowHalf disabled value={product.rating} />
             <span className="pasaj-rating-score">{product.rating.toLocaleString("tr-TR")}</span>
+            <Link to="#reviews">{product.reviewCount} Değerlendirme</Link>
           </div>
 
           <div className="pasaj-variant-grid">
             <button type="button" className="pasaj-variant-card active">
               <span>RENK</span>
               <strong>
-                <i className="pasaj-color-dot" style={colorStyle} /> {colorName}
+                <i className="pasaj-color-dot" style={colorMeta.style} /> {colorMeta.name}
               </strong>
             </button>
             <button type="button" className="pasaj-variant-card active">
@@ -169,6 +179,11 @@ export const ProductDetailPage = () => {
           </div>
 
           <aside className="pasaj-buy-box">
+            <div className="pasaj-seller-row">
+              <span>Satıcı:</span>
+              <strong>{sellerName}</strong>
+            </div>
+
             <div className="pasaj-price-panel">
               <div>
                 {product.previousPrice > product.price ? (
@@ -177,6 +192,11 @@ export const ProductDetailPage = () => {
                 {discountRate > 0 ? <span className="pasaj-discount">%{discountRate} İndirim</span> : null}
               </div>
               <strong>{formatCurrency(product.price)}</strong>
+            </div>
+
+            <div className="pasaj-stock-note">
+              <span>Ürün tükenmek üzere</span>
+              <small>Sepette ve ödeme adımında teslimat seçeneği güncellenebilir.</small>
             </div>
 
             <div className="pasaj-buy-actions">
@@ -194,9 +214,8 @@ export const ProductDetailPage = () => {
             </div>
 
             <div className="pasaj-service-row">
-              <span><CheckCircleOutlined /> 1 İş Günunde Kargoda</span>
+              <span><CheckCircleOutlined /> 1 İş Gününde Kargoda</span>
               <span><TruckOutlined /> Ücretsiz Kargo</span>
-              <Link to={`/category/${product.category}`}>İndirim Bilgileri <InfoCircleOutlined /></Link>
             </div>
 
             <div className="pasaj-buy-footer">
@@ -210,26 +229,36 @@ export const ProductDetailPage = () => {
       <section className="pasaj-payment-methods">
         <Typography.Title level={2}>Alternatif Ödeme Yöntemleri</Typography.Title>
         <div className="pasaj-payment-grid">
-          <article>
-            <strong>Pasaj Limitiyle Al</strong>
-            <span>Turkcell Pasaj limitini kullanarak kolayca alışveriş yap.</span>
+          <article className="pasaj-payment-feature">
+            <div className="pasaj-payment-check">
+              <CheckCircleOutlined />
+            </div>
+            <div>
+              <strong>Turkcell Faturanıza Ek</strong>
+              <span>Kredi sorgulama sonucunuza göre tutarlar değişiklik gösterebilir.</span>
+            </div>
+            <b>{formatCurrency(monthlyPrice)} x 3 AY</b>
           </article>
           <article>
-            <strong>Kredi Karti</strong>
-            <span>Seçili bankalarda pesin fiyatına taksit fırsatları.</span>
+            <CreditCardOutlined />
+            <strong>Kredi Kartı</strong>
+            <span>Seçili bankalarda peşin fiyatına taksit fırsatları.</span>
           </article>
           <article>
+            <ShopOutlined />
             <strong>Hızlı Teslimat</strong>
-            <span>Uygun ürünlerde ayni gün veya ertesi gün teslimat.</span>
+            <span>{product.shippingNote}</span>
           </article>
         </div>
       </section>
 
       <section className="pasaj-detail-tabs">
         <div className="pasaj-detail-tab-list">
+          <button type="button">Ürün Açıklamaları</button>
           <button type="button" className="active">Ürün Özellikleri</button>
-          <button type="button">Değerlendirmeler</button>
+          <button type="button" id="reviews">Değerlendirmeler</button>
           <button type="button" id="questions">Soru & Cevap</button>
+          <button type="button">Kredi Kartı Taksit Seçenekleri</button>
         </div>
         <div className="pasaj-detail-content">
           <div>
@@ -238,6 +267,10 @@ export const ProductDetailPage = () => {
               {product.highlights.map((item) => (
                 <Tag key={item}>{item}</Tag>
               ))}
+            </div>
+            <div className="pasaj-discount-info">
+              <InfoCircleOutlined />
+              <span>İndirim ve stok bilgileri ürün bazında değişiklik gösterebilir.</span>
             </div>
           </div>
           <Descriptions column={1} bordered>
