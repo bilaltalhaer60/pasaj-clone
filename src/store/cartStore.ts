@@ -9,54 +9,95 @@ export interface CartItem {
 }
 
 interface CartState {
+  ownerKey: string;
+  cartsByOwner: Record<string, CartItem[]>;
   items: CartItem[];
+  setOwner: (ownerKey: string) => void;
   addItem: (product: Product) => void;
   removeItem: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
   clearCart: () => void;
 }
 
+const guestOwnerKey = "guest";
+
+const getOwnerItems = (state: CartState) => state.cartsByOwner[state.ownerKey] ?? [];
+
+const writeOwnerItems = (state: CartState, items: CartItem[]) => ({
+  items,
+  cartsByOwner: {
+    ...state.cartsByOwner,
+    [state.ownerKey]: items
+  }
+});
+
 export const useCartStore = create<CartState>()(
   persist(
     (set) => ({
+      ownerKey: guestOwnerKey,
+      cartsByOwner: {
+        [guestOwnerKey]: []
+      },
       items: [],
+      setOwner: (ownerKey) =>
+        set((state) => ({
+          ownerKey,
+          items: state.cartsByOwner[ownerKey] ?? []
+        })),
       addItem: (product) => {
         set((state) => {
-          const existing = state.items.find((item) => item.product.id === product.id);
+          const ownerItems = getOwnerItems(state);
+          const existing = ownerItems.find((item) => item.product.id === product.id);
 
           if (existing) {
-            return {
-              items: state.items.map((item) =>
+            return writeOwnerItems(
+              state,
+              ownerItems.map((item) =>
                 item.product.id === product.id
                   ? { ...item, quantity: Math.min(item.quantity + 1, 5) }
                   : item
               )
-            };
+            );
           }
 
-          return { items: [...state.items, { product, quantity: 1 }] };
+          return writeOwnerItems(state, [...ownerItems, { product, quantity: 1 }]);
         });
         useUiStore.getState().showToast(`${product.name} sepete eklendi.`);
       },
       removeItem: (productId) => {
-        set((state) => ({ items: state.items.filter((item) => item.product.id !== productId) }));
+        set((state) =>
+          writeOwnerItems(
+            state,
+            getOwnerItems(state).filter((item) => item.product.id !== productId)
+          )
+        );
         useUiStore.getState().showToast("Ürün sepetten silindi.");
       },
       updateQuantity: (productId, quantity) =>
-        set((state) => ({
-          items: state.items
+        set((state) =>
+          writeOwnerItems(
+            state,
+            getOwnerItems(state)
             .map((item) =>
               item.product.id === productId
                 ? { ...item, quantity: Math.max(1, Math.min(quantity, 5)) }
                 : item
             )
             .filter((item) => item.quantity > 0)
-        })),
-      clearCart: () => set({ items: [] })
+          )
+        ),
+      clearCart: () => set((state) => writeOwnerItems(state, []))
     }),
     {
       name: "pasaj-cart-store",
-      partialize: (state) => ({ items: state.items })
+      partialize: (state) => ({
+        ownerKey: state.ownerKey,
+        cartsByOwner: {
+          ...state.cartsByOwner,
+          [state.ownerKey]: state.items
+        },
+        items: state.items
+      })
     }
   )
 );

@@ -33,7 +33,13 @@ const product = (overrides: Partial<Product> = {}): Product => ({
 describe("cartStore", () => {
   beforeEach(() => {
     act(() => {
-      useCartStore.setState({ items: [] });
+      useCartStore.setState({
+        ownerKey: "guest",
+        cartsByOwner: {
+          guest: []
+        },
+        items: []
+      });
       window.localStorage.clear();
     });
   });
@@ -113,6 +119,27 @@ describe("cartStore", () => {
     });
 
     expect(useCartStore.getState().items).toEqual([]);
+  });
+
+  it("keeps carts separate for different signed-in users", () => {
+    act(() => {
+      const store = useCartStore.getState();
+      store.setOwner("user-a");
+      store.addItem(product());
+      store.setOwner("user-b");
+      store.addItem(product({ id: "p2", slug: "ipad", name: "iPad" }));
+      store.setOwner("user-a");
+    });
+
+    expect(useCartStore.getState().items).toHaveLength(1);
+    expect(useCartStore.getState().items[0]?.product.id).toBe("p1");
+
+    act(() => {
+      useCartStore.getState().setOwner("user-b");
+    });
+
+    expect(useCartStore.getState().items).toHaveLength(1);
+    expect(useCartStore.getState().items[0]?.product.id).toBe("p2");
   });
 
   it("calculates derived totals and free shipping remainder", () => {

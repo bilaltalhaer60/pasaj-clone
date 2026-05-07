@@ -1,5 +1,5 @@
 ﻿const getEnv = (key: keyof ImportMetaEnv, fallback = ""): string => {
-  return import.meta.env[key] ?? fallback;
+  return import.meta.env?.[key] ?? fallback;
 };
 
 const parseNumber = (value: string, fallback: number): number => {
@@ -13,6 +13,7 @@ export const env = {
   shippingCost: parseNumber(getEnv("VITE_SHIPPING_COST", "29.9"), 29.9),
   productsCollection: getEnv("VITE_FIREBASE_PRODUCTS_COLLECTION", "products"),
   ordersCollection: getEnv("VITE_FIREBASE_ORDERS_COLLECTION", "orders"),
+  usersCollection: getEnv("VITE_FIREBASE_USERS_COLLECTION", "users"),
   firebase: {
     apiKey: getEnv("VITE_FIREBASE_API_KEY"),
     authDomain: getEnv("VITE_FIREBASE_AUTH_DOMAIN"),

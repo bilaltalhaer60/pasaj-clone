@@ -11,6 +11,7 @@ import { ForgotPasswordPage } from '../pages/ForgotPasswordPage';
 import { LoginPage } from '../pages/LoginPage';
 import { ProductDetailPage } from '../pages/ProductDetailPage';
 import { RegisterPage } from '../pages/RegisterPage';
+import { SearchPage } from '../pages/SearchPage';
 import { ROUTES } from '../constants/routes';
 import { AdminRoute } from './AdminRoute';
 import { ProtectedRoute } from './ProtectedRoute';
@@ -20,6 +21,7 @@ export function AppRouter() {
     <Routes>
       <Route element={<MainLayout />}>
         <Route path="/" element={<HomePage />} />
+        <Route path={ROUTES.search} element={<SearchPage />} />
         <Route path="/category/:categorySlug" element={<ProductListPage />} />
         <Route path={ROUTES.product} element={<ProductDetailPage />} />
         <Route path={ROUTES.cart} element={<CartPage />} />

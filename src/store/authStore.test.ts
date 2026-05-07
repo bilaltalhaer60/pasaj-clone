@@ -32,7 +32,11 @@ describe("authStore", () => {
       useAuthStore.persist.clearStorage();
       useAuthStore.setState({
         isLoggedIn: true,
+        isAuthReady: true,
+        isAuthLoading: false,
+        authError: "",
         user: {
+          uid: "user-1",
           fullName: "Bilal Talha",
           email: "bilal@pasajclone.dev",
           phone: "05xx xxx xx xx",
@@ -55,47 +59,6 @@ describe("authStore", () => {
     });
   });
 
-  it("logs in and keeps admin role for admin-like emails", () => {
-    act(() => {
-      useAuthStore.getState().login("admin@pasajclone.dev");
-    });
-
-    const state = useAuthStore.getState();
-    expect(state.isLoggedIn).toBe(true);
-    expect(state.user?.email).toBe("admin@pasajclone.dev");
-    expect(state.user?.role).toBe("admin");
-  });
-
-  it("logs in as a regular user for non-admin emails", () => {
-    act(() => {
-      useAuthStore.getState().login("user@example.com");
-    });
-
-    expect(useAuthStore.getState().user?.role).toBe("user");
-  });
-
-  it("creates a fallback user when login runs without an existing profile", () => {
-    act(() => {
-      useAuthStore.setState({ isLoggedIn: false, user: null });
-      useAuthStore.getState().login("admin-reset@example.com");
-    });
-
-    const user = useAuthStore.getState().user;
-    expect(user?.fullName).toBe("Bilal Talha");
-    expect(user?.role).toBe("admin");
-  });
-
-  it("registers a new user and forces the user role", () => {
-    act(() => {
-      useAuthStore.getState().register("Yeni Kullanıcı", "new@example.com");
-    });
-
-    const user = useAuthStore.getState().user;
-    expect(user?.fullName).toBe("Yeni Kullanıcı");
-    expect(user?.email).toBe("new@example.com");
-    expect(user?.role).toBe("user");
-  });
-
   it("adds new orders to the beginning of the order history", () => {
     act(() => {
       useAuthStore.getState().addOrder(sampleOrder);
@@ -109,7 +72,7 @@ describe("authStore", () => {
 
   it("ignores addOrder when there is no active user", () => {
     act(() => {
-      useAuthStore.setState({ isLoggedIn: false, user: null });
+      useAuthStore.setState({ isLoggedIn: false, user: null, isAuthReady: true });
       useAuthStore.getState().addOrder(sampleOrder);
     });
 
@@ -142,6 +105,17 @@ describe("authStore", () => {
     expect(useAuthStore.getState().user?.favorites.includes("iphone-17-256-gb")).toBe(false);
   });
 
+  it("does not create favorites when there is no active session", () => {
+    act(() => {
+      useAuthStore.setState({ isLoggedIn: false, user: null, isAuthReady: true });
+      useAuthStore.getState().toggleFavorite("iphone-17-256-gb");
+    });
+
+    const state = useAuthStore.getState();
+    expect(state.isLoggedIn).toBe(false);
+    expect(state.user).toBeNull();
+  });
+
   it("normalizes legacy favorite names into slugs", () => {
     act(() => {
       useAuthStore.setState((state) => ({
@@ -159,9 +133,9 @@ describe("authStore", () => {
     expect(useAuthStore.getState().user?.favorites).toEqual(["airpods-pro-2", "iphone-16-pro-256-gb"]);
   });
 
-  it("logs out and clears session data", () => {
-    act(() => {
-      useAuthStore.getState().logout();
+  it("logs out and clears session data", async () => {
+    await act(async () => {
+      await useAuthStore.getState().logout();
     });
 
     expect(useAuthStore.getState().isLoggedIn).toBe(false);

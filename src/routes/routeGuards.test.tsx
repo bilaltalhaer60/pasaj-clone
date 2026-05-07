@@ -22,6 +22,7 @@ describe("route guards", () => {
     useAuthStore.persist.clearStorage();
     useAuthStore.setState({
       isLoggedIn: false,
+      isAuthReady: true,
       user: null
     });
   });
@@ -40,7 +41,9 @@ describe("route guards", () => {
   it("renders protected content for logged in users", () => {
     useAuthStore.setState({
       isLoggedIn: true,
+      isAuthReady: true,
       user: {
+        uid: "user-1",
         fullName: "Bilal",
         email: "user@example.com",
         phone: "",
@@ -65,7 +68,9 @@ describe("route guards", () => {
   it("renders nested outlet content for protected routes without explicit children", () => {
     useAuthStore.setState({
       isLoggedIn: true,
+      isAuthReady: true,
       user: {
+        uid: "user-1",
         fullName: "Bilal",
         email: "user@example.com",
         phone: "",
@@ -104,7 +109,9 @@ describe("route guards", () => {
   it("redirects non-admin users to home", () => {
     useAuthStore.setState({
       isLoggedIn: true,
+      isAuthReady: true,
       user: {
+        uid: "user-1",
         fullName: "Bilal",
         email: "user@example.com",
         phone: "",
@@ -129,7 +136,9 @@ describe("route guards", () => {
   it("renders admin content for admin users", () => {
     useAuthStore.setState({
       isLoggedIn: true,
+      isAuthReady: true,
       user: {
+        uid: "admin-1",
         fullName: "Bilal",
         email: "admin@example.com",
         phone: "",
@@ -154,7 +163,9 @@ describe("route guards", () => {
   it("renders nested outlet content for admin routes without explicit children", () => {
     useAuthStore.setState({
       isLoggedIn: true,
+      isAuthReady: true,
       user: {
+        uid: "admin-1",
         fullName: "Bilal",
         email: "admin@example.com",
         phone: "",

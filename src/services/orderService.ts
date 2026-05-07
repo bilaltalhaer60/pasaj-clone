@@ -31,6 +31,8 @@ const mapOrder = (snapshot: QueryDocumentSnapshot<DocumentData>): OrderRecord =>
 
   return {
     id: snapshot.id,
+    userId: typeof data.userId === "string" ? data.userId : undefined,
+    userEmail: typeof data.userEmail === "string" ? data.userEmail : undefined,
     orderNumber: typeof data.orderNumber === "string" ? data.orderNumber : snapshot.id,
     status:
       typeof data.status === "string" && orderStatuses.includes(data.status as never)
@@ -64,6 +66,8 @@ export const createOrder = async (payload: CreateOrderPayload): Promise<OrderRec
 
   const orderNumber = buildOrderNumber();
   const orderData = {
+    userId: payload.userId,
+    userEmail: payload.userEmail,
     orderNumber,
     status: "Hazırlanıyor",
     createdAt: serverTimestamp(),
@@ -84,6 +88,8 @@ export const createOrder = async (payload: CreateOrderPayload): Promise<OrderRec
 
   return {
     id: docRef.id,
+    userId: payload.userId,
+    userEmail: payload.userEmail,
     orderNumber,
     status: "Hazırlanıyor",
     createdAt: new Date().toISOString(),

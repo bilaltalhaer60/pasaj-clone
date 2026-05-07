@@ -25,6 +25,8 @@ export interface OrderLine {
 
 export interface OrderRecord {
   id: string;
+  userId?: string;
+  userEmail?: string;
   orderNumber: string;
   status: string;
   createdAt: string;
@@ -37,6 +39,8 @@ export interface OrderRecord {
 }
 
 export interface CreateOrderPayload {
+  userId: string;
+  userEmail: string;
   customer: OrderCustomer;
   payment: {
     cardName: string;

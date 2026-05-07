@@ -11,6 +11,26 @@ Object.defineProperty(globalThis, "TextDecoder", {
   value: TextDecoder
 });
 
+Object.defineProperty(globalThis, "fetch", {
+  writable: true,
+  value: () => Promise.reject(new Error("Network requests are disabled in tests."))
+});
+
+Object.defineProperty(globalThis, "Headers", {
+  writable: true,
+  value: class Headers {}
+});
+
+Object.defineProperty(globalThis, "Request", {
+  writable: true,
+  value: class Request {}
+});
+
+Object.defineProperty(globalThis, "Response", {
+  writable: true,
+  value: class Response {}
+});
+
 Object.defineProperty(window, "matchMedia", {
   writable: true,
   value: (query) => ({

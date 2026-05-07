@@ -17,6 +17,13 @@ export const router = createBrowserRouter([
         }
       },
       {
+        path: ROUTES.search,
+        lazy: async () => {
+          const module = await import("../pages/SearchPage");
+          return { Component: module.SearchPage };
+        }
+      },
+      {
         path: ROUTES.category,
         lazy: async () => {
           const module = await import("../pages/CategoryPage");

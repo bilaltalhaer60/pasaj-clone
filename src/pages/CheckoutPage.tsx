@@ -1,9 +1,17 @@
-﻿import { useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Alert, Button, Card, Col, Form, Input, message, Result, Row, Space, Steps, Typography } from "antd";
+import { useMemo, useState } from "react";
+import {
+  CheckCircleOutlined,
+  CreditCardOutlined,
+  HomeOutlined,
+  LeftOutlined,
+  ShoppingCartOutlined,
+  TruckOutlined
+} from "@ant-design/icons";
 import { useMutation } from "@tanstack/react-query";
-import { PageShell } from "../app/page-shell";
+import { Alert, Button, Col, Form, Input, message, Result, Row, Space, Steps, Typography } from "antd";
+import { Link, useNavigate } from "react-router-dom";
 import { env } from "../config/env";
+import { ROUTES } from "../constants/routes";
 import { createOrder } from "../services/orderService";
 import { useAuthStore } from "../store/authStore";
 import { getCartSubtotal, useCartStore } from "../store/cartStore";
@@ -26,6 +34,7 @@ export const CheckoutPage = () => {
   const [completedOrder, setCompletedOrder] = useState<OrderRecord | null>(null);
   const items = useCartStore((state) => state.items);
   const clearCart = useCartStore((state) => state.clearCart);
+  const user = useAuthStore((state) => state.user);
   const addOrder = useAuthStore((state) => state.addOrder);
 
   const subtotal = getCartSubtotal(items);
@@ -69,7 +78,14 @@ export const CheckoutPage = () => {
 
   const submitOrder = async () => {
     const values = await form.validateFields();
+    if (!user) {
+      message.error("Sipariş oluşturmak için giriş yapmalısınız.");
+      return;
+    }
+
     const payload: CreateOrderPayload = {
+      userId: user.uid,
+      userEmail: user.email,
       customer: {
         fullName: values.fullName,
         phone: values.phone,
@@ -97,63 +113,76 @@ export const CheckoutPage = () => {
 
   if (completedOrder) {
     return (
-      <PageShell
-        badge="6. Hafta Teslimi"
-        title="Sipariş tamamlandı"
-        description="Sipariş Firestore'a kaydedildi ve checkout akışının 3 adımı tamamlandı."
-        nextTargets={[
-          { label: "Anasayfa", to: "/" },
-          { label: "Sepet", to: "/cart" }
-        ]}
-      >
-        <Result
-          status="success"
-          title="Siparişiniz alındı"
-          subTitle={`Sipariş numarası: ${completedOrder.orderNumber}`}
-          extra={[
-            <Button key="home" type="primary" onClick={() => navigate("/")}>
-              Anasayfaya dön
-            </Button>
-          ]}
-        />
-      </PageShell>
+      <main className="pasaj-checkout-page">
+        <section className="pasaj-checkout-success">
+          <Result
+            status="success"
+            title="Siparişiniz alındı"
+            subTitle={`Sipariş numarası: ${completedOrder.orderNumber}`}
+            extra={[
+              <Button key="home" type="primary" onClick={() => navigate("/")}>
+                Anasayfaya Dön
+              </Button>
+            ]}
+          />
+        </section>
+      </main>
     );
   }
 
   return (
-    <PageShell
-      badge="6. Hafta Teslimi"
-      title="Ödeme"
-      description="Checkout artık 3 adımlı akışta çalışıyor ve siparişi Firestore'a kaydediyor."
-      nextTargets={[
-        { label: "Sepete Dön", to: "/cart" },
-        { label: "Anasayfa", to: "/" }
-      ]}
-    >
+    <main className="pasaj-checkout-page">
+      <nav className="pasaj-breadcrumb" aria-label="Ödeme yolu">
+        <Link to="/">Pasaj</Link>
+        <span>/</span>
+        <Link to={ROUTES.cart}>Sepetim</Link>
+        <span>/</span>
+        <span>Ödeme</span>
+      </nav>
+
+      <section className="pasaj-checkout-heading">
+        <div>
+          <h1>Ödeme</h1>
+          <p>Teslimat bilgilerinizi tamamlayın, ödeme adımında siparişinizi onaylayın.</p>
+        </div>
+        <Link to={ROUTES.cart} className="pasaj-checkout-back">
+          <LeftOutlined />
+          Sepete Dön
+        </Link>
+      </section>
+
       {items.length === 0 ? (
         <Alert
           type="warning"
           showIcon
+          className="pasaj-checkout-alert"
           message="Checkout'a devam etmek için önce sepete ürün eklemelisiniz."
         />
       ) : null}
 
-      <Steps current={currentStep} items={stepItems} className="checkout-steps" />
+      <div className="pasaj-checkout-layout">
+        <section className="pasaj-checkout-main-panel">
+          <Steps current={currentStep} items={stepItems} className="pasaj-checkout-steps" />
 
-      <Row gutter={[24, 24]}>
-        <Col xs={24} lg={15}>
-          <Card className="checkout-card">
-            <Form layout="vertical" form={form} initialValues={{ installment: "Peşin" }}>
-              {currentStep === 0 ? (
+          <Form layout="vertical" form={form} initialValues={{ installment: "Peşin" }} className="pasaj-checkout-form">
+            {currentStep === 0 ? (
+              <section className="pasaj-checkout-section">
+                <div className="pasaj-checkout-section-title">
+                  <HomeOutlined />
+                  <div>
+                    <h2>Teslimat Bilgileri</h2>
+                    <p>Siparişinizin gönderileceği adres ve alıcı bilgileri.</p>
+                  </div>
+                </div>
                 <Row gutter={[16, 0]}>
                   <Col xs={24} md={12}>
                     <Form.Item label="Ad Soyad" name="fullName" rules={[{ required: true, message: "Ad soyad zorunlu." }]}>
-                      <Input placeholder="Bilal Talha" />
+                      <Input placeholder="Bilal Talha" size="large" />
                     </Form.Item>
                   </Col>
                   <Col xs={24} md={12}>
                     <Form.Item label="Telefon" name="phone" rules={[{ required: true, message: "Telefon zorunlu." }]}>
-                      <Input placeholder="05xx xxx xx xx" />
+                      <Input placeholder="05xx xxx xx xx" size="large" />
                     </Form.Item>
                   </Col>
                   <Col xs={24}>
@@ -163,22 +192,31 @@ export const CheckoutPage = () => {
                   </Col>
                   <Col xs={24} md={12}>
                     <Form.Item label="Şehir" name="city" rules={[{ required: true, message: "Şehir zorunlu." }]}>
-                      <Input placeholder="İstanbul" />
+                      <Input placeholder="İstanbul" size="large" />
                     </Form.Item>
                   </Col>
                   <Col xs={24} md={12}>
                     <Form.Item label="İlçe" name="district" rules={[{ required: true, message: "İlçe zorunlu." }]}>
-                      <Input placeholder="Kadıköy" />
+                      <Input placeholder="Kadıköy" size="large" />
                     </Form.Item>
                   </Col>
                 </Row>
-              ) : null}
+              </section>
+            ) : null}
 
-              {currentStep === 1 ? (
+            {currentStep === 1 ? (
+              <section className="pasaj-checkout-section">
+                <div className="pasaj-checkout-section-title">
+                  <CreditCardOutlined />
+                  <div>
+                    <h2>Ödeme Bilgileri</h2>
+                    <p>Kart bilgilerinizi girin, onay adımında siparişi kontrol edin.</p>
+                  </div>
+                </div>
                 <Row gutter={[16, 0]}>
                   <Col xs={24}>
                     <Form.Item label="Kart üzerindeki ad" name="cardName" rules={[{ required: true, message: "Kart sahibi zorunlu." }]}>
-                      <Input placeholder="BILAL TALHA" />
+                      <Input placeholder="BILAL TALHA" size="large" />
                     </Form.Item>
                   </Col>
                   <Col xs={24}>
@@ -190,58 +228,49 @@ export const CheckoutPage = () => {
                         { min: 16, message: "Kart numarası eksik görünüyor." }
                       ]}
                     >
-                      <Input placeholder="0000 0000 0000 0000" maxLength={19} />
+                      <Input placeholder="0000 0000 0000 0000" maxLength={19} size="large" />
                     </Form.Item>
                   </Col>
                   <Col xs={24} md={8}>
                     <Form.Item label="Ay / Yıl" name="expireDate" rules={[{ required: true, message: "Tarih zorunlu." }]}>
-                      <Input placeholder="12/28" />
+                      <Input placeholder="12/28" size="large" />
                     </Form.Item>
                   </Col>
                   <Col xs={24} md={8}>
                     <Form.Item label="CVV" name="cvv" rules={[{ required: true, message: "CVV zorunlu." }]}>
-                      <Input placeholder="123" maxLength={3} />
+                      <Input placeholder="123" maxLength={3} size="large" />
                     </Form.Item>
                   </Col>
                   <Col xs={24} md={8}>
                     <Form.Item label="Taksit" name="installment" rules={[{ required: true, message: "Taksit seçimi zorunlu." }]}>
-                      <Input placeholder="Peşin / 3 / 6" />
+                      <Input placeholder="Peşin / 3 / 6" size="large" />
                     </Form.Item>
                   </Col>
                 </Row>
-              ) : null}
+              </section>
+            ) : null}
 
-              {currentStep === 2 ? (
-                <Space direction="vertical" size={16} style={{ width: "100%" }}>
-                  <Typography.Title level={4}>Sipariş özeti ve onay</Typography.Title>
-                  <Typography.Paragraph>
-                    Teslimat, ödeme ve sepet bilgilerini kontrol edin. "Siparişi oluştur" dediğinizde kayıt Firestore'a yazılacak.
-                  </Typography.Paragraph>
+            {currentStep === 2 ? (
+              <section className="pasaj-checkout-section">
+                <div className="pasaj-checkout-section-title">
+                  <CheckCircleOutlined />
+                  <div>
+                    <h2>Sipariş Onayı</h2>
+                    <p>Teslimat, ödeme ve sepet bilgilerinizi kontrol edin.</p>
+                  </div>
+                </div>
+                <Space direction="vertical" size={14} style={{ width: "100%" }}>
                   <div className="checkout-review-box">
-                    <div className="summary-row">
-                      <span>Teslimat alıcısı</span>
-                      <strong>{deliverySummary.fullName || "-"}</strong>
-                    </div>
-                    <div className="summary-row">
-                      <span>Telefon</span>
-                      <strong>{deliverySummary.phone || "-"}</strong>
-                    </div>
+                    <div className="summary-row"><span>Teslimat alıcısı</span><strong>{deliverySummary.fullName || "-"}</strong></div>
+                    <div className="summary-row"><span>Telefon</span><strong>{deliverySummary.phone || "-"}</strong></div>
                     <div className="summary-row">
                       <span>Adres</span>
-                      <strong>
-                        {[deliverySummary.district, deliverySummary.city].filter(Boolean).join(" / ") || "-"}
-                      </strong>
+                      <strong>{[deliverySummary.district, deliverySummary.city].filter(Boolean).join(" / ") || "-"}</strong>
                     </div>
                   </div>
                   <div className="checkout-review-box">
-                    <div className="summary-row">
-                      <span>Ödeme yöntemi</span>
-                      <strong>{paymentSummary.installment || "Peşin"}</strong>
-                    </div>
-                    <div className="summary-row">
-                      <span>Kart sahibi</span>
-                      <strong>{paymentSummary.cardName || "-"}</strong>
-                    </div>
+                    <div className="summary-row"><span>Ödeme yöntemi</span><strong>{paymentSummary.installment || "Peşin"}</strong></div>
+                    <div className="summary-row"><span>Kart sahibi</span><strong>{paymentSummary.cardName || "-"}</strong></div>
                     <div className="summary-row">
                       <span>Kart</span>
                       <strong>
@@ -251,64 +280,64 @@ export const CheckoutPage = () => {
                       </strong>
                     </div>
                   </div>
-                  <div className="checkout-review-box">
-                    <div className="summary-row"><span>Toplam ürün</span><strong>{items.length}</strong></div>
-                    <div className="summary-row"><span>Ara toplam</span><strong>{formatCurrency(subtotal)}</strong></div>
-                    <div className="summary-row"><span>Kargo</span><strong>{shippingCost === 0 ? "Ücretsiz" : formatCurrency(shippingCost)}</strong></div>
-                    <div className="summary-row total-row"><span>Genel toplam</span><strong>{formatCurrency(total)}</strong></div>
-                  </div>
                 </Space>
-              ) : null}
-            </Form>
+              </section>
+            ) : null}
+          </Form>
 
-            <div className="checkout-actions">
-              <Button onClick={previousStep} disabled={currentStep === 0 || createOrderMutation.isPending}>
-                Geri
+          <div className="checkout-actions">
+            <Button onClick={previousStep} disabled={currentStep === 0 || createOrderMutation.isPending}>
+              Geri
+            </Button>
+            {currentStep < 2 ? (
+              <Button type="primary" onClick={nextStep} disabled={items.length === 0}>
+                Devam Et
               </Button>
-              {currentStep < 2 ? (
-                <Button type="primary" onClick={nextStep} disabled={items.length === 0}>
-                  Devam et
-                </Button>
-              ) : (
-                <Button type="primary" onClick={submitOrder} loading={createOrderMutation.isPending} disabled={items.length === 0}>
-                  Siparişi oluştur
-                </Button>
-              )}
-            </div>
-          </Card>
-        </Col>
+            ) : (
+              <Button type="primary" onClick={submitOrder} loading={createOrderMutation.isPending} disabled={items.length === 0}>
+                Siparişi Oluştur
+              </Button>
+            )}
+          </div>
+        </section>
 
-        <Col xs={24} lg={9}>
-          <Card title="Sipariş özeti" className="checkout-card">
-            <Space direction="vertical" size={14} style={{ width: "100%" }}>
-              {items.map((item) => (
-                <div key={item.product.id} className="summary-row checkout-item-row">
-                  <span>
-                    {item.product.name} x{item.quantity}
-                  </span>
-                  <strong>{formatCurrency(item.product.price * item.quantity)}</strong>
-                </div>
-              ))}
-              <div className="summary-row">
-                <span>Ara toplam</span>
-                <strong>{formatCurrency(subtotal)}</strong>
+        <aside className="pasaj-checkout-summary-panel">
+          <div className="pasaj-cart-summary-title">
+            <ShoppingCartOutlined />
+            <strong>Sipariş Özeti</strong>
+          </div>
+
+          <div className="pasaj-checkout-items">
+            {items.map((item) => (
+              <div key={item.product.id} className="pasaj-checkout-item">
+                <img src={item.product.image} alt={item.product.name} />
+                <span>{item.product.name} x{item.quantity}</span>
+                <strong>{formatCurrency(item.product.price * item.quantity)}</strong>
               </div>
-              <div className="summary-row">
-                <span>Kargo</span>
-                <strong>{shippingCost === 0 ? "Ücretsiz" : formatCurrency(shippingCost)}</strong>
-              </div>
-              <div className="summary-row total-row">
-                <span>Genel toplam</span>
-                <strong>{formatCurrency(total)}</strong>
-              </div>
-              <Typography.Paragraph type="secondary" className="checkout-note">
-                Bu ekran artik demo değil. Form tamamlandığında sipariş kaydı Firestore koleksiyonuna eklenir.
-              </Typography.Paragraph>
-            </Space>
-          </Card>
-        </Col>
-      </Row>
-    </PageShell>
+            ))}
+          </div>
+
+          <div className="pasaj-cart-summary-rows">
+            <div><span>Ürünler</span><strong>{items.length}</strong></div>
+            <div><span>Ara Toplam</span><strong>{formatCurrency(subtotal)}</strong></div>
+            <div><span>Kargo</span><strong>{shippingCost === 0 ? "Ücretsiz" : formatCurrency(shippingCost)}</strong></div>
+          </div>
+
+          <div className="pasaj-cart-total-row">
+            <span>Genel Toplam</span>
+            <strong>{formatCurrency(total)}</strong>
+          </div>
+
+          <div className="pasaj-cart-summary-note">
+            <TruckOutlined />
+            <span>Sepetteki fiyatlar ödeme adımına kadar korunur.</span>
+          </div>
+
+          <Typography.Paragraph type="secondary" className="checkout-note">
+            Sipariş tamamlandığında kayıt Firestore koleksiyonuna eklenir.
+          </Typography.Paragraph>
+        </aside>
+      </div>
+    </main>
   );
 };
-
