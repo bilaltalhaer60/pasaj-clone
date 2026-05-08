@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { LoginOutlined, UserAddOutlined } from "@ant-design/icons";
+import { LockOutlined, LoginOutlined, UserAddOutlined } from "@ant-design/icons";
 import { Alert, Button, Form, Input } from "antd";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { isFirebaseReady } from "../config/firebase";
@@ -105,6 +105,13 @@ export const LoginPage = () => {
         <Link to={ROUTES.register} className="pasaj-auth-register">
           <UserAddOutlined />
           Üye Ol
+        </Link>
+        <Link to={ROUTES.adminLogin} className="pasaj-admin-login-card">
+          <LockOutlined />
+          <span>
+            <strong>Admin Girisi</strong>
+            <small>Yonetim paneline gec</small>
+          </span>
         </Link>
       </section>
     </main>

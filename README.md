@@ -73,19 +73,26 @@ VITE_FIREBASE_APP_ID=
 - `/product/:productSlug`
 - `/cart`
 - `/login`
+- `/admin-login`
 - `/register`
 - `/forgot-password`
 - `/checkout`
 - `/account`
 - `/admin`
 
-## Demo Hesaplar
+## Demo Hesaplar ve Admin Yetkisi
 
-Bu repodaki auth akisi demo store mantigiyla desteklenir.
+Bu projede giris ve kayit akisi Firebase Authentication ile calisir. Yeni kayit olan
+kullanicilar varsayilan olarak `user` rolunde acilir.
 
-- Kullanici girisi: herhangi bir normal e-posta
-- Admin girisi: icinde `admin` gecen bir e-posta
-- Varsayilan demo admin profili: `bilal@pasajclone.dev`
+- Kullanici girisi: Firebase Authentication uzerinden olusturulmus herhangi bir hesap
+- Admin girisi: Firebase Authentication hesabi + Firestore `users/{uid}` dokumaninda `role: "admin"`
+- Admin giris rotasi: `/admin-login`
+- Admin panel rotasi: `/admin`
+
+Admin kullanici hazirlamak icin Firebase Console'da ilgili kullanicinin `users`
+koleksiyonundaki dokumaninda `role` alanini `admin` yapin. Normal kullanicilar ayni
+giris sayfasindan girse bile `/admin` rotasina erisemez.
 
 ## Hafta Ozeti
 

@@ -10,10 +10,23 @@ service cloud.firestore {
       return isSignedIn() && request.auth.uid == userId;
     }
 
+    function currentUserProfile() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid));
+    }
+
     function isAdmin() {
       return isSignedIn()
-        && request.auth.token.email is string
-        && request.auth.token.email.matches('.*admin.*');
+        && currentUserProfile().data.role == 'admin';
+    }
+
+    function createsUserRole() {
+      return !('role' in request.resource.data)
+        || request.resource.data.role == 'user';
+    }
+
+    function keepsExistingRole() {
+      return !('role' in request.resource.data)
+        || request.resource.data.role == resource.data.role;
     }
 
     match /products/{productId} {
@@ -23,7 +36,8 @@ service cloud.firestore {
 
     match /users/{userId} {
       allow read: if isOwner(userId) || isAdmin();
-      allow create, update: if isOwner(userId);
+      allow create: if isOwner(userId) && createsUserRole();
+      allow update: if isAdmin() || (isOwner(userId) && keepsExistingRole());
       allow delete: if isAdmin();
     }
 

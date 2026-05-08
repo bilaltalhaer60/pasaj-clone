@@ -3489,6 +3489,59 @@ a {
   font-weight: 800;
 }
 
+.pasaj-admin-login-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 18px;
+  padding: 14px 16px;
+  border: 1px solid rgba(0, 75, 147, 0.18);
+  border-radius: 8px;
+  background: #f6faff;
+  color: #003b75;
+  text-decoration: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.pasaj-admin-login-card:hover,
+.pasaj-admin-login-card:focus {
+  color: #003b75;
+  border-color: rgba(0, 75, 147, 0.38);
+  box-shadow: 0 10px 24px rgba(0, 75, 147, 0.12);
+  transform: translateY(-1px);
+}
+
+.pasaj-admin-login-card .anticon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #004b93;
+  color: #ffffff;
+  font-size: 16px;
+  flex: 0 0 auto;
+}
+
+.pasaj-admin-login-card span {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.pasaj-admin-login-card strong {
+  font-size: 0.95rem;
+  line-height: 1.2;
+}
+
+.pasaj-admin-login-card small {
+  color: #5e7288;
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
 .pasaj-account-page {
   padding: 34px 0 64px;
   background: #f5f8fc;
@@ -3964,15 +4017,213 @@ a {
   align-items: flex-start;
 }
 
-.admin-panel-card {
-  border-radius: 24px;
-  border: 1px solid #dfe7f0;
-  box-shadow: 0 14px 28px rgba(11, 42, 73, 0.06);
+.pasaj-admin-page {
+  padding: 18px 0 64px;
+  background: #f5f8fc;
+  color: #15243a;
+}
+
+.pasaj-admin-shell {
+  display: grid;
+  gap: 18px;
+}
+
+.pasaj-admin-header {
+  min-height: 158px;
+  padding: 26px 30px;
+  border: 1px solid #dfe8f2;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 12px 26px rgba(0, 46, 95, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.pasaj-admin-header::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 6px;
+  background: #ffc72c;
+}
+
+.pasaj-admin-eyebrow {
+  display: inline-flex;
+  margin-bottom: 8px;
+  color: #003b7a;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.pasaj-admin-header h1 {
+  margin: 0;
+  color: #1f3763;
+  font-size: 34px;
+  line-height: 1.15;
+  font-weight: 800;
+}
+
+.pasaj-admin-header p {
+  max-width: 560px;
+  margin: 10px 0 0;
+  color: #61758f;
+  font-size: 16px;
+}
+
+.pasaj-admin-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.pasaj-admin-outline-button {
+  min-height: 42px;
+  padding: 0 16px;
+  border: 1px solid #003b7a;
+  border-radius: 4px;
+  color: #003b7a;
+  background: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 800;
+}
+
+.pasaj-admin-outline-button:hover,
+.pasaj-admin-outline-button:focus {
+  color: #003b7a;
+  border-color: #ffc72c;
+  background: #fff8df;
+}
+
+.pasaj-admin-tabs {
+  padding: 18px 22px 24px;
+  border: 1px solid #dfe8f2;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 12px 26px rgba(0, 46, 95, 0.08);
+}
+
+.pasaj-admin-tabs > .ant-tabs-nav {
+  margin-bottom: 18px;
+}
+
+.pasaj-admin-tabs .ant-tabs-tab {
+  padding: 10px 14px;
+  border-radius: 4px;
+  color: #5d728d;
+  font-weight: 800;
+}
+
+.pasaj-admin-tabs .ant-tabs-tab-active {
+  background: #eff5fc;
+}
+
+.pasaj-admin-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: #003b7a;
+}
+
+.pasaj-admin-tabs .ant-tabs-ink-bar {
+  background: #ffc72c;
+  height: 3px;
+}
+
+.pasaj-admin-tab-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pasaj-admin-page .ant-alert {
+  border-radius: 8px;
+  border-color: #dfe8f2;
+}
+
+.admin-panel-card,
+.pasaj-admin-page .ant-card {
+  border-radius: 8px;
+  border: 1px solid #dfe8f2;
+  box-shadow: none;
+}
+
+.pasaj-admin-page .ant-card-head {
+  min-height: 58px;
+  border-bottom: 1px solid #edf2f7;
+}
+
+.pasaj-admin-page .ant-card-head-title {
+  color: #1f3763;
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.pasaj-admin-page .ant-btn {
+  border-radius: 4px;
+  font-weight: 800;
+}
+
+.pasaj-admin-page .ant-btn-primary {
+  border-color: #ffc72c;
+  background: #ffc72c;
+  color: #003b7a;
+  box-shadow: none;
+}
+
+.pasaj-admin-page .ant-btn-primary:not(:disabled):hover,
+.pasaj-admin-page .ant-btn-primary:not(:disabled):focus {
+  border-color: #ffdc61;
+  background: #ffdc61;
+  color: #003b7a;
+}
+
+.pasaj-admin-page .ant-btn-default:not(:disabled):hover,
+.pasaj-admin-page .ant-btn-default:not(:disabled):focus {
+  border-color: #003b7a;
+  color: #003b7a;
+}
+
+.pasaj-admin-page .admin-stat-card {
+  border-radius: 8px;
+  background: #ffffff;
+  border: 1px solid #dfe8f2;
+  box-shadow: none;
+  min-height: 118px;
+  position: relative;
+  overflow: hidden;
+}
+
+.pasaj-admin-page .admin-stat-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 4px;
+  background: #ffc72c;
+}
+
+.pasaj-admin-page .admin-stat-card .ant-statistic-title {
+  color: #6b7f99;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.pasaj-admin-page .admin-stat-card .ant-statistic-content {
+  color: #003b7a;
+  font-size: 27px;
+  font-weight: 800;
 }
 
 .admin-chart-wrap {
   width: 100%;
   overflow-x: auto;
+  padding-top: 8px;
 }
 
 .admin-chart {
@@ -3997,11 +4248,110 @@ a {
   justify-content: space-between;
   align-items: center;
   gap: 16px;
+  min-height: 44px;
   padding-bottom: 12px;
-  border-bottom: 1px solid rgba(20, 33, 61, 0.08);
+  border-bottom: 1px solid #edf2f7;
+}
+
+.admin-summary-row span {
+  color: #61758f;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.admin-summary-row strong {
+  color: #003b7a;
+  font-size: 18px;
+  font-weight: 800;
 }
 
 .admin-summary-row:last-child {
   padding-bottom: 0;
   border-bottom: none;
+}
+
+.pasaj-admin-product-cell {
+  display: grid;
+  grid-template-columns: 54px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  min-width: 230px;
+}
+
+.pasaj-admin-product-cell img {
+  width: 54px;
+  height: 54px;
+  object-fit: contain;
+  border: 1px solid #e5edf6;
+  border-radius: 4px;
+  background: #f8fafd;
+}
+
+.pasaj-admin-product-cell span {
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.pasaj-admin-page .ant-table-wrapper {
+  overflow-x: auto;
+}
+
+.pasaj-admin-page .ant-table {
+  color: #1f3763;
+}
+
+.pasaj-admin-page .ant-table-thead > tr > th {
+  background: #f5f8fc;
+  color: #1f3763;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.pasaj-admin-page .ant-table-tbody > tr > td {
+  border-color: #edf2f7;
+}
+
+.pasaj-admin-page .ant-select-selector,
+.pasaj-admin-page .ant-input,
+.pasaj-admin-page .ant-input-number,
+.pasaj-admin-page .ant-input-affix-wrapper,
+.pasaj-admin-page textarea.ant-input {
+  border-radius: 4px;
+}
+
+@media (max-width: 900px) {
+  .pasaj-admin-header {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 22px;
+  }
+
+  .pasaj-admin-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .pasaj-admin-tabs {
+    padding: 14px;
+  }
+}
+
+@media (max-width: 640px) {
+  .pasaj-admin-page {
+    padding-top: 12px;
+  }
+
+  .pasaj-admin-header h1 {
+    font-size: 27px;
+  }
+
+  .pasaj-admin-outline-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .pasaj-admin-tabs .ant-tabs-nav {
+    overflow-x: auto;
+  }
 }

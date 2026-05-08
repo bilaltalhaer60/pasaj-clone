@@ -18,7 +18,7 @@ export const AdminRoute = ({ children }: AdminRouteProps) => {
   }
 
   if (!isLoggedIn) {
-    return <Navigate to={ROUTES.login} replace state={{ from: ROUTES.admin }} />;
+    return <Navigate to={ROUTES.adminLogin} replace state={{ from: ROUTES.admin }} />;
   }
 
   if (user?.role !== "admin") {

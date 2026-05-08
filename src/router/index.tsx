@@ -52,6 +52,13 @@ export const router = createBrowserRouter([
         }
       },
       {
+        path: ROUTES.adminLogin,
+        lazy: async () => {
+          const module = await import("../pages/AdminLoginPage");
+          return { Component: module.AdminLoginPage };
+        }
+      },
+      {
         path: ROUTES.register,
         lazy: async () => {
           const module = await import("../pages/RegisterPage");

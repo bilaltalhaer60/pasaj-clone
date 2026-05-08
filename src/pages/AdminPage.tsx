@@ -1,5 +1,5 @@
 ﻿import { useMemo, useState } from "react";
-import { Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   Alert,
@@ -24,8 +24,14 @@ import {
   message,
   type TableColumnsType
 } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
-import { PageShell } from "../app/page-shell";
+import {
+  AppstoreOutlined,
+  BarChartOutlined,
+  HomeOutlined,
+  PlusOutlined,
+  ShoppingOutlined,
+  UserOutlined
+} from "@ant-design/icons";
 import { isFirebaseReady, storage } from "../config/firebase";
 import { ROUTES } from "../constants/routes";
 import { getAllOrders, updateOrderStatus } from "../services/orderService";
@@ -326,10 +332,13 @@ export const AdminPage = () => {
       title: "Ürün",
       dataIndex: "name",
       render: (_, record) => (
-        <Space direction="vertical" size={2}>
-          <Typography.Text strong>{record.name}</Typography.Text>
-          <Typography.Text type="secondary">{record.brand}</Typography.Text>
-        </Space>
+        <div className="pasaj-admin-product-cell">
+          <img src={record.image} alt={record.name} />
+          <span>
+            <Typography.Text strong>{record.name}</Typography.Text>
+            <Typography.Text type="secondary">{record.brand}</Typography.Text>
+          </span>
+        </div>
       )
     },
     { title: "Kategori", dataIndex: "category" },
@@ -417,15 +426,25 @@ export const AdminPage = () => {
   }
 
   return (
-    <PageShell
-      badge="7. Hafta Teslimi"
-      title="Admin Panel"
-      description="Dashboard, ürün CRUD, sipariş yönetimi ve Firebase Storage görsel yükleme akışı tek panelde aktif."
-      nextTargets={[
-        { label: "Hesabım", to: ROUTES.account },
-        { label: "Anasayfa", to: ROUTES.home }
-      ]}
-    >
+    <main className="pasaj-admin-page">
+      <section className="pasaj-admin-shell">
+        <div className="pasaj-admin-header">
+          <div>
+            <span className="pasaj-admin-eyebrow">Pasaj Yönetim Merkezi</span>
+            <h1>Admin Panel</h1>
+            <p>Ürünleri, siparişleri ve operasyon özetini tek ekrandan yönetin.</p>
+          </div>
+          <div className="pasaj-admin-actions">
+            <Link to={ROUTES.account} className="pasaj-admin-outline-button">
+              <UserOutlined />
+              Hesabım
+            </Link>
+            <Link to={ROUTES.home} className="pasaj-admin-outline-button">
+              <HomeOutlined />
+              Mağazaya Dön
+            </Link>
+          </div>
+        </div>
       {messageContext}
       {!isFirebaseReady ? (
         <Alert
@@ -444,10 +463,16 @@ export const AdminPage = () => {
         />
       ) : null}
       <Tabs
+        className="pasaj-admin-tabs"
         items={[
           {
             key: "dashboard",
-            label: "Dashboard",
+            label: (
+              <span className="pasaj-admin-tab-label">
+                <BarChartOutlined />
+                Dashboard
+              </span>
+            ),
             children:
               productsQuery.isLoading || ordersQuery.isLoading ? (
                 <Card className="admin-panel-card">
@@ -553,7 +578,12 @@ export const AdminPage = () => {
           },
           {
             key: "products",
-            label: "Ürün Yönetimi",
+            label: (
+              <span className="pasaj-admin-tab-label">
+                <AppstoreOutlined />
+                Ürün Yönetimi
+              </span>
+            ),
             children: (
               <Card
                 className="admin-panel-card"
@@ -588,7 +618,12 @@ export const AdminPage = () => {
           },
           {
             key: "orders",
-            label: "Sipariş Yönetimi",
+            label: (
+              <span className="pasaj-admin-tab-label">
+                <ShoppingOutlined />
+                Sipariş Yönetimi
+              </span>
+            ),
             children: (
               <Card className="admin-panel-card" title="Tüm siparişler">
                 {ordersQuery.error ? (
@@ -628,7 +663,8 @@ export const AdminPage = () => {
       >
         <ProductForm form={form} selectedFile={selectedFile} setSelectedFile={setSelectedFile} />
       </Modal>
-    </PageShell>
+      </section>
+    </main>
   );
 };
 

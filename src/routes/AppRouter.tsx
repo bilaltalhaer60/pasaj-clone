@@ -4,6 +4,7 @@ import { HomePage } from '../features/home/HomePage';
 import { NotFoundPage } from '../features/misc/NotFoundPage';
 import { ProductListPage } from '../features/product/ProductListPage';
 import { AccountPage } from '../pages/AccountPage';
+import { AdminLoginPage } from '../pages/AdminLoginPage';
 import { AdminPage } from '../pages/AdminPage';
 import { CartPage } from '../pages/CartPage';
 import { CheckoutPage } from '../pages/CheckoutPage';
@@ -49,6 +50,7 @@ export function AppRouter() {
             </AdminRoute>
           }
         />
+        <Route path={ROUTES.adminLogin} element={<AdminLoginPage />} />
         <Route path={ROUTES.login} element={<LoginPage />} />
         <Route path="/giriş" element={<LoginPage />} />
         <Route path={ROUTES.register} element={<RegisterPage />} />

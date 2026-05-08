@@ -10,6 +10,7 @@ const renderWithRoutes = (element: ReactElement, initialEntry: string) =>
     <MemoryRouter initialEntries={[initialEntry]}>
       <Routes>
         <Route path="/login" element={<div>Login page</div>} />
+        <Route path="/admin-login" element={<div>Admin login page</div>} />
         <Route path="/" element={<div>Home page</div>} />
         <Route path="/account" element={element} />
         <Route path="/admin" element={element} />
@@ -95,7 +96,7 @@ describe("route guards", () => {
     expect(screen.getByText("Nested account page")).toBeInTheDocument();
   });
 
-  it("redirects guests from admin routes to login", () => {
+  it("redirects guests from admin routes to admin login", () => {
     renderWithRoutes(
       <AdminRoute>
         <div>Admin page</div>
@@ -103,7 +104,7 @@ describe("route guards", () => {
       "/admin"
     );
 
-    expect(screen.getByText("Login page")).toBeInTheDocument();
+    expect(screen.getByText("Admin login page")).toBeInTheDocument();
   });
 
   it("redirects non-admin users to home", () => {

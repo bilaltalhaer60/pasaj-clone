@@ -5,6 +5,7 @@
   product: "/product/:productSlug",
   cart: "/cart",
   login: "/login",
+  adminLogin: "/admin-login",
   register: "/register",
   forgotPassword: "/forgot-password",
   checkout: "/checkout",

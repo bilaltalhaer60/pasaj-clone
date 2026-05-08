@@ -89,8 +89,7 @@ const formatOrderDate = (createdAt: string) => {
       }).format(date);
 };
 
-const getRoleFromEmail = (email: string): MockUser["role"] =>
-  email.toLocaleLowerCase("tr-TR").includes("admin") ? "admin" : "user";
+const DEFAULT_USER_ROLE: MockUser["role"] = "user";
 
 const getFallbackName = (firebaseUser: FirebaseUser, fullName?: string) => {
   if (fullName?.trim()) {
@@ -161,7 +160,7 @@ const buildProfile = (
     email: typeof data?.email === "string" ? data.email : email,
     phone: typeof data?.phone === "string" ? data.phone : "",
     membership: typeof data?.membership === "string" ? data.membership : "Standart Üye",
-    role: isValidRole(data?.role) ? data.role : getRoleFromEmail(email),
+    role: isValidRole(data?.role) ? data.role : DEFAULT_USER_ROLE,
     orders: mapOrders(data?.orders),
     favorites: normalizeFavorites(rawFavorites),
     addresses: mapAddresses(data?.addresses)
